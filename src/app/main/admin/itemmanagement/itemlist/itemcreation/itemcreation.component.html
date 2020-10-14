@@ -1,0 +1,230 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="itemcreation">
+    <div class="p-16" pristinePerfectScrollbar>
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+            <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column" fxLayoutAlign="start">
+                <div class="h3 mb-8 p-16" fxLayout="column" style="padding-top: 20px">
+                    <div fxFlex="1 0 auto" *ngIf="type?.toLowerCase()=='edit';else elseblok" class="p-8" fxLayout="row" fxLayout.lt-sm="row" fxLayoutGap="10px">
+                      <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-between center"
+                           fxLayoutGap="10px">
+                        <div fxFlex="30">
+                          <b>Item List ( </b><b
+                          style="color: red"> {{ sessionManageMent.getLocationName}} </b><b>
+                          ) </b>
+                        </div>
+                      </div>
+                      <div fxFlex="50" fxLayout="row" fxLayoutAlign="end">
+                        <div fxLayout="row" fxLayoutAlign="end" fxLayoutAlign.lt-sm="end"
+                             fxLayoutGap="20px">
+                          <button (click)="ItemGroupCreate()"
+                            class="mr-sm-12" color="accent" mat-raised-button mat-ripple>
+                            <b>New</b>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                      <ng-template #elseblok>
+                        <div fxFlex="1 0 auto"  class="p-8" fxLayout="row" fxLayout.lt-sm="row" fxLayoutGap="10px">
+                          <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-between center"
+                               fxLayoutGap="10px">
+                            <div fxFlex="30">
+                              <b>Item List ( </b><b
+                              style="color: red"> {{ sessionManageMent.getLocationName}} </b><b>
+                              ) </b>
+                            </div>
+                          </div>
+                          <div fxFlex="50" fxLayout="row" fxLayoutAlign="end">
+                            <div fxLayout="row" fxLayoutAlign="end" fxLayoutAlign.lt-sm="end"
+                                 fxLayoutGap="20px">
+                              <button (click)="ItemGroupCreate()" class="mr-sm-12" color="accent" mat-raised-button mat-ripple>
+                                <b>New</b>
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </ng-template>
+                    <mat-divider></mat-divider>
+                    <br>
+                    <div [formGroup]="GeneralInformation">
+                        <div fxFlex="" fxLayout="column">
+                            <div class="Heading">General:</div>
+                            <div class="p-8" fxFlex="" fxLayout="Row wrap" fxLayout.lt-sm="column" fxLayoutAlign="start"
+                                 fxLayoutGap="20px" fxLayoutGap.lt-sm="0px">
+                                <mat-form-field appearance="outline" fxFlex="22.5">
+                                    <mat-label>Item Code</mat-label>
+                                    <input formControlName="itemCode" matInput placeholder="Item Code" type="text">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="22.5">
+                                    <mat-label>Description</mat-label>
+                                    <input formControlName="description" matInput placeholder="Description" type="text">
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="22.5">
+                                  <mat-label>Item Group</mat-label>
+                                  <mat-select formControlName="Item_group" (selectionChange)="seedtypechange(GeneralInformation.get('seed_type').value)">
+                                    <mat-option *ngFor="let item_Group of GetItemGroupList"
+                                                [value]="item_Group.item_no">{{item_Group.item_no}}</mat-option>
+                                  </mat-select>
+                                </mat-form-field>
+
+                                <!--                                <mat-form-field appearance="outline" fxFlex="22.5">-->
+                                <!--                                    <mat-label>Item Color</mat-label>-->
+                                <!--                                    <mat-select  formControlName="itemColor">-->
+                                <!--                                     <mat-option>1</mat-option>-->
+                                <!--                                    </mat-select>-->
+                                <!--                                </mat-form-field>-->
+                                <!--                                <mat-form-field appearance="outline" fxFlex="22.5">-->
+                                <!--                                    <mat-label>Item Size</mat-label>-->
+                                <!--                                    <mat-select  formControlName="itemSize">-->
+                                <!--                                        <mat-option>1</mat-option>-->
+                                <!--                                    </mat-select>-->
+                                <!--                                </mat-form-field>-->
+                                <!--                                <mat-form-field appearance="outline" fxFlex="22.5">-->
+                                <!--                                    <mat-label>Item Brand</mat-label>-->
+                                <!--                                    <mat-select  formControlName="itemBrand">-->
+                                <!--                                        <mat-option>1</mat-option>-->
+                                <!--                                    </mat-select>-->
+                                <!--                                </mat-form-field>-->
+                                <!--                                <mat-form-field appearance="outline" fxFlex="22.5">-->
+                                <!--                                    <mat-label>Item Material</mat-label>-->
+                                <!--                                    <mat-select  formControlName="itemMaterial">-->
+                                <!--                                        <mat-option>1</mat-option>-->
+                                <!--                                    </mat-select>-->
+                                <!--                                </mat-form-field>-->
+
+                              <mat-form-field appearance="outline" fxFlex="22.5">
+                                <mat-label>Base Unit Of Measurement</mat-label>
+                                <mat-select formControlName="baseUom">
+                                  <mat-option *ngFor="let uom of GetBaseUom"
+                                              [value]="uom.id">{{uom.name}}</mat-option>
+                                </mat-select>
+                              </mat-form-field>
+                              <mat-form-field appearance="outline" fxFlex="22.5">
+                                <mat-label>Item Type</mat-label>
+                                <mat-select formControlName="seed_type" (selectionChange)="seedtypechange(GeneralInformation.get('seed_type').value)">
+                                  <mat-option *ngFor="let seed_type of SeedType"
+                                              [value]="seed_type">{{seed_type}}</mat-option>
+                                </mat-select>
+                              </mat-form-field>
+<!--                                <mat-form-field appearance="outline" fxFlex="22.5">-->
+<!--                                    <mat-label>Sales Unit Of Measurement</mat-label>-->
+<!--                                    <input formControlName="salesUom" matInput placeholder="Sales Unit Of Measurement"-->
+<!--                                           type="text">-->
+<!--                                </mat-form-field>-->
+<!--                                <mat-form-field appearance="outline" fxFlex="22.5">-->
+<!--                                    <mat-label>Purchase Unit Of Measurement</mat-label>-->
+<!--                                    <input formControlName="purchaseUom" matInput placeholder="Purchase Unit Of Measurement"-->
+<!--                                           type="text">-->
+<!--                                </mat-form-field>-->
+                                <mat-form-field appearance="outline" fxFlex="22.5">
+                                    <mat-label>Category</mat-label>
+                                    <mat-select (selectionChange)="getItemSubCategory(GeneralInformation.get('category').value)"
+                                                formControlName="category">
+                                      <mat-option>None</mat-option>
+                                        <mat-option *ngFor="let cat of ItemCategoryList"
+                                                    [value]="cat.id">{{cat.code}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" fxFlex="22.5">
+                                    <mat-label>Sub Category</mat-label>
+
+                                    <mat-select formControlName="subCategory">
+                                      <mat-option>None</mat-option>
+                                        <mat-option *ngFor="let subCat of ItemSubcategoryList"
+                                                    [value]="subCat.id">{{subCat.code}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" fxFlex="22.5">
+                                  <mat-label>Class Of Seed</mat-label>
+                                  <mat-select formControlName="class_of_seed">
+                                    <mat-option *ngFor="let class_of_seed of SeedClass"
+                                                [value]="class_of_seed">{{class_of_seed}}</mat-option>
+                                  </mat-select>
+                                </mat-form-field>
+
+                              <mat-form-field appearance="outline" fxFlex="22.5">
+                                <mat-label>FG Pack Size</mat-label>
+                                <input formControlName="fg_pack_size" matInput placeholder="FG Pack Size"
+                                       type="number">
+                              </mat-form-field>
+
+                              <mat-form-field appearance="outline" fxFlex="22.5">
+                                <mat-label>Crop Type</mat-label>
+                                <mat-select formControlName="crop_type">
+                                  <mat-option *ngFor="let crop_type of CropType"
+                                              [value]="crop_type">{{crop_type}}</mat-option>
+                                </mat-select>
+                              </mat-form-field>
+
+                              <mat-form-field appearance="outline" fxFlex="22.5">
+                                <mat-label>Marketing Code</mat-label>
+                                <input formControlName="marketing_code" matInput placeholder="Marketing Code"
+                                       type="text">
+                              </mat-form-field>
+
+                              <mat-form-field appearance="outline" fxFlex="22.5">
+                                <mat-label>Class Of Variety</mat-label>
+                                <mat-select formControlName="class_of_variety">
+                                  <mat-option *ngFor="let class_of_variety of VarietyClass"
+                                              [value]="class_of_variety">{{class_of_variety}}</mat-option>
+                                </mat-select>
+                              </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="22.5">
+                                    <mat-label>Image URL</mat-label>
+                                    <input formControlName="imageUrl" matInput placeholder="Image URL" type="text">
+                                </mat-form-field>
+                            </div>
+                            <div class="Heading">Account:</div>
+                            <div fxFlex fxLayout="column">
+                                <div class="p-8" fxLayout="Row wrap" fxLayout.lt-sm="column" fxLayoutAlign="start"
+                                     fxLayoutGap="20px" fxLayoutGap.lt-sm="10px">
+                                    <mat-form-field appearance="outline" fxFlex="30" fxFlex.lt-sm="auto">
+                                        <mat-label>MRP</mat-label>
+                                        <input formControlName="mrp" matInput placeholder="MRP" type="number">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="30" fxFlex.lt-sm="auto">
+                                        <mat-label>Unit Price</mat-label>
+                                        <input formControlName="unitPrice" matInput placeholder="Unit Price"
+                                               type="number">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="30" fxFlex.lt-sm="auto">
+                                        <mat-label>Cost/Unit</mat-label>
+                                        <input formControlName="cost" matInput placeholder="Cost/Unit" type="number">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="46">
+                                        <mat-label>Gst Group</mat-label>
+                                        <mat-select (selectionChange)="getGstHsnCode(GeneralInformation.get('gstGroup').value)"
+                                                    formControlName="gstGroup">
+                                            <mat-option *ngFor="let gstGroup of GetGstGroupId"
+                                                        [value]="gstGroup.gst_group_id">{{gstGroup.gst_group}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="46">
+                                        <mat-label>HSN Code</mat-label>
+                                        <mat-select formControlName="hsnCode">
+                                            <mat-option *ngFor="let hsncode of GetGstHsnCode"
+                                                        [value]="hsncode.hsn_id">{{hsncode.description}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div fxFlex="" fxLayout="row" fxLayoutAlign="end">
+
+                                <button (click)="ItemCreate()" *ngIf="type?.toLowerCase()=='edit';else elseblock"
+                                        color="accent" mat-raised-button>
+                                    <mat-icon>update</mat-icon>&nbsp;Update
+                                </button>
+                                <ng-template #elseblock>
+                                    <button (click)="ItemCreate()" color="accent" mat-raised-button>
+                                        <mat-icon>save</mat-icon>&nbsp;Save
+                                    </button>
+                                </ng-template>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

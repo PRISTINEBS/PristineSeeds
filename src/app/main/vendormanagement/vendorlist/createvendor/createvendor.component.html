@@ -1,0 +1,447 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="vendorcreation">
+    <div class="p-16" pristinePerfectScrollbar>
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+            <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column"
+                 fxLayoutAlign="start">
+                <div class="h3 mb-8 p-16" fxLayout="column" style="padding-top: 20px">
+                    <div fxFlex="1 0 auto" fxLayout="row" fxLayout.lt-sm="row" fxLayoutGap="10px">
+                        <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-between center"
+                             fxLayoutGap="10px">
+                            <div fxFlex="30">
+                                <b>Create Vendor ( </b><b
+                                style="color: red"> {{ sessionManageMent.getLocationName}} </b><b>
+                                ) </b>
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <br>
+                    <mat-horizontal-stepper #stepper linear>
+                        <mat-step [stepControl]="GeneralInformation" label="General Information">
+                            <div [formGroup]="GeneralInformation">
+                                <ng-template matStepLabel>General Information</ng-template>
+                                <div fxFlex="" fxLayout="column">
+                                    <div class="p-8" fxLayout="Row" fxLayoutAlign="start" fxLayoutGap="40px">
+                                        <mat-form-field appearance="outline" fxFlex="50">
+                                            <mat-label>Type of vendor<sup style="color: red">*</sup></mat-label>
+                                            <mat-select formControlName="VendorType" placeholder="Type of vendor">
+                                                <mat-option [value]="'Domestic'">Domestic</mat-option>
+                                                <mat-option [value]="'International'">International</mat-option>
+                                            </mat-select>
+                                            <mat-error
+                                                *ngIf="GeneralInformation.get('VendorType').hasError('required') && GeneralInformation.get('VendorType').dirty && GeneralInformation.get('VendorType').touched">
+                                                Vendor Type is required*
+                                            </mat-error>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex="50">
+                                            <mat-label>Vendor Name<sup style="color: red">*</sup></mat-label>
+                                            <input formControlName="VendorName" matInput placeholder="Vendor Name"
+                                                   type="text">
+                                            <mat-error
+                                                *ngIf="GeneralInformation.get('VendorName').hasError('required') && GeneralInformation.get('VendorName').dirty && GeneralInformation.get('VendorName').touched">
+                                                Vendor Name is required*
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div>
+                                        <button color="accent" mat-button
+                                                mat-raised-button matStepperNext>Next
+                                        </button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </mat-step>
+                        <mat-step [stepControl]="CommunicationDetails" label="Communication Details">
+                            <div [formGroup]="CommunicationDetails">
+                                <ng-template matStepLabel>Communication Details</ng-template>
+                                <div fxFlex fxLayout="column">
+                                    <div class="p-8" fxLayout="Row wrap" fxLayout.lt-sm="column"
+                                         fxLayoutAlign="start" fxLayoutGap="20px" fxLayoutGap.lt-sm="10px">
+                                        <mat-form-field appearance="outline" fxFlex="30.5">
+                                            <mat-label>Select Country<sup style="color: red">*</sup></mat-label>
+                                            <mat-select formControlName="Country" placeholder="Select Country">
+                                                <mat-option [value]="'India'">India</mat-option>
+                                            </mat-select>
+                                            <mat-error
+                                                *ngIf="CommunicationDetails.get('Country').hasError('required') && CommunicationDetails.get('Country').dirty && CommunicationDetails.get('Country').touched">
+                                                Country is required*
+                                            </mat-error>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex="30.5">
+                                            <mat-label>Select State<sup style="color: red">*</sup></mat-label>
+                                            <mat-select formControlName="State" placeholder="Select State">
+                                                <mat-option *ngFor="let state of stateList"
+                                                            [value]="state.name">{{state.name}}</mat-option>
+                                            </mat-select>
+                                            <mat-error
+                                                *ngIf="CommunicationDetails.get('State').hasError('required') && CommunicationDetails.get('State').dirty && CommunicationDetails.get('State').touched">
+                                                State is required*
+                                            </mat-error>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex="30.5">
+                                            <mat-label>Enter City<sup style="color: red">*</sup></mat-label>
+                                            <input formControlName="City" matInput placeholder="Enter City" type="text">
+                                            <mat-error
+                                                *ngIf="CommunicationDetails.get('City').hasError('required') && CommunicationDetails.get('City').dirty && CommunicationDetails.get('City').touched">
+                                                City is required*
+                                            </mat-error>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex="30.5">
+                                            <mat-label>Pin Code<sup style="color: red">*</sup></mat-label>
+                                            <input formControlName="PinCode" matInput placeholder="Pin Code"
+                                                   type="text">
+                                            <mat-error
+                                                *ngIf="CommunicationDetails.get('PinCode').hasError('required') && CommunicationDetails.get('PinCode').dirty && CommunicationDetails.get('PinCode').touched">
+                                                Pin Code is required*
+                                            </mat-error>
+                                            <mat-error
+                                                *ngIf="CommunicationDetails.get('PinCode').hasError('pattern')">
+                                                Pin Code should not more than 6 digit
+                                            </mat-error>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex="30.5">
+                                            <mat-label>Email Id<sup style="color: red">*</sup></mat-label>
+                                            <input formControlName="Email" matInput placeholder="Email Id" type="text">
+                                            <mat-error
+                                                *ngIf="CommunicationDetails.get('Email').hasError('required') && CommunicationDetails.get('Email').dirty && CommunicationDetails.get('Email').touched">
+                                                Email is required*
+                                            </mat-error>
+                                            <mat-error
+                                                *ngIf="CommunicationDetails.get('Email').hasError('pattern')">
+                                                Please enter valid email id(eg:example@123.com)
+                                            </mat-error>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex="30.5">
+                                            <mat-label>Mobile No<sup style="color: red">*</sup></mat-label>
+                                            <input formControlName="Mobile" matInput placeholder="Mobile No"
+                                                   type="text">
+                                            <mat-error
+                                                *ngIf="CommunicationDetails.get('Mobile').hasError('required') && CommunicationDetails.get('Mobile').dirty && CommunicationDetails.get('Mobile').touched">
+                                                Mobile no is required*
+                                            </mat-error>
+                                            <mat-error
+                                                *ngIf="CommunicationDetails.get('Mobile').hasError('maxLength')">
+                                                Mobile no should not more than 1o digit(eg:9876565436)
+                                            </mat-error>
+                                            <mat-error
+                                                *ngIf="CommunicationDetails.get('Mobile').hasError('pattern')">
+                                                Invalid mobile no(eg:9876565436)
+                                            </mat-error>
+                                        </mat-form-field>
+
+                                        <mat-form-field appearance="outline" fxFlex="46.5">
+                                            <mat-label>Phone No</mat-label>
+                                            <input formControlName="Phone" matInput placeholder="Phone No" type="text">
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex="46.5">
+                                            <mat-label>Vendor Address<sup style="color: red">*</sup></mat-label>
+                                            <input formControlName="Address" matInput placeholder="Vendor Address"
+                                                   type="text">
+                                            <mat-error
+                                                *ngIf="CommunicationDetails.get('Address').hasError('required') && CommunicationDetails.get('Address').dirty && CommunicationDetails.get('Address').touched">
+                                                Address is required*
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="row" fxLayoutGap="10px">
+                                        <button color="warn" mat-button
+                                                mat-raised-button matStepperPrevious>Back
+                                        </button>
+                                        <button color="accent" mat-button
+                                                mat-raised-button matStepperNext>Next
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-step>
+                        <mat-step [stepControl]="ContactInformation" label="Contact Information">
+                            <div [formGroup]="ContactInformation">
+                                <ng-template matStepLabel>Contact Information</ng-template>
+                                <div fxFlex fxLayout="column">
+                                    <div class="p-8" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="start"
+                                         fxLayoutGap="50px" fxLayoutGap.lt-sm="10px">
+                                        <div fxFlex="50" fxLayout="column">
+                                            <div class="Heading">Person Name</div>
+                                            <br>
+                                            <mat-form-field appearance="outline">
+                                                <mat-label>Contact Person Name<sup style="color: red">*</sup>
+                                                </mat-label>
+                                                <input formControlName="ContactPersonName" matInput placeholder="Contact Person Name"
+                                                       type="text">
+                                                <mat-error
+                                                    *ngIf="ContactInformation.get('ContactPersonName').hasError('required') && ContactInformation.get('ContactPersonName').dirty && ContactInformation.get('ContactPersonName').touched">
+                                                    Name is required*
+                                                </mat-error>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline">
+                                                <mat-label>Operation Person Name<sup style="color: red">*</sup>
+                                                </mat-label>
+                                                <input formControlName="OperationPersonName" matInput placeholder="Operation Person Name"
+                                                       type="text">
+                                                <mat-error
+                                                    *ngIf="ContactInformation.get('OperationPersonName').hasError('required') && ContactInformation.get('OperationPersonName').dirty && ContactInformation.get('OperationPersonName').touched">
+                                                    Name is required*
+                                                </mat-error>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline">
+                                                <mat-label>Account Person Name<sup style="color: red">*</sup>
+                                                </mat-label>
+                                                <input formControlName="AccountPersonName" matInput placeholder="Account Person Name"
+                                                       type="text">
+                                                <mat-error
+                                                    *ngIf="ContactInformation.get('AccountPersonName').hasError('required') && ContactInformation.get('AccountPersonName').dirty && ContactInformation.get('AccountPersonName').touched">
+                                                    Name is required*
+                                                </mat-error>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline">
+                                                <mat-label>Warehouse Person Name<sup style="color: red">*</sup>
+                                                </mat-label>
+                                                <input formControlName="WarehousePersonName" matInput placeholder="Warehouse Person Name"
+                                                       type="text">
+                                                <mat-error
+                                                    *ngIf="ContactInformation.get('WarehousePersonName').hasError('required') && ContactInformation.get('WarehousePersonName').dirty && ContactInformation.get('WarehousePersonName').touched">
+                                                    Name is required*
+                                                </mat-error>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline">
+                                                <mat-label>Purchase Person Name<sup style="color: red">*</sup>
+                                                </mat-label>
+                                                <input formControlName="PurchasePersonName" matInput placeholder="Purchase Person Name"
+                                                       type="text">
+                                                <mat-error
+                                                    *ngIf="ContactInformation.get('PurchasePersonName').hasError('required') && ContactInformation.get('PurchasePersonName').dirty && ContactInformation.get('PurchasePersonName').touched">
+                                                    Name is required*
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                        <div fxFlex="50" fxLayout="column">
+                                            <div class="Heading">Person No.</div>
+                                            <br>
+                                            <mat-form-field appearance="outline">
+                                                <mat-label>Contact Person No.<sup style="color: red">*</sup></mat-label>
+                                                <input formControlName="ContactPersonNo" matInput placeholder="Contact Person No."
+                                                       type="text">
+                                                <mat-error
+                                                    *ngIf="ContactInformation.get('ContactPersonNo').hasError('required') && ContactInformation.get('ContactPersonNo').dirty && ContactInformation.get('ContactPersonNo').touched">
+                                                    Number is required*
+                                                </mat-error>
+                                                <mat-error
+                                                    *ngIf="ContactInformation.get('ContactPersonNo').hasError('maxLength')">
+                                                    Number should not more than 10 digit(eg:9876576576)
+                                                </mat-error>
+                                                <mat-error
+                                                    *ngIf="ContactInformation.get('ContactPersonNo').hasError('pattern')">
+                                                    Invalid mobile no(eg:9876576576)
+                                                </mat-error>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline">
+                                                <mat-label>Operation Person No.<sup style="color: red">*</sup>
+                                                </mat-label>
+                                                <input formControlName="OperationPersonNo" matInput placeholder="Operation Person No."
+                                                       type="text">
+                                                <mat-error
+                                                    *ngIf="ContactInformation.get('OperationPersonNo').hasError('required') && ContactInformation.get('OperationPersonNo').dirty && ContactInformation.get('OperationPersonNo').touched">
+                                                    Number is required*
+                                                </mat-error>
+                                                <mat-error
+                                                    *ngIf="ContactInformation.get('OperationPersonNo').hasError('maxLength')">
+                                                    Number should not more than 10 digit(eg:9876576576)
+                                                </mat-error>
+                                                <mat-error
+                                                    *ngIf="ContactInformation.get('OperationPersonNo').hasError('pattern')">
+                                                    Invalid mobile no(eg:9876576576)
+                                                </mat-error>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline">
+                                                <mat-label>Account Person No.<sup style="color: red">*</sup></mat-label>
+                                                <input formControlName="AccountPersonNo" matInput placeholder="Account Person No."
+                                                       type="text">
+                                                <mat-error
+                                                    *ngIf="ContactInformation.get('AccountPersonNo').hasError('required') && ContactInformation.get('AccountPersonNo').dirty && ContactInformation.get('AccountPersonNo').touched">
+                                                    Number is required*
+                                                </mat-error>
+                                                <mat-error
+                                                    *ngIf="ContactInformation.get('AccountPersonNo').hasError('maxLength')">
+                                                    Number should not more than 10 digit(eg:9876576576)
+                                                </mat-error>
+                                                <mat-error
+                                                    *ngIf="ContactInformation.get('AccountPersonNo').hasError('pattern')">
+                                                    Invalid mobile no(eg:9876576576)
+                                                </mat-error>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline">
+                                                <mat-label>Warehouse Person No.<sup style="color: red">*</sup>
+                                                </mat-label>
+                                                <input formControlName="WarehousePersonNo" matInput placeholder="Warehouse Person No."
+                                                       type="text">
+                                                <mat-error
+                                                    *ngIf="ContactInformation.get('WarehousePersonNo').hasError('required') && ContactInformation.get('WarehousePersonNo').dirty && ContactInformation.get('WarehousePersonNo').touched">
+                                                    Number is required*
+                                                </mat-error>
+                                                <mat-error
+                                                    *ngIf="ContactInformation.get('WarehousePersonNo').hasError('maxLength')">
+                                                    Number should not more than 10 digit(eg:9876576576)
+                                                </mat-error>
+                                                <mat-error
+                                                    *ngIf="ContactInformation.get('WarehousePersonNo').hasError('pattern')">
+                                                    Invalid mobile no(eg:9876576576)
+                                                </mat-error>
+                                            </mat-form-field>
+                                            <mat-form-field appearance="outline">
+                                                <mat-label>Purchase Person No.<sup style="color: red">*</sup>
+                                                </mat-label>
+                                                <input formControlName="PurchasePersonNo" matInput placeholder="Purchase Person No."
+                                                       type="text">
+                                                <mat-error
+                                                    *ngIf="ContactInformation.get('PurchasePersonNo').hasError('required') && ContactInformation.get('PurchasePersonNo').dirty && ContactInformation.get('PurchasePersonNo').touched">
+                                                    Number is required*
+                                                </mat-error>
+                                                <mat-error
+                                                    *ngIf="ContactInformation.get('PurchasePersonNo').hasError('maxLength')">
+                                                    Number should not more than 10 digit(eg:9876576576)
+                                                </mat-error>
+                                                <mat-error
+                                                    *ngIf="ContactInformation.get('PurchasePersonNo').hasError('pattern')">
+                                                    Invalid mobile no(eg:9876576576)
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div fxFlex="row" fxLayoutGap="10px">
+                                        <button color="warn" mat-button
+                                                mat-raised-button matStepperPrevious>Back
+                                        </button>
+                                        <button color="accent" mat-button
+                                                mat-raised-button matStepperNext>Next
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-step>
+                        <mat-step [stepControl]="TaxInformation" label="Tax Information">
+                            <div [formGroup]="TaxInformation">
+                                <ng-template matStepLabel>Tax Information</ng-template>
+                                <div fxFlex fxLayout="column">
+                                    <div class="p-8" fxFlex="" fxLayout="row wrap" fxLayout.lt-sm="column"
+                                         fxLayoutGap="20px" fxLayoutGap.lt-sm="10px">
+                                        <mat-form-field appearance="outline" fxFlex="30.5">
+                                            <mat-label>Gst Type<sup style="color: red">*</sup></mat-label>
+                                            <mat-select (selectionChange)="OnRegTypeSelectionChange()" formControlName="GstType"
+                                                        placeholder="Gst Type">
+                                                <mat-option [value]="'Registered'">Registered</mat-option>
+                                                <mat-option [value]="'Composite'">Composite</mat-option>
+                                                <mat-option [value]="'Unregistered'">Unregistered</mat-option>
+                                                <mat-option [value]="'Import'">Import</mat-option>
+                                                <mat-option [value]="'Exempted'">Exempted</mat-option>
+                                                <mat-option [value]="'Sez'">Sez</mat-option>
+                                            </mat-select>
+                                            <mat-error
+                                                *ngIf="TaxInformation.get('GstType').hasError('required') && TaxInformation.get('GstType').dirty && TaxInformation.get('GstType').touched">
+                                                Gst Type is required*
+                                            </mat-error>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex="30.5">
+                                            <mat-label>Gst Registration No.<sup style="color: red">*</sup></mat-label>
+                                            <input formControlName="GstRegNo" matInput placeholder="Gst Registration No."
+                                                   type="text">
+                                            <mat-error
+                                                *ngIf="TaxInformation.get('GstRegNo').hasError('required') && TaxInformation.get('GstRegNo').dirty && TaxInformation.get('GstRegNo').touched">
+                                                Gst Reg. no is required*
+                                            </mat-error>
+                                            <mat-error
+                                                *ngIf="TaxInformation.get('GstRegNo').hasError('pattern')">
+                                                invalid Gst Reg. no
+                                            </mat-error>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex="30.5">
+                                            <mat-label>Pan Number<sup style="color: red">*</sup></mat-label>
+                                            <input formControlName="PanNo" matInput placeholder="Pan Number"
+                                                   type="text">
+                                            <mat-error
+                                                *ngIf="TaxInformation.get('PanNo').hasError('required') && TaxInformation.get('PanNo').dirty && TaxInformation.get('PanNo').touched">
+                                                Pan no is required*
+                                            </mat-error>
+                                            <mat-error
+                                                *ngIf="TaxInformation.get('PanNo').hasError('pattern')">
+                                                Invalid Pan no
+                                            </mat-error>
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex="46.5">
+                                            <mat-label>Home Page</mat-label>
+                                            <input formControlName="HomePage" matInput placeholder="Home Page"
+                                                   type="text">
+                                        </mat-form-field>
+                                        <mat-form-field appearance="outline" fxFlex="46.5">
+                                            <mat-label>Currency<sup style="color: red">*</sup></mat-label>
+                                            <mat-select formControlName="Currency" placeholder="Currency">
+                                                <mat-option [value]="'INR'">INR</mat-option>
+                                                <mat-option>AED</mat-option>
+                                                <mat-option>AUD</mat-option>
+                                                <mat-option>BGN</mat-option>
+                                                <mat-option>BND</mat-option>
+                                                <mat-option>BRL</mat-option>
+                                            </mat-select>
+                                            <mat-error
+                                                *ngIf="TaxInformation.get('Currency').hasError('required') && TaxInformation.get('Currency').dirty && TaxInformation.get('Currency').touched">
+                                                Currency is required*
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div fxFlex="row" fxLayoutGap="10px">
+                                        <button color="warn" mat-button
+                                                mat-raised-button matStepperPrevious>Back
+                                        </button>
+                                        <button color="accent" mat-button
+                                                mat-raised-button matStepperNext>Next
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </mat-step>
+                        <mat-step label="Upload">
+                            <ng-template matStepperIcon="Image">
+                                <mat-icon>done</mat-icon>
+                            </ng-template>
+                            <div fxFlex fxLayout="row wrap" fxLayoutGap="10px">
+                                <div class="upload-image">
+                                    <div #image class="image-wrapper"></div>
+                                    <div class="browse-btn">
+                                        <input #file (change)="onSelectedFile($event)" accept='image/*' id="cameraImg" multiple
+                                               name="cameraImg" type="file"/>
+                                        <div class="browse-image">
+                                            <!--                                        <mat-icon>camera_alt</mat-icon>-->
+                                            <img src="assets/images/camera.png"/>
+                                            <p style="font-weight: 600">Browse file</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngFor="let url of urls" class="upload-image">
+                                    <div #image class="image-wrapper"></div>
+                                    <div class="browse-btn">
+                                        <div class="browse-image">
+                                            <!--                                        <mat-icon>camera_alt</mat-icon>-->
+                                            <img [src]="url" class="img"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div fxFlex="row" fxLayoutGap="10px">
+                                <button color="warn" mat-button
+                                        mat-raised-button matStepperPrevious>Back
+                                </button>
+                                <button (click)="stepper.reset()" color="primary"
+                                        mat-button mat-raised-button>Reset
+                                </button>
+                                <button (click)="CreateVendor();stepper.reset()" color="accent"
+                                        mat-button mat-raised-button>Save
+                                </button>
+                            </div>
+                        </mat-step>
+                    </mat-horizontal-stepper>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

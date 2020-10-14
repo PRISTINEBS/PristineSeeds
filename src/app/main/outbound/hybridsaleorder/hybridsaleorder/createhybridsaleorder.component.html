@@ -1,0 +1,259 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="createsaleorder">
+    <div class="content p-20" pristinePerfectScrollbar>
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+            <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column" fxLayoutAlign="start">
+
+                <div class=" h3 mb-8 p-16">
+                    <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-between"
+                         fxLayoutGap="10px">
+                        <div fxFlex="60" fxFlex.sm fxLayout.lt-sm="column">
+                            <b>Create Hybrid Sale Order ( </b> <b
+                            style="color: red"> {{sessionManageMent.getLocationName}}</b><b>
+                            ) {{currentdate | date: 'dd/MM/yyyy hh:mm a'}} </b>
+                        </div>
+
+                        <div *ngIf="hideSubmit==true && CustomerInfo.valid " fxFlex="20" fxLayout="row" fxLayoutAlign="end">
+                            <button (click)="CreateSaleOrder()" [disabled]="BasicInput.invalid"
+                                    aria-label="Submit"
+                                    color="accent"
+                                    mat-raised-button>
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <mat-divider></mat-divider>
+                <mat-horizontal-stepper #stepper linear>
+                  <mat-step [stepControl]="CustomerInfo" label="Customer Information">
+                    <form [formGroup]="CustomerInfo" >
+                        <div  class="p-16" fxFlex fxLayout="column">
+                      <div fxLayout="column" fxLayoutGap="10px">
+                        <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+                          <div fxFlex="33" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                            <div fxLayout="column" style="width: 80%;">
+                              <mat-form-field appearance="outline">
+                                <mat-label>Delivery order No.</mat-label>
+                                <mat-select autocomplete="off" (selectionChange)="get_doInfo()" formControlName="DeliveryOrderNo">
+                                  <mat-option>None</mat-option>
+                                  <mat-option [value]="docno.document_no" *ngFor="let docno of deliveryOrderlist">{{docno.document_no}}</mat-option>
+                                </mat-select>
+                                <mat-error>
+                                  Delivery order No. is required
+                                </mat-error>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                          <div fxFlex="33" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                            <div fxLayout="column" style="width: 80%;">
+                              <mat-form-field appearance="outline">
+                                <mat-label>Customer Name</mat-label>
+                                  <input  formControlName="CustomerNameorNo"
+                                         autocomplete="off" focused="'true'" matInput placeholder="Customer Name"
+                                         type="text" readonly>
+                                <mat-error>
+                                  Customer Name or Number is required
+                                </mat-error>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div *ngIf="addresslist?.length>0">
+                        <b>Addresses </b>
+                        <br><br>
+                      </div>
+                      <div class="cardcontent" fxFlex fxLayout="row wrap" fxLayout.lt-sm="column"
+                           fxLayoutGap="20px" fxLayoutGap.lt-sm="20px">
+                        <div *ngFor="let address of addresslist; let i = index;" class="pristine-card"
+                             fxFlex="25">
+                          <div class="p-16 pb-0">
+                            <div class="h3 font">{{address.name}}</div>
+                          </div>
+                          <div class="p-16 pt-0 line-height-1.75">
+                            {{address.address + ',' + address.taluka + ',' + address.village
+                          + ',' + address.city + ',' + address.state + ',' + address.pincode}}
+                            <br>
+                            {{'Mobile no:' + '' + address.mobile_no}}
+                          </div>
+                          <div class="p-8 pt-0" fxLayout="row" fxLayoutAlign="start center">
+                            <mat-chip-list aria-label="Fish selection" multiple="true">
+                              <mat-chip (click)="billclick(i)" [selected]="address.billtoselected"
+                                        color="warn">Bill To
+                              </mat-chip>
+                              <mat-chip (click)="shipclick(i)" [selected]="address.shiptoselected"
+                                        color="primary">Ship To
+                              </mat-chip>
+                            </mat-chip-list>
+                          </div>
+                        </div>
+                      </div>
+                      <div fxLayout="row wrap" fxLayout.lt-sm="column" fxLayoutAlign="start center"
+                           style="margin-top: 20px">
+                        <button [disabled]="CustomerInfo.invalid" (click)="hideSubmit=true" color="accent" mat-button
+                                mat-raised-button matStepperNext style="width: 80px;">Next
+                        </button>
+                      </div>
+                    </div>
+                    </form>
+                  </mat-step>
+                    <mat-step [stepControl]="BasicInput" label="Basic Information">
+                      <form [formGroup]="BasicInput" name="registerForm" >
+                        <div fxLayout="column" fxLayoutGap="10px">
+                          <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+                            <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                              <div fxLayout="column" style="width: 80%;">
+                                <mat-form-field appearance="outline" fxFlex="22.5">
+                                  <mat-label>LR/RR no<sup style="color: red">*</sup></mat-label>
+                                    <input matInput type="text" formControlName="LRRno" >
+                                  <mat-error>
+                                    LR/RR no is required
+                                  </mat-error>
+                                  </mat-form-field>
+                              </div>
+                            </div>
+
+                            <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center" *ngIf="this.addresslist?.length>0">
+                              <div fxLayout="column" style="width: 80%;">
+                                <mat-form-field appearance="outline">
+                                  <mat-label>LR/RR Date<sup style="color: red">*</sup></mat-label>
+                                  <input (focusin)="ldate.open()" [matDatepicker]="ldate"
+                                         formControlName="LRRDate"
+                                         matInput
+                                         placeholder="Choose LR date"
+                                  >
+                                  <mat-datepicker #ldate="matDatepicker"
+                                  ></mat-datepicker>
+                                  <mat-icon class="secondary-text" matSuffix>date_range</mat-icon>
+                                  <mat-error>
+                                    LR/RR date is required
+                                  </mat-error>
+                                </mat-form-field>
+                              </div>
+                            </div>
+
+                            <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center" *ngIf="this.addresslist?.length>0">
+                              <div fxLayout="column" style="width: 80%;">
+                                <mat-form-field appearance="outline" >
+                                  <mat-label>Vehicle No<sup style="color: red">*</sup></mat-label>
+                                  <input formControlName="VehicleNo"  matInput placeholder="Vehicle No" type="text" >
+                                  <mat-error>
+                                    Vehicle no is required
+                                  </mat-error>
+                                </mat-form-field>
+                              </div>
+                            </div >
+
+                            <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center" *ngIf="this.addresslist?.length>0">
+                              <div fxLayout="column" style="width: 80%;">
+                                <mat-form-field appearance="outline" >
+                                  <mat-label>Transporter Code<sup style="color: red">*</sup></mat-label>
+                                  <input formControlName="TransporterCode"  matInput placeholder="Transporter Code" type="text" >
+                                  <mat-error>
+                                    Transporter Code is required
+                                  </mat-error>
+                                </mat-form-field>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div fxLayout="column" fxLayoutGap="10px">
+                          <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+
+                            <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center" *ngIf="this.addresslist?.length>0">
+                              <div fxLayout="column" style="width: 80%;">
+                                <mat-form-field appearance="outline" fxFlex="22.5">
+                                  <mat-label>Transporter Name<sup style="color: red">*</sup></mat-label>
+                                  <input formControlName="TransporterName"  matInput placeholder="Transporter Name" type="text" >
+                                  <mat-error>
+                                    Transporter Name is required
+                                  </mat-error>
+                                </mat-form-field>
+                              </div>
+                            </div>
+                            <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center" *ngIf="this.addresslist?.length>0">
+                              <div fxLayout="column" style="width: 80%;">
+                                <mat-form-field appearance="outline">
+                                  <mat-label>Salesperson Code<sup style="color: red">*</sup></mat-label>
+                                  <input autocomplete="off" formControlName="SalespersonCode" placeholder="Salesperson Code" matInput >
+                                </mat-form-field>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <br>
+                        <b style="color: red" class="p-8">Order Line Detail</b>
+                        <br>
+                        <div class="h3 mb-8 p-16">
+                          <div class="example-container">
+                            <table #matSort="matSort" [dataSource]="dataSource" mat-table matSort>
+                              <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+                                <th *matHeaderCellDef mat-header-cell>
+                                  <div class="filterHeader">
+                                    <b mat-sort-header>{{column|firstAnd_Split}}</b><br>
+                                    <input (keyup)="applyFilter($event.target.value,column)"
+                                           *ngIf="column!='Action'"
+                                           [placeholder]="column|firstAnd_Split">
+                                  </div>
+                                </th>
+                                <td *matCellDef="let element" mat-cell>
+                                  <p *ngIf="column!='Action';else elseAction">{{element[column]}}</p>
+                                  <ng-template #elseAction>
+                                    <!--                                                <button (click)="delete_line(element)" *ngIf="column=='Action'"-->
+                                    <!--                                                        mat-icon-button>-->
+                                    <!--                                                    <mat-icon class="icon-size">delete</mat-icon>-->
+                                    <!--                                                </button>-->
+                                    <p *ngIf="column=='created_on'">{{element[column]|date:'dd/MM/yyyy HH:MM a'}}</p>
+                                  </ng-template>
+                                </td>
+                                <td *matFooterCellDef mat-footer-cell>
+                                  <p *ngIf="column=='item_name'">
+                                    Total
+                                  </p>
+                                  <p *ngIf="column!='item_no' && column!='lot_no' && column!='item_name' && column!='crop_code' && column!='variety_group' && column!='marketing_indent_no' && column!='item_class_of_seed' && column!='sales_type' && column!='Action' && dataSource?.data?.length>0">
+                                    {{sum_footer(dataSource.data, column) }}
+                                  </p>
+                                </td>
+                              </ng-container>
+                              <tr *matHeaderRowDef="displayedColumns ; sticky: true" mat-header-row></tr>
+                              <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+                              <tr *matFooterRowDef="displayedColumns; sticky: true" mat-footer-row></tr>
+                            </table>
+                            <div *ngIf="dataSource?.data?.length<=0" class="h3 m-16">No Record Found.</div>
+                            <mat-divider *ngIf="dataSource?.data?.length<=0"></mat-divider>
+                          </div>
+                          <mat-paginator #matpaginator="matPaginator" [pageSizeOptions]="[ 5, 10, 20, 30,40,50]"
+                                         showFirstLastButtons></mat-paginator>
+
+                        </div>
+
+                      </form>
+
+                    </mat-step>
+
+
+                </mat-horizontal-stepper>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

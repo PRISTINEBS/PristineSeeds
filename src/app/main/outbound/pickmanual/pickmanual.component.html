@@ -1,0 +1,146 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="iqcscanning">
+    <div class="content p-20" pristinePerfectScrollbar>
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+            <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column" fxLayoutAlign="start">
+                <div class=" h3 mb-8 p-16">
+                    <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column"
+                         fxLayoutAlign="space-between center"
+                         fxLayoutGap="10px">
+                        <div fxFlex="60">
+                            <b>Pick Scan ( </b> <b
+                            style="color: red"> {{sessionManageMent.getLocationName}}</b><b>
+                            ) </b>
+                        </div>
+
+                        <div *ngIf="this.inputjson.action=='scan'" fxFlex="20" fxLayout="row" fxLayoutAlign="end">
+                            <button (click)="complete_pick()"
+                                    color="accent"
+                                    mat-raised-button>
+                                Complete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <mat-divider></mat-divider>
+
+
+                <div class="h3 mb-8 p-16">
+                    <b>Document Information</b>
+                    <br>
+                    <div>
+                        <div class="headertable" fxLayout="column" fxLayoutGap="10px">
+                            <table style=" border:0px;margin-top: 10px;">
+                                <tbody style="font-size: 12px;">
+                                <tr>
+                                    <th>Pick No</th>
+                                    <th>Document Type</th>
+                                    <th>Repick</th>
+                                    <th>Assigned id</th>
+                                    <th>Total Qty</th>
+                                    <th>Picked Qty</th>
+                                    <th>No of NF</th>
+                                    <th>Not Available Qty</th>
+                                </tr>
+                                <tr>
+                                    <td>{{this.picklines[0]?.pick_no}}</td>
+                                    <td>{{this.picklines[0]?.source_document_type}}</td>
+                                    <td>{{this.picklines[0]?.repick }}</td>
+                                    <td>{{this.picklines[0]?.assign_to}}</td>
+                                    <td>{{this.total_qty}}</td>
+                                    <td>{{this.picked_qty}}</td>
+                                    <td>{{this.no_of_nf}}</td>
+                                    <td>{{this.not_available}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                    <br>
+
+
+                    <div *ngIf="this.inputjson.action=='scan'">
+                        <b>Scan Bin and Barcode</b>
+                        <br>
+
+
+                        <div fxLayout="column" fxLayoutGap="10px">
+                            <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column"
+                                 fxLayoutAlign="space-between center">
+                                <div fxFlex="40" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                    <div fxLayout="column" style="width: 80%;">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Bincode</mat-label>
+                                            <input (keydown.enter)="scanbinvalidation()" [formControl]="bincode"
+                                                   autocomplete="false"
+                                                   id="scanbin"
+                                                   matInput
+                                                   placeholder="Scan bincode">
+                                            <mat-icon class="secondary-text" matSuffix>widgets</mat-icon>
+                                            <mat-error>
+                                                Bincode is required
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div fxFlex="40" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                    <div fxLayout="column" style="width: 80%;">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Barcode</mat-label>
+                                            <input (keydown.enter)="scanbarcodevalidation(barcode.value)"
+                                                   [formControl]="barcode"
+                                                   autocomplete="false"
+                                                   id="scanbarcode"
+                                                   matInput
+                                                   placeholder="Scan Barcode">
+                                            <mat-icon class="secondary-text" matSuffix>barcode</mat-icon>
+                                            <mat-error>
+                                                Barcode is required
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <b>Pick Information</b>
+                    <br>
+
+                    <div class="example-container">
+                        <table>
+                            <tr *ngFor="let line of this.picklines let i = index;"
+                                [ngStyle]="{backgroundColor: getColor( line)} ">
+                                <td>
+                                    <b style="color:#085a9d;">Bin : </b> {{line.bincode}}<br>
+                                    <b style="color:#085a9d;">Order No : </b>{{line.order_no}}<br>
+                                    <b style="color:#085a9d;">Description : </b>{{line.description}}<br>
+                                </td>
+                                <td>
+                                    <b style="color:#085a9d;">Item No : </b>{{line.item_no}}<br>
+                                    <b style="color:#085a9d;">Qty : </b>{{line.qty_picked}}/<b>{{line.qty_ordered}}</b>
+                                </td>
+                                <td *ngIf="line.pick_status==32 && this.inputjson.action=='scan'"
+                                    style="padding-top: 10px; width: 150px">
+                                    <a>
+                                        <img (click)="notfound(line)"
+                                             src="assets/images/logos/NF.jpg"
+                                             style="height:40px; width: 40px; margin-right: 20px"/>
+                                    </a>
+                                    <a>
+                                        <img src="assets/images/logos/hold.jpg" style="height:40px; width: 40px"/>
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

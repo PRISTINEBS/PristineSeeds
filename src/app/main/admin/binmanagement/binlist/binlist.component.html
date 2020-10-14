@@ -1,0 +1,73 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="itemlist">
+    <div class="p-16" pristinePerfectScrollbar>
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+            <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column"
+                 fxLayoutAlign="start">
+
+
+                <div class="h3 mb-8 p-16" fxLayout="column" style="padding-top: 20px">
+                    <div fxFlex="1 0 auto" fxLayout="row" fxLayout.lt-sm="row" fxLayoutGap="10px">
+                        <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-between center"
+                             fxLayoutGap="10px">
+                            <div fxFlex="30">
+                                <b>Bin List ( </b><b
+                                style="color: red"> {{ sessionManageMent.getLocationName}} </b><b>
+                                ) </b>
+                            </div>
+                        </div>
+                        <div fxFlex="50" fxLayout="row" fxLayoutAlign="end">
+                            <div fxLayout="row" fxLayoutAlign="end" fxLayoutAlign.lt-sm="end"
+                                 fxLayoutGap="20px">
+                                <button (click)="createnewbin()"
+                                        class="mr-sm-12" color="accent" mat-raised-button mat-ripple>
+                                    <b>New</b>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <mat-divider></mat-divider>
+                <br>
+                <div class="p-8" fxFlex fxLayout="column" fxLayout.lt-sm="column">
+                    <div class="example-container">
+                        <table [dataSource]="dataSource" mat-table matSort>
+                            <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+                                <th *matHeaderCellDef mat-header-cell>
+                                    <div class="filterHeader">
+                                        <b mat-sort-header>{{column|firstAnd_Split}}</b><br>
+                                        <input (keyup)="applyFilter($event.target.value,column)"
+                                               *ngIf="column!='View' && column!='Delete'  "
+                                               [placeholder]="column|firstAnd_Split">
+                                    </div>
+                                </th>
+                                <td *matCellDef="let element" mat-cell>
+                                    <p *ngIf="column!='View' && column!='Delete'">{{element[column]}}</p>
+                                    <div *ngIf="column=='View' && element['quantity']!=0">
+                                        <button (click)="viewinfo(element)" mat-icon-button>
+                                            <mat-icon class="icon-size">visibility</mat-icon>
+                                        </button>
+
+                                    </div>
+                                    <div *ngIf="column=='Delete' && element['quantity']==0">
+                                        <button (click)="delete(element)" mat-icon-button>
+                                            <mat-icon class="icon-size">delete</mat-icon>
+                                        </button>
+
+                                    </div>
+                                </td>
+                            </ng-container>
+                            <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+                            <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+                        </table>
+                        <div *ngIf="dataSource?.data?.length<=0" class="h3 m-16">No Record Found.</div>
+                        <mat-divider *ngIf="dataSource?.data?.length<=0"></mat-divider>
+                    </div>
+                    <mat-paginator [pageSizeOptions]="[ 5, 10, 20, 30,40,50]" showFirstLastButtons></mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

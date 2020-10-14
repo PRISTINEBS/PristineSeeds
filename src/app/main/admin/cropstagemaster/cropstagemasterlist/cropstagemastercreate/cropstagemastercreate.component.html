@@ -1,0 +1,126 @@
+<div fxFlex fxLayout="column" fxLayoutAlign="start" id="AddCropStageCategory">
+  <div mat-dialog-title style="margin-top: -35px">
+    <div class="h5 mb-8 pt-16">Create Crop Stage Master
+    </div>
+    <div fxLayout="column" fxLayoutAlign="start">
+      <mat-divider></mat-divider>
+    </div>
+  </div>
+  <div [formGroup]="cropstagemasterform" fxFlex="" fxLayout="column">
+    <div fxFlex="1 0 Auto" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="start" fxLayoutGap="20px"
+         fxLayoutGap.lt-sm="0px">
+      <div fxFlex="33"  fxLayout="column">
+        <mat-form-field appearance="outline" >
+          <mat-label>Crop Code <sub style="color:red">*</sub></mat-label>
+          <mat-select formControlName="crop_type" >
+            <mat-option *ngFor="let crop_type of CropType"
+                        [value]="crop_type">{{crop_type}}</mat-option>
+
+          </mat-select>
+          <mat-error
+            *ngIf="cropstagemasterform.get('crop_type').hasError('required') && cropstagemasterform.get('crop_type').touched && cropstagemasterform.get('crop_type').dirty">
+            Crop Type Required
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="33"  fxLayout="column">
+        <mat-form-field appearance="outline" >
+          <mat-label>Stage <sub style="color:red">*</sub></mat-label>
+          <mat-select formControlName="stage" matInput type="text">
+            <mat-option *ngFor="let stage of Stage" (click)="setSequence(stage)"
+                        [value]="stage">{{stage}}</mat-option>
+
+          </mat-select>
+          <mat-error
+            *ngIf="cropstagemasterform.get('stage').hasError('required') && cropstagemasterform.get('stage').touched && cropstagemasterform.get('stage').dirty">
+            Stage Required
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="33" fxLayout="column">
+        <mat-form-field appearance="outline" >
+          <mat-label>Sequence <sub style="color:red">*</sub></mat-label>
+          <mat-select formControlName="sequence" matInput type="text">
+            <mat-option *ngFor="let sequence of Sequence" disabled
+                        [value]="sequence">{{sequence}}</mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="cropstagemasterform.get('sequence').hasError('required') && cropstagemasterform.get('sequence').touched && cropstagemasterform.get('sequence').dirty">
+            Sequence Required
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div fxFlex="1 0 Auto" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="start" fxLayoutGap="10px"
+         fxLayoutGap.lt-sm="0px">
+      <div fxFlex="33"  fxLayout="column">
+          <mat-label>GOT Test <sub style="color:red">*</sub></mat-label>
+          <mat-checkbox formControlName="got_test" class="example-margin" >
+          </mat-checkbox>
+      </div>
+
+      <div fxFlex="33"  fxLayout="column">
+        <mat-label>BT/ELISA Test <sub style="color:red">*</sub></mat-label>
+        <mat-checkbox formControlName="bt_elisa_test" class="example-margin" >
+        </mat-checkbox>
+      </div>
+
+      <div fxFlex="33"  fxLayout="column">
+        <mat-label>Stl Germination <sub style="color:red">*</sub></mat-label>
+        <mat-checkbox formControlName="stl_germination_test" class="example-margin" >
+        </mat-checkbox>
+      </div>
+
+    </div>
+
+    <div fxFlex="1 0 Auto" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="start" fxLayoutGap="10px" style="margin-top: 10px"
+         fxLayoutGap.lt-sm="0px">
+
+      <div fxFlex="33"  fxLayout="column">
+        <mat-label>Stl Physical Purity <sub style="color:red">*</sub></mat-label>
+        <mat-checkbox formControlName="stl_physical_purity" class="example-margin" >
+        </mat-checkbox>
+      </div>
+
+      <div fxFlex="33"  fxLayout="column">
+        <mat-label>Stl Moisture <sub style="color:red">*</sub></mat-label>
+        <mat-checkbox formControlName="stl_moisture" class="example-margin" >
+        </mat-checkbox>
+      </div>
+
+      <div fxFlex="33"  fxLayout="column">
+        <mat-label>Stl Vigour <sub style="color:red">*</sub></mat-label>
+        <mat-checkbox formControlName="stl_vigour" class="example-margin" >
+        </mat-checkbox>
+      </div>
+
+    </div>
+
+    <div fxLayout="column" style="margin-top: 10px">
+      <mat-form-field appearance="outline">
+        <mat-label>Description</mat-label>
+        <textarea formControlName="description" matInput type="text"></textarea>
+      </mat-form-field>
+    </div>
+
+  </div>
+  <div class="pt-16" fxLayout="row" fxLayoutAlign="end">
+    <button [disabled]="cropstagemasterform.invalid" (click)="CreateItemCategory()" *ngIf="data.flag.toLowerCase()=='insert'else elseblock"
+            class="mat-accent mr-16"
+            mat-raised-button>Save
+    </button>
+    <ng-template #elseblock>
+      <button [disabled]="cropstagemasterform.invalid" (click)="CreateItemCategory()" class="mat-accent mr-16"
+              mat-raised-button>Update
+      </button>
+    </ng-template>
+    <button (click)="cancle()" color="warn" mat-raised-button>Cancel</button>
+  </div>
+
+</div>
+
+
+

@@ -1,0 +1,45 @@
+<div fxFlex fxLayout="column" fxLayoutAlign="start" id="ItemAttributeValue">
+    <div mat-dialog-title style="margin-top: -35px">
+        <div class="h5 mb-8 pt-16">Create Attribute Value
+        </div>
+        <div fxLayout="column" fxLayoutAlign="start">
+            <mat-divider></mat-divider>
+        </div>
+    </div>
+    <div [formGroup]="itemattributevalue" fxFlex="" fxLayout="column">
+        <div fxFlex="" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="start" fxLayoutGap="20px"
+             fxLayoutGap.lt-sm="0px">
+            <mat-form-field appearance="outline">
+                <mat-label>Attribute Value <sub style="color:red">*</sub></mat-label>
+                <input formControlName="attrvalue" matInput type="text">
+                <mat-error
+                    *ngIf="itemattributevalue.get('attrvalue').hasError('required') && itemattributevalue.get('attrvalue').touched && itemattributevalue.get('attrvalue').dirty">
+                    Category Code Required
+                </mat-error>
+            </mat-form-field>
+            <div fxLayout="column">
+                <mat-form-field appearance="outline">
+                    <mat-label>Description</mat-label>
+                    <input formControlName="description" matInput type="text">
+                </mat-form-field>
+            </div>
+        </div>
+
+    </div>
+    <div class="pt-16" fxLayout="row" fxLayoutAlign="end">
+        <button (click)="CreateAttributeValue()" *ngIf="data.flag.toLowerCase()=='insert'else elseblock"
+                class="mat-accent mr-16"
+                mat-raised-button>Save
+        </button>
+        <ng-template #elseblock>
+            <button (click)="CreateAttributeValue()" class="mat-accent mr-16"
+                    mat-raised-button>Update
+            </button>
+        </ng-template>
+        <button (click)="cancle()" color="warn" mat-raised-button>Cancel</button>
+    </div>
+
+</div>
+
+
+

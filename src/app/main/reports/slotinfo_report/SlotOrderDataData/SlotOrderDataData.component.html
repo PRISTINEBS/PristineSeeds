@@ -1,0 +1,59 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar style="background-color: #FFFFFF;">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">Slot Detail  (<b
+                style="color: darkred">{{_data.selectedSloatData.slot_id}} </b>)
+            </span>
+            <button (click)="matDialogRef.close()" aria-label="Close dialog" mat-icon-button>
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-divider></mat-divider>
+    <!-- HORIZONTAL STEPPER EXAMPLE -->
+    <mat-card pristinePerfectScrollbar>
+        <mat-spinner *ngIf="loading" diameter="30" mode="indeterminate"></mat-spinner>
+        <div *ngIf="AllOrderDetailArray?.length>0" class="tbl-content">
+            <table class="tablestyle">
+                <tr>
+                    <th>Zone :</th>
+                    <td>{{this._data.zonedata.sorting_zone}}</td>
+                    <th>Order No. :</th>
+                    <td> {{_data.selectedSloatData.order_no}}</td>
+                    <th>Status :</th>
+                    <td> {{_data.selectedSloatData.status}}</td>
+                </tr>
+            </table>
+            <br> <br>
+            <table class="tablestyle">
+                <tr>
+                    <th>Barcode</th>
+                    <th>Qty Ordered</th>
+                    <th>Remaining Qty</th>
+                    <th>Pick Status</th>
+                    <th>Consolidation Qty</th>
+                </tr>
+                <tr *ngFor="let itam of AllOrderDetailArray">
+                    <td>
+                        <b>
+                            {{itam.barcode}}
+                        </b>
+                    </td>
+                    <td>
+                        <p>{{itam.qty_ordered}}</p>
+                    </td>
+                    <td>
+                        <p>{{itam.remaining_qty}}</p>
+                    </td>
+                    <td>
+                        <p>{{itam.pick_status}}</p>
+                    </td>
+                    <td>
+                        <p>{{itam.consolidation_qty}}</p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </mat-card>
+    <!-- / HORIZONTAL STEPPER EXAMPLE -->
+</div>

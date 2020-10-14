@@ -1,0 +1,201 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="grnwithoutscan">
+    <div class="p-16" pristinePerfectScrollbar>
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+            <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column" fxLayoutAlign="start">
+                <div class=" h3 mb-8 p-16">
+                    <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-between center"
+                         fxLayoutGap="10px">
+                        <div fxFlex="30">
+                            <b>GRN In {{this.grn_type}} </b><b
+                            style="color: red"> {{ sessionManageMent.getLocationName}} </b>
+                        </div>
+
+                        <div fxFlex="50" fxLayout="row" fxLayoutAlign="end">
+                            <button (click)="complete_grn()"
+                                    aria-label="Submit"
+                                    color="accent"
+                                    mat-raised-button>
+                                Complete
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <mat-divider></mat-divider>
+
+                <div *ngIf="this.grn_info" class="tbl-content">
+                    <table>
+                        <tr>
+                            <td>
+                                <b>Gate Entry No : </b>
+                                <mat-label>{{this.grn_info[0].gate_entry_no}}</mat-label>
+                            </td>
+                            <td>
+                                <b>Document Type : </b>
+                                <mat-label>{{this.grn_info[0].document_type}}</mat-label>
+                            </td>
+                            <td *ngIf="this.grn_info[0].bill_of_entry_no!='' && this.grn_info[0].bill_of_entry_no!= undefined">
+                                <b>Bill of entry No : </b>
+                                <mat-label>{{this.grn_info[0].bill_of_entry_no}}</mat-label>
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td>
+                                <b>Goods Receipt Note : </b>
+                                <mat-label>{{this.grn_info[0].grn_no}}</mat-label>
+                            </td>
+                            <td>
+                                <b>Document No : </b>
+                                <mat-label>{{this.grn_info[0].document_no}}</mat-label>
+                            </td>
+                            <td *ngIf="this.grn_info[0].bill_of_entry_no!='' && this.grn_info[0].bill_of_entry_no!= undefined">
+                                <b>BOE Amount : </b>
+                                <mat-label>{{this.grn_info[0].bil_of_entry_amount}}</mat-label>
+                            </td>
+
+                        </tr>
+                        <tr>
+
+                            <td>
+                                <b>GRN Created By : </b>
+                                <mat-label>{{this.grn_info[0].grn_created_by}}</mat-label>
+                            </td>
+                            <td>
+                                <b>Invoice No : </b>
+                                <mat-label>{{this.grn_info[0].external_document_no}}</mat-label>
+                            </td>
+                            <td *ngIf="this.grn_info[0].bill_of_entry_no!='' && this.grn_info[0].bill_of_entry_no!= undefined">
+                                <b>BOE Date : </b>
+                                <mat-label>{{this.grn_info[0].bil_of_entry_date| date: 'dd/MM/yyyy hh:mm a'}}</mat-label>
+                            </td>
+                        </tr>
+                        <tr>
+
+                            <td>
+                                <b>GRN Datetime : </b>
+                                <mat-label>{{this.grn_info[0].grn_created_datetime|date : 'dd/MM/yyyy hh:mm a'}}</mat-label>
+                            </td>
+                            <td>
+                                <b>Location : </b>
+                                <mat-label>{{this.grn_info[0].location_name}}</mat-label>
+                            </td>
+                            <!--                            <td>-->
+                            <!--                                <b>Total Scanned Barcode : </b>-->
+                            <!--                                <mat-label>{{this.total_scanned_barcode}}</mat-label>-->
+                            <!--                            </td>-->
+                        </tr>
+                    </table>
+                </div>
+
+                <mat-divider></mat-divider>
+
+                <div class="h3 mb-8 p-16" fxLayout="column" style="padding-top: 20px">
+
+                    <div class="example-container">
+                        <table [dataSource]="dataSource" mat-table matSort>
+                            <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column"
+                                          [stickyEnd]="column=='Add' || column=='Print' || column=='Change' ? true: false">
+                                <th *matHeaderCellDef mat-header-cell>
+                                    <div class="filterHeader">
+                                        <b mat-sort-header>{{column|firstAnd_Split}}</b><br>
+                                        <input (keyup)="applyFilter($event.target.value,column)"
+                                               *ngIf="column!='expiry_Date' && column!='vendor_Lotno'
+                                                && column!='new_quantity' && column!='Add' && column!='Print' && column!='Change' && column!='barcode'"
+                                               [placeholder]="column|firstAnd_Split">
+                                    </div>
+                                </th>
+
+                                <td *matCellDef="let element" mat-cell>
+
+                                    <p *ngIf="column!='expiry_Date' && column!='vendor_Lotno'
+                                                && column!='new_quantity' && column!='Add' && column!='Print' && column!='new_barcode' && column!='Change' ">{{element[column]}}</p>
+
+                                    <div
+                                        *ngIf="column=='expiry_Date' && element['expiry_Date']=='1'">
+
+                                        <input (focusin)="idate.open()" [(ngModel)]="element['user_enter_expiry_Date']"
+                                               [matDatepicker]="idate"
+                                               [max]="maxDateexp"
+                                               [min]="minDateexp"
+                                               autocomplete="off"
+                                               class="myInput"
+                                               matInput
+                                               placeholder="Choose Expiry date"
+                                        >
+                                        <mat-datepicker #idate="matDatepicker"></mat-datepicker>
+
+                                    </div>
+                                    <div
+                                        *ngIf="column=='vendor_Lotno' && element['vendor_Lotno']=='1'">
+
+                                        <input [(ngModel)]="element['user_enter_lotno']" autocomplete="off"
+                                               class="myInput"
+                                               focused="'true'" matInput placeholder="Vendor lot No"
+                                               type="text">
+
+                                    </div>
+
+                                    <div
+                                        *ngIf="column=='new_barcode' && grn_type=='With Scan' && this.sessionManageMent.getBarcode.toLowerCase() != 'item'">
+
+                                        <input (keydown.enter)="new_barcode_in_wih_scan(element)" [(ngModel)]="element['new_barcode']" autocomplete="off"
+                                               class="myInput"
+                                               focused="'true'" matInput placeholder="New Barcode"
+                                               type="text">
+                                    </div>
+
+                                    <div
+                                        *ngIf="column=='new_quantity' && (grn_type=='Without Scan' || this.sessionManageMent.getBarcode.toLowerCase() == 'item')">
+
+                                        <input (ngModelChange)="check_number(element)"
+                                               [(ngModel)]="element['new_quantity']" autocomplete="off"
+                                               class="myInput"
+                                               focused="'true'" matInput
+                                               placeholder="New Quantity" type="text">
+
+                                    </div>
+                                    <div
+                                        *ngIf="column=='Add' && (grn_type=='Without Scan' || this.sessionManageMent.getBarcode.toLowerCase() == 'item')">
+                                        <button (click)="new_barcode_in(element)" mat-icon-button>
+                                            <mat-icon svgIcon="qtyin"></mat-icon>
+                                        </button>
+                                    </div>
+
+
+                                    <div *ngIf="column=='Print' && element['grn_quantity']>0">
+                                        <button (click)="print_barcode(element)" mat-icon-button>
+                                            <mat-icon svgIcon="barcodeprint"></mat-icon>
+                                        </button>
+                                    </div>
+                                    <div *ngIf="column=='Change' && element['grn_quantity']>0">
+                                        <button (click)="update_scanned_barcode(element)" mat-icon-button>
+                                            <mat-icon svgIcon="change"></mat-icon>
+                                        </button>
+                                    </div>
+                                </td>
+                                <td *matFooterCellDef mat-footer-cell>
+                                    <p *ngIf="column=='item_Info'">
+                                        Total
+                                    </p>
+                                    <p *ngIf="(column=='document_quantity' || column=='received_quantity' || column=='grn_quantity') && dataSource?.data?.length>0">
+                                        {{sum_footer(dataSource?.data, column) }}
+                                    </p>
+                                </td>
+                            </ng-container>
+
+                            <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+
+                            <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+                            <tr *matFooterRowDef="displayedColumns; sticky: true" mat-footer-row></tr>
+                        </table>
+                        <div *ngIf="dataSource?.data?.length<=0" class="h3 m-16">No Record Found.</div>
+                        <mat-divider *ngIf="dataSource?.data?.length<=0"></mat-divider>
+                    </div>
+                    <mat-paginator [pageSizeOptions]="[5, 10, 20, 30,40,50]" showFirstLastButtons></mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

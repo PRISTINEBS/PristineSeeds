@@ -1,0 +1,127 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="saleorderlist">
+    <div class="p-16" pristinePerfectScrollbar>
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+            <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column"
+                 fxLayoutAlign="start">
+
+
+                <div class="h3 mb-8 p-16" fxLayout="column" style="padding-top: 20px">
+                    <div fxFlex="1 0 auto" fxLayout="row" fxLayout.lt-sm="row" fxLayoutGap="10px">
+                        <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px">
+                            <b>Sale Order List ( </b><b
+                            style="color: red"> {{ sessionManageMent.getLocationName}} </b><b> )</b>
+                        </div>
+                        <div fxFlex="50" fxLayout="row" fxLayoutAlign="end">
+                            <div fxLayout="row" fxLayoutAlign="end" fxLayoutAlign.lt-sm="end"
+                                 fxLayoutGap="20px">
+                                <button (click)="create_sale_order()"
+                                        class="mr-sm-12" color="accent" mat-raised-button mat-ripple>
+                                    <b>New</b>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <mat-divider></mat-divider>
+                <br>
+                <div class="p-8" fxFlex fxLayout="column" fxLayout.lt-sm="column">
+
+
+                    <form [formGroup]="search" name="search" novalidate>
+
+                        <div fxLayout="column" fxLayoutGap="10px">
+                            <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+                                <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                    <div fxLayout="column" style="width: 80%;">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Start Date</mat-label>
+                                            <input (focusin)="stdate.open()"
+                                                   [matDatepicker]="stdate"
+                                                   autocomplete="false" formControlName="StartDate"
+                                                   matInput
+                                                   placeholder="Choose Start Date">
+                                            <mat-datepicker #stdate="matDatepicker"></mat-datepicker>
+                                            <mat-icon class="secondary-text" matSuffix>date_range</mat-icon>
+                                            <mat-error>
+                                                Start Date is required
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                    <div fxLayout="column" style="width: 80%;">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>End Date</mat-label>
+                                            <input (focusin)="eddate.open()"
+                                                   [matDatepicker]="eddate"
+                                                   autocomplete="false" formControlName="EndDate"
+                                                   matInput
+                                                   placeholder="Choose End Date">
+                                            <mat-datepicker #eddate="matDatepicker"></mat-datepicker>
+                                            <mat-icon class="secondary-text" matSuffix>date_range</mat-icon>
+                                            <mat-error>
+                                                End Date is required
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div fxFlex="15" fxLayout="row" fxLayoutAlign="end" fxLayoutAlign.lt-sm="center"
+                                     style="margin-bottom: 15px">
+                                    <div fxLayout="column" style="width: 80px; margin-top: 10px">
+                                        <button (click)="Search()" [disabled]="search.invalid"
+                                                aria-label="Submit"
+                                                color="accent"
+                                                mat-raised-button
+                                        >
+                                            Search
+                                        </button>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+
+
+                    </form>
+
+
+                    <div class="example-container">
+                        <table [dataSource]="dataSource" mat-table matSort>
+                            <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column"
+                                          [stickyEnd]="column=='View' ? true: false">
+                                <th *matHeaderCellDef mat-header-cell>
+                                    <div class="filterHeader">
+                                        <b mat-sort-header>{{column|firstAnd_Split}}</b><br>
+                                        <input (keyup)="applyFilter($event.target.value,column)"
+                                               *ngIf="column!='View'"
+                                               [placeholder]="column|firstAnd_Split">
+                                    </div>
+                                </th>
+                                <td *matCellDef="let element" mat-cell>
+                                    <p *ngIf="column!='View' && column!='order_datetime';else elseAction">{{element[column]}}</p>
+                                    <p *ngIf="column=='order_datetime'">{{element[column]|date:'dd/MM/yyyy HH:MM a'}}</p>
+
+                                    <ng-template #elseAction>
+                                        <button (click)="viewinfo(element)" *ngIf="column=='View'"
+                                                mat-icon-button>
+                                            <mat-icon class="icon-size">visibility</mat-icon>
+                                        </button>
+                                    </ng-template>
+                                </td>
+                            </ng-container>
+                            <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+                            <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+                        </table>
+                        <div *ngIf="dataSource?.data?.length<=0" class="h3 m-16">No Record Found.</div>
+                        <mat-divider *ngIf="dataSource?.data?.length<=0"></mat-divider>
+                    </div>
+                    <mat-paginator [pageSizeOptions]="[ 10, 20, 30,40,50]" showFirstLastButtons></mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

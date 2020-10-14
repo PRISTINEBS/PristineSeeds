@@ -1,0 +1,126 @@
+<div fxFlex fxLayout="column" fxLayoutAlign="start" id="AddParentSeedMaster">
+  <div mat-dialog-title style="margin-top: -35px">
+    <div class="h5 mb-8 pt-16">Create Parent Seed Master
+    </div>
+    <div fxLayout="column" fxLayoutAlign="start">
+      <mat-divider></mat-divider>
+    </div>
+  </div>
+  <div [formGroup]="parentseedmasterform" fxFlex="" fxLayout="column">
+
+    <div fxFlex="1 0 Auto" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="start" fxLayoutGap="20px"
+         fxLayoutGap.lt-sm="0px">
+
+      <div fxFlex="20"  fxLayout="column">
+        <mat-form-field appearance="outline" >
+          <mat-label>Variety Type <sub style="color:red">*</sub></mat-label>
+          <mat-select formControlName="variety_type" >
+            <mat-option *ngFor="let variety_type of variety_type" (click)="setItemNo(variety_type)"
+                        [value]="variety_type">{{variety_type}}</mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="parentseedmasterform.get('variety_type').hasError('required') && parentseedmasterform.get('variety_type').touched && parentseedmasterform.get('variety_type').dirty">
+            Variety Type Required
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="50" fxLayout="column">
+        <mat-form-field appearance="outline">
+          <mat-label>Item No <sup style="color: red">*</sup></mat-label>
+
+          <mat-select autocomplete="off" formControlName="ItemNo" >
+            <input [(ngModel)]="searchByItemNameorNo"
+                   [ngModelOptions]="{standalone:true}"
+                   (ngModelChange)="get_Item(this.parentseedmasterform.get('variety_type').value)"
+                   autocomplete="off" class="myInput"
+                   focused="'true'" matInput placeholder="Search" type="text">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let item_list of itemlist"
+                        [value]="item_list.item_no">{{item_list.name + ' ( ' + item_list.item_no + ' )' + ' ( ' + item_list.baseuom + ' ) '}}</mat-option>
+          </mat-select>
+          <mat-error>
+            Item No is required
+          </mat-error>
+
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="50"  fxLayout="column">
+        <mat-form-field appearance="outline">
+          <mat-label>Male Parent Item No </mat-label>
+
+          <mat-select autocomplete="off" formControlName="ItemNoM" >
+            <input [(ngModel)]="searchByItemNameorNo_M"
+                   [ngModelOptions]="{standalone:true}"
+                   (ngModelChange)="get_Item_Male()"
+                   autocomplete="off" class="myInput"
+                   focused="'true'" matInput placeholder="Search" type="text">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let itemlistm of itemlistm"
+                        [value]="itemlistm.item_no">{{itemlistm.name + ' ( ' + itemlistm.item_no + ' )' + ' ( ' + itemlistm.baseuom + ' ) '}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+    </div>
+
+    <div fxFlex="1 0 Auto" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="start" fxLayoutGap="20px"
+         fxLayoutGap.lt-sm="0px">
+
+      <div fxFlex="50"  fxLayout="column">
+        <mat-form-field appearance="outline">
+          <mat-label>Female Parent Item No </mat-label>
+
+          <mat-select autocomplete="off" formControlName="ItemNoF" >
+            <input [(ngModel)]="searchByItemNameorNo_F"
+                   [ngModelOptions]="{standalone:true}"
+                   (ngModelChange)="get_Item_Female()"
+                   autocomplete="off" class="myInput"
+                   focused="'true'" matInput placeholder="Search" type="text">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let itemlistf of itemlistf"
+                        [value]="itemlistf.item_no">{{itemlistf.name + ' ( ' + itemlistf.item_no + ' )' + ' ( ' + itemlistf.baseuom + ' ) '}}</mat-option>
+          </mat-select>
+
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="50"  fxLayout="column">
+        <mat-form-field appearance="outline">
+          <mat-label>Other Parent Item No </mat-label>
+
+          <mat-select autocomplete="off" formControlName="ItemNoO" >
+            <input [(ngModel)]="searchByItemNameorNo_O"
+                   [ngModelOptions]="{standalone:true}"
+                   (ngModelChange)="get_Item_Other()"
+                   autocomplete="off" class="myInput"
+                   focused="'true'" matInput placeholder="Search" type="text">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let itemlisto of itemlisto"
+                        [value]="itemlisto.item_no">{{itemlisto.name + ' ( ' + itemlisto.item_no + ' )' + ' ( ' + itemlisto.baseuom + ' ) '}}</mat-option>
+          </mat-select>
+
+        </mat-form-field>
+      </div>
+
+    </div>
+
+  </div>
+  <div class="pt-16" fxLayout="row" fxLayoutAlign="end">
+    <button [disabled]="parentseedmasterform.invalid" (click)="CreateItemCategory()" *ngIf="data.flag.toLowerCase()=='insert'else elseblock"
+            class="mat-accent mr-16"
+            mat-raised-button>Save
+    </button>
+    <ng-template #elseblock>
+      <button [disabled]="parentseedmasterform.invalid" (click)="CreateItemCategory()" class="mat-accent mr-16"
+              mat-raised-button>Update
+      </button>
+    </ng-template>
+    <button (click)="cancle()" color="warn" mat-raised-button>Cancel</button>
+  </div>
+
+</div>
+
+
+

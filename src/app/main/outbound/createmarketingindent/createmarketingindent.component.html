@@ -1,0 +1,318 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="createmarketingindent">
+    <div class="content p-20" pristinePerfectScrollbar>
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+            <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column" fxLayoutAlign="start">
+                <div class="h3 mb-8 p-16"><b>Create Marketing Indent ( </b> <b
+                    style="color: red"> {{sessionManageMent.getLocationName}}</b><b>
+                    ) {{currentdate | date: 'dd/MM/yyyy hh:mm a'}} </b>
+                    <button style="float: right" (click)="CreatemarketingIndent()" [disabled]="(registerForm.invalid)&&(addLineForm.invalid)" aria-label="Submit"
+                            color="accent"
+                            mat-raised-button>
+                      Submit
+                    </button>
+                </div>
+              <div fxFlex="" fxLayout="column" class="p-8">
+                <mat-divider></mat-divider>
+              </div>
+                <div class="p-16">
+                  <form [formGroup]="registerForm" name="registerForm" novalidate>
+                    <div fxLayout="column" fxLayoutGap="10px">
+                      <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+
+                        <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                              <div fxLayout="column" style="width: 80%;">
+                                <mat-form-field appearance="outline" fxFlex="22.5">
+                                  <mat-label>Customer Name<sup style="color: red">*</sup></mat-label>
+                                  <mat-select (selectionChange)="get_CustomerFull_info()" autocomplete="off"
+                                              formControlName="CustomerNameorNo">
+                                    <input (ngModelChange)="get_CustomerNo()"
+                                           [(ngModel)]="searchByCustomerNameorNo"
+                                           [ngModelOptions]="{standalone:true}"
+                                           autocomplete="off" class="myInput"
+                                           focused="'true'" matInput placeholder="Search"
+                                           type="text">
+                                    <mat-option>None</mat-option>
+                                    <mat-option
+                                      *ngFor="let shippingOrder of customerlist"
+                                      [value]="shippingOrder.customer_id">{{shippingOrder.full_name}}</mat-option>
+                                  </mat-select>
+                                </mat-form-field>
+                              </div>
+                            </div>
+
+                        <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center" *ngIf="this.addresslist?.length>0">
+                              <div fxLayout="column" style="width: 80%;">
+                              <mat-form-field appearance="outline">
+                                <mat-label>Customer No.<sup style="color: red">*</sup></mat-label>
+                                <input matInput type="text" formControlName="CustomerNo" readonly>
+                              </mat-form-field>
+                            </div>
+                            </div>
+
+                        <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center" *ngIf="this.addresslist?.length>0">
+                              <div fxLayout="column" style="width: 80%;">
+                            <mat-form-field appearance="outline" >
+                              <mat-label>Name<sup style="color: red">*</sup></mat-label>
+                              <input formControlName="Name" readonly matInput placeholder="Name" type="text" readonly>
+                            </mat-form-field>
+                            </div>
+                            </div >
+
+                        <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center" *ngIf="this.addresslist?.length>0">
+                              <div fxLayout="column" style="width: 80%;">
+                            <mat-form-field appearance="outline" >
+                              <mat-label>Name 2<sup style="color: red">*</sup></mat-label>
+                              <input formControlName="Name2" readonly matInput placeholder="Name 2" type="text" readonly>
+                            </mat-form-field>
+                            </div>
+                            </div>
+                      </div>
+                    </div>
+
+                    <div fxLayout="column" fxLayoutGap="10px">
+                            <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+
+                                <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center" *ngIf="this.addresslist?.length>0">
+                                  <div fxLayout="column" style="width: 80%;">
+                                    <mat-form-field appearance="outline" fxFlex="22.5">
+                                      <mat-label>Address<sup style="color: red">*</sup></mat-label>
+                                      <input formControlName="Address" readonly matInput placeholder="Address" type="text" readonly>
+                                    </mat-form-field>
+                                  </div>
+                                </div>
+
+                                <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center" *ngIf="this.addresslist?.length>0">
+                                    <div fxLayout="column" style="width: 80%;">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Address 2<sup style="color: red">*</sup></mat-label>
+                                            <input autocomplete="off" formControlName="Address2" matInput readonly>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center" *ngIf="this.addresslist?.length>0">
+                                    <div fxLayout="column" style="width: 80%;">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Zone<sup style="color: red">*</sup></mat-label>
+                                            <input autocomplete="off" formControlName="Zone" matInput readonly>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center" *ngIf="this.addresslist?.length>0">
+                                    <div fxLayout="column" style="width: 80%;">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>State<sup style="color: red">*</sup></mat-label>
+                                            <input autocomplete="off" matInput formControlName="State" type="text" readonly>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    <div fxLayout="column" fxLayoutGap="10px">
+                            <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column" >
+                              <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center" *ngIf="this.addresslist?.length>0">
+                                <div fxLayout="column" style="width: 80%;">
+                                  <mat-form-field appearance="outline">
+                                    <mat-label>Region<sup style="color: red">*</sup></mat-label>
+                                    <input autocomplete="off" formControlName="Region" matInput readonly>
+                                  </mat-form-field>
+                                </div>
+                              </div>
+
+                              <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center" *ngIf="this.addresslist?.length>0">
+                                    <div fxLayout="column" style="width: 80%;">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>District<sup style="color: red">*</sup></mat-label>
+                                            <input autocomplete="off" formControlName="District" matInput readonly>
+                                            <mat-icon class="secondary-text" matSuffix>receipt</mat-icon>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+
+                              <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center" *ngIf="this.addresslist?.length>0">
+                                <div fxLayout="column" style="width: 80%;">
+                                  <mat-form-field appearance="outline">
+                                    <mat-label>Taluka<sup style="color: red">*</sup></mat-label>
+                                    <input autocomplete="off" formControlName="Taluka" matInput readonly>
+                                  </mat-form-field>
+                                </div>
+                              </div>
+                              <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center" *ngIf="this.addresslist?.length>0">
+                                <div fxLayout="column" style="width: 80%;">
+                                  <mat-form-field appearance="outline">
+                                    <mat-label>Date<sup style="color: red">*</sup></mat-label>
+                                    <input (focusin)="ldate.open()" [matDatepicker]="ldate"
+                                           formControlName="Date"
+                                           matInput
+                                           placeholder="Choose LR date"
+                                    >
+                                    <mat-datepicker #ldate="matDatepicker"
+                                    ></mat-datepicker>
+                                    <mat-icon class="secondary-text" matSuffix>date_range</mat-icon>
+                                    <mat-error>
+                                      Date is required
+                                    </mat-error>
+                                  </mat-form-field>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+                    <div fxLayout="column" fxLayoutGap="10px">
+                        <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+                          <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center" *ngIf="this.addresslist?.length>0">
+                            <div fxLayout="column" style="width: 80%;">
+                              <mat-form-field appearance="outline">
+                                <mat-label>Session<sup style="color: red">*</sup></mat-label>
+                                <mat-select  formControlName="Session" >
+                                  <mat-option [value]="session.season_code" *ngFor="let session of sessionList">{{session.season_code}}</mat-option>
+                                </mat-select>
+                                <mat-error>
+                                  Session is required
+                                </mat-error>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                  </form>
+                  <b *ngIf="registerForm.get('Date').value!='' && registerForm.get('Session').value!=''"> Add Line </b>
+                  <br><br>
+                  <form [formGroup]="addLineForm" name="addChallanForm" *ngIf="registerForm.get('Date').value!='' && registerForm.get('Session').value!=''" novalidate >
+                    <div fxLayout="column" fxLayoutGap="10px">
+
+                      <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+
+                        <div fxFlex="30" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                          <div fxLayout="column" style="width: 80%;">
+                            <mat-form-field appearance="outline">
+                              <mat-label>Crop Code<sup style="color: red">*</sup></mat-label>
+                              <mat-select formControlName="CropCode" (selectionChange)="getItemSubCategory(addLineForm.get('CropCode').value)">
+                                <mat-option *ngFor="let cropcode of ItemCategoryList"
+                                            [value]="cropcode.id">{{cropcode.cat_code}}</mat-option>
+                              </mat-select>
+                              <mat-error>
+                                Crop Code is required
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div fxFlex="30" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                          <div fxLayout="column" style="width: 80%;">
+                            <mat-form-field appearance="outline">
+                              <mat-label>Variety Group<sup style="color: red">*</sup></mat-label>
+                              <mat-select formControlName="VarietyGroup">
+                                <mat-option *ngFor="let varietygroup of ItemSubcategoryList"
+                                            [value]="varietygroup.item_group">{{varietygroup.item_group}}</mat-option>
+                              </mat-select>
+                              <mat-error>
+                               Variety Group is required
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div fxFlex="30" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                          <div fxLayout="column" style="width: 80%;">
+                            <mat-form-field appearance="outline">
+                              <mat-label>Booking Quantity </mat-label>
+                              <input autocomplete="off"  pattern="[0-9]*"
+                                     type="number" formControlName="BookingQuantity" matInput>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                      </div>
+                      <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column"
+                           *ngIf="addLineForm.get('BookingQuantity').value!=null && addLineForm.get('BookingQuantity').value!=0">
+                        <div fxFlex="30" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                          <div fxLayout="column" style="width: 80%;">
+                            <mat-form-field appearance="outline" fxFlex="22.5">
+                              <mat-label>Alloted Quantity</mat-label>
+                              <input autocomplete="off"  pattern="[0-9]*"
+                                     (keyup)="getpercentagevalue()"
+                                     type="number" formControlName="AllotedQuantity" step="1" matInput>
+                            </mat-form-field>
+                          </div>
+                        </div>
+
+                        <div fxFlex="30" fxLayout="row" fxLayoutAlign.lt-sm="center"
+                             *ngIf="addLineForm.get('BookingQuantity').value!=null && addLineForm.get('BookingQuantity').value!=0">
+                          <div fxLayout="column" style="width: 80%;">
+                            <mat-form-field appearance="outline">
+                              <mat-label>Alloted % <sup style="color: red">*</sup></mat-label>
+                              <input autocomplete="off" formControlName="AllotedPercetage" matInput
+                                     pattern="[0-9]*"
+                                     (keyup)="getAllotedQuantity()"
+                                     type="number"
+                                      max="100"
+                                      step="1">
+
+                              <mat-error *ngIf="addLineForm.get('AllotedQuantity').hasError('max')">
+                                Value should not more than 100
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                        </div>
+
+                        <div fxFlex="10" fxLayout="row" fxLayoutAlign.lt-sm="center" style="margin-bottom: 15px"
+                             *ngIf="addLineForm.get('BookingQuantity').value!=null && addLineForm.get('BookingQuantity').value!=0">
+                          <div fxLayout="column" style="width: 80px; margin-top: 10px">
+                            <button  [disabled]="addLineForm.invalid" (click)="AddLines()"
+                                    aria-label="Submit"
+                                    color="accent"
+                                    mat-raised-button>Add
+                            </button>
+                          </div>
+                        </div>
+
+                      </div>
+
+                    </div>
+                  </form>
+                </div>
+
+              <div class="h3 mb-8 p-16">
+                <div >
+                  <div class="example-container">
+                    <table #matSort="matSort" [dataSource]="dataSource" mat-table matSort>
+                      <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+                        <th *matHeaderCellDef mat-header-cell>
+                          <div class="filterHeader">
+                            <b mat-sort-header>{{(column=='baseuomid'?'baseuom':column)|firstAnd_Split}}</b><br>
+                            <input (keyup)="applyFilter($event.target.value,column)"
+                                   *ngIf="column!='Action'"
+                                   [placeholder]="column|firstAnd_Split">
+                          </div>
+                        </th>
+                        <td *matCellDef="let element" mat-cell>
+                          <p *ngIf="column!='Action';else elseAction">{{element[column]}}</p>
+                          <ng-template #elseAction>
+                            <button (click)="delete_line(element)" *ngIf="column=='Action'"
+                                    mat-icon-button>
+                              <mat-icon class="icon-size">delete</mat-icon>
+                            </button>
+                            <p *ngIf="column=='created_on'">{{element[column]|date:'dd/MM/yyyy HH:MM a'}}</p>
+                          </ng-template>
+                        </td>
+                        <td *matFooterCellDef mat-footer-cell>
+                          <p *ngIf="column=='variety_group' && dataSource?.data?.length>0">
+                            Total
+                          </p>
+                          <p *ngIf="column!='variety_group' && column!='crop_code' && column!='alloted_percentage' && column!='Action' && dataSource?.data?.length>0">
+                            {{sum_footer(dataSource.data, column) }}
+                          </p>
+                        </td>
+                      </ng-container>
+                      <tr *matHeaderRowDef="displayedColumns ; sticky: true" mat-header-row></tr>
+                      <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+                      <tr *matFooterRowDef="displayedColumns; sticky: true" mat-footer-row></tr>
+                    </table>
+                    <div *ngIf="dataSource?.data?.length<=0" class="h3 m-16">No Record Found.</div>
+                    <mat-divider *ngIf="dataSource?.data?.length<=0"></mat-divider>
+                  </div>
+                  <mat-paginator #matpaginator="matPaginator" [pageSizeOptions]="[ 5, 10, 20, 30,40,50]"
+                                 showFirstLastButtons></mat-paginator>
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>

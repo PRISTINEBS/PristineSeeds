@@ -1,0 +1,152 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="itemview">
+    <div class="content p-20" pristinePerfectScrollbar>
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+            <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column" fxLayoutAlign="start">
+                <div class=" h3 mb-8 p-16">
+                    <div fxFlex="1 1 auto" fxLayout="space between center">
+                        <div fxFlex="50">
+                            <b>Item View ( </b> <b
+                            style="color: red"> {{sessionManageMent.getLocationName}}</b><b>
+                            ) </b>
+                        </div>
+
+                        <div fxFlex="50" fxLayoutAlign="end">
+                            <button
+                                aria-label="Order"
+                                color="accent"
+                                mat-raised-button>
+                                Order
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <mat-divider></mat-divider>
+
+
+                <div class="h3 mb-8 p-16">
+                    <b>Item Information</b>
+                    <br> <br>
+                    <div *ngIf="this.iteminfo?.length>0" class="headertable" fxLayout="column" fxLayoutGap="10px">
+                        <table style=" border:0px;margin-top: 10px;">
+                            <tbody style="font-size: 12px;">
+
+                            <tr>
+                                <th>Item Code :</th>
+                                <td>{{this.iteminfo[0]?.item_no}}</td>
+                                <th>Description :</th>
+                                <td>{{this.iteminfo[0]?.description}}</td>
+                                <th>Base UOM :</th>
+                                <td>{{this.iteminfo[0]?.base_unit_of_measure}}</td>
+                            </tr>
+
+                            <tr>
+                                <th>Seed Type :</th>
+                                <td>{{this.iteminfo[0]?.seed_type}}</td>
+                                <th>Item Group :</th>
+                                <td>{{this.iteminfo[0]?.item_group}}</td>
+                                <th>Purchase UOM :</th>
+                                <td>{{this.iteminfo[0]?.purchase_unit_of_measure}}</td>
+
+                            </tr>
+
+                            <tr>
+                                <th>Category :</th>
+                                <td>{{this.iteminfo[0]?.main_category}}</td>
+                                <th>Sub Category :</th>
+                                <td>{{this.iteminfo[0]?.sub_category}}</td>
+                                <th>Class Of Seed :</th>
+                                <td>{{this.iteminfo[0]?.class_of_seed}}</td>
+                            </tr>
+
+                            <tr>
+                              <th>FG Pack Size :</th>
+                              <td>{{this.iteminfo[0]?.fg_pack_size}}</td>
+                              <th>Crop Type :</th>
+                              <td>{{this.iteminfo[0]?.crop_type}}</td>
+                              <th>Marketing Code :</th>
+                              <td>{{this.iteminfo[0]?.marketing_code}}</td>
+                            </tr>
+
+                            <tr>
+                              <th>Class Of Variety :</th>
+                              <td>{{this.iteminfo[0]?.class_of_variety}}</td>
+                              <th>MRP :</th>
+                              <td>{{this.iteminfo[0]?.mrp}}</td>
+                              <th>Unit Price :</th>
+                              <td>{{this.iteminfo[0]?.unit_price}}</td>
+                            </tr>
+
+                            <tr>
+                                <th>GST Group :</th>
+                                <td>{{this.iteminfo[0]?.gst_group}}</td>
+                                <th>HSN Code :</th>
+                                <td>{{this.iteminfo[0]?.hsn_code}}</td>
+                                <th>Bad Quantity :</th>
+                                <td>{{this.iteminfo[0]?.bad_inventory}}</td>
+                            </tr>
+
+                            <tr>
+                                <th>Good Quantity :</th>
+                                <td>{{this.iteminfo[0]?.good_inventory}}</td>
+                                <th>Quantity to take :</th>
+                                <td>{{this.iteminfo[0]?.quantity_to_take}}</td>
+                                <th>Reservation Quantity :</th>
+                                <td>{{this.iteminfo[0]?.reservation_quantity}}</td>
+                            </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <br>
+                    <mat-divider></mat-divider>
+                    <br>
+                    <b *ngIf="this.iteminfo?.length>0" style="color: red">Bin Information for item
+                        : {{this.iteminfo[0]?.item_no}} </b>
+                    <br>
+                    <br>
+
+                    <div class="example-container">
+                        <table [dataSource]="dataSource" mat-table matSort>
+                            <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+                                <th *matHeaderCellDef mat-header-cell>
+                                    <div class="filterHeader">
+                                        <b mat-sort-header>{{column|firstAnd_Split}}</b><br>
+                                        <input (keyup)="applyFilter($event.target.value,column)"
+                                               *ngIf="column!='Action'"
+                                               [placeholder]="column|firstAnd_Split">
+                                    </div>
+                                </th>
+                                <td *matCellDef="let element" mat-cell>
+                                    <p *ngIf="column!='Barcode'">{{element[column]}}</p>
+                                    <div *ngIf="column=='Barcode'">
+                                        <button (click)="viewbarcode(element)" mat-icon-button>
+                                            <mat-icon>barcode</mat-icon>
+                                        </button>
+                                    </div>
+                                </td>
+                                <td *matFooterCellDef mat-footer-cell>
+                                    <b *ngIf="column=='item_no'">
+                                        Total :
+                                    </b>
+                                    <b *ngIf="column!='item_no' && column!='bincode' && column!='expiry_date' && column!='Barcode' && dataSource?.data?.length>0">
+                                        {{sum_footer(dataSource.data, column) }}
+                                    </b>
+                                </td>
+                            </ng-container>
+                            <tr *matHeaderRowDef="displayedColumns ; sticky: true" mat-header-row></tr>
+                            <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+                            <tr *matFooterRowDef="displayedColumns; sticky: true" mat-footer-row></tr>
+                        </table>
+                        <div *ngIf="dataSource?.data?.length<=0" class="h3 m-16">No Record Found.</div>
+                        <mat-divider *ngIf="dataSource?.data?.length<=0"></mat-divider>
+                    </div>
+                    <mat-paginator [pageSizeOptions]="[5, 10, 20, 30,40,50]" showFirstLastButtons></mat-paginator>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,133 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="manifestreturn">
+    <div class="content p-20" pristinePerfectScrollbar>
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+            <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column" fxLayoutAlign="start">
+
+                <div class=" h3 mb-8 p-16">
+                    <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-between center"
+                         fxLayoutGap="10px">
+                        <div fxFlex="60">
+                            <b>Manifest Return ( </b> <b
+                            style="color: red"> {{sessionManageMent.getLocationName}}</b><b>
+                            ) </b>
+                        </div>
+
+                        <div *ngIf="this.dataSource?.data?.length>0 && this.inputjson.type!='view'" fxFlex="20"
+                             fxLayout="row" fxLayoutAlign="end">
+                            <button (click)="manifest_return_complete()"
+                                    aria-label="Submit"
+                                    color="accent"
+                                    mat-raised-button>
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <mat-divider></mat-divider>
+
+
+                <div *ngIf="this.returninfo?.length>0" class="h3 mb-8 p-16">
+                    <b>Document Information</b>
+                    <br>
+                    <div>
+                        <div class="headertable" fxLayout="column" fxLayoutGap="10px">
+                            <table style=" border:0px;margin-top: 10px;">
+                                <tbody style="font-size: 12px;">
+                                <tr>
+                                    <th>Return Manifest No</th>
+                                    <th>Return Manifest Datetime</th>
+                                    <th>Dsp Code</th>
+                                    <th>Created By</th>
+                                    <th>Status</th>
+                                    <th>Total Packages</th>
+                                    <th>Total Weight</th>
+                                </tr>
+                                <tr>
+                                    <td>{{this.returninfo[0]?.return_manifest_no}}</td>
+                                    <td>{{this.returninfo[0]?.return_manifest_datetime| date : 'dd/MM/yyyy'}}</td>
+                                    <td>{{this.returninfo[0]?.dsp_code }}</td>
+                                    <td>{{this.returninfo[0]?.created_by}}</td>
+                                    <td>{{this.returninfo[0]?.status}}</td>
+                                    <td>{{this.returninfo[0]?.total_packages }}</td>
+                                    <td>{{this.returninfo[0]?.total_weight}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    <br>
+                    <mat-divider></mat-divider>
+                    <br>
+                    <b>Return ( </b> <b
+                    style="color: red">{{this.returninfo[0]?.return_manifest_no}}</b><b> ) Information </b>
+                    <br>
+                    <br>
+                    <div *ngIf="this.inputjson.type!='view'" fxLayout="column" fxLayoutGap="10px">
+                        <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+                            <div fxFlex="35" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                <div fxLayout="column" style="width: 80%;">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>Return Reason</mat-label>
+                                        <mat-select [formControl]="rejectionreason">
+                                            <mat-option>None</mat-option>
+                                            <mat-option (select)="this.rejectionreason.setValue(values)"
+                                                        *ngFor="let values of rejection_reason"
+                                                        [value]="values">{{values}} </mat-option>
+                                        </mat-select>
+                                        <mat-error>
+                                            Return Reason is required
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div fxFlex="35" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                <div fxLayout="column" style="width: 80%;">
+                                    <mat-form-field appearance="outline">
+                                        <mat-label>AWB No</mat-label>
+                                        <input (keydown.enter)="scanawbno()" [formControl]="awbno" autocomplete="false"
+                                               id="bincode"
+                                               matInput
+                                               placeholder="Scan AWB No">
+
+                                        <mat-icon class="secondary-text" matSuffix>widgets</mat-icon>
+                                        <mat-error>
+                                            AWB No is required
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="example-container">
+                        <table [dataSource]="dataSource" mat-table matSort>
+                            <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+                                <th *matHeaderCellDef mat-header-cell>
+                                    <div class="filterHeader">
+                                        <b mat-sort-header>{{column|firstAnd_Split}}</b><br>
+                                        <input (keyup)="applyFilter($event.target.value,column)"
+                                               *ngIf="column!='Action'"
+                                               [placeholder]="column|firstAnd_Split">
+                                    </div>
+                                </th>
+                                <td *matCellDef="let element" mat-cell>
+                                    <p>{{element[column]}}</p>
+                                </td>
+                            </ng-container>
+                            <tr *matHeaderRowDef="displayedColumns ; sticky: true" mat-header-row></tr>
+                            <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+                        </table>
+                        <div *ngIf="dataSource?.data?.length<=0" class="h3 m-16">No Record Found.</div>
+                        <mat-divider *ngIf="dataSource?.data?.length<=0"></mat-divider>
+                    </div>
+                    <mat-paginator [pageSizeOptions]="[5, 10, 20, 30,40,50]" showFirstLastButtons></mat-paginator>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

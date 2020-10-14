@@ -1,0 +1,402 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="createprocesstransfer">
+  <div class="content p-20" pristinePerfectScrollbar>
+    <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+      <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column" fxLayoutAlign="start">
+        <div class="h3 mb-8 p-16"><b>Create Process Transfer ( </b> <b
+          style="color: red"> {{sessionManageMent.getLocationName}}</b><b>
+          ) {{currentdate | date: 'dd/MM/yyyy hh:mm a'}} </b>
+
+          <button style="float: right" (click)="CreateProcessTransfer()" [disabled]="(processTransferForm.invalid)" aria-label="Submit"
+                  color="accent"
+                  mat-raised-button
+          >
+            Submit
+          </button>
+        </div>
+        <div class="p-16">
+          <form [formGroup]="processTransferForm" name="processTransferForm" novalidate>
+            <div fxLayout="column" fxLayoutGap="10px">
+              <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+
+                <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline" fxFlex="22.5">
+                      <mat-label>Crop</mat-label>
+                      <mat-select formControlName="crop" >
+                        <mat-option *ngFor="let cat of ItemCategoryList" (click)="get_Crop_From_Stage_Master(cat)"
+                                    [value]="cat.code">{{cat.code}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline" fxFlex="22.5">
+                      <mat-label>Season</mat-label>
+                      <mat-select formControlName="season">
+                        <mat-option *ngFor="let season of seasonMaster" (click)="clear_all_fill_details()"
+                                    [value]="season.season_code">{{season.season_code}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline" fxFlex="22.5">
+                      <mat-label>From Stage</mat-label>
+                      <mat-select formControlName="from_stage">
+                        <mat-option *ngFor="let crop_stage_master of get_crop_stage_master" (click)="set_to_stage(crop_stage_master.sequence-1)"
+                                    [value]="crop_stage_master.stage">{{crop_stage_master.stage}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline" >
+                      <mat-label>To Stage<sup style="color: red">*</sup></mat-label>
+                      <input formControlName="to_stage" readonly matInput placeholder="To Stage" type="text">
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </form>
+
+          <b> Select Item And Lot For Transfer </b>
+          <br><br>
+          <form [formGroup]="addItemLotForm" name="addItemLotForm" novalidate>
+
+            <div fxLayout="column" fxLayoutGap="10px">
+
+              <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+
+                <div fxFlex="45" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline" (click)="check_from_stage()">
+                      <mat-label>Find Item By Name Or No <sup style="color: red">*</sup></mat-label>
+
+                      <mat-select autocomplete="off" formControlName="ItemNo" >
+                        <input [(ngModel)]="searchByItemNameorNo"
+                               [ngModelOptions]="{standalone:true}"
+                               (ngModelChange)="get_Item(this.CropId)"
+                               autocomplete="off" class="myInput"
+                               focused="'true'" matInput placeholder="Search" type="text">
+                        <mat-option>None</mat-option>
+                        <mat-option (click)="setItemDetails(item_list)"
+                                    *ngFor="let item_list of itemlist"
+                                    [value]="item_list.item_no">{{item_list.name + ' ( ' + item_list.item_no + ' )' + ' ( ' + item_list.baseuom + ' ) '}}</mat-option>
+                      </mat-select>
+                      <mat-error>
+                        Item Name or Number is required
+                      </mat-error>
+
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline" >
+                      <mat-label>Item Crop<sup style="color: red">*</sup></mat-label>
+                      <input formControlName="item_crop" readonly matInput placeholder="To Stage" type="text">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline" >
+                      <mat-label>Class Of Seeds<sup style="color: red">*</sup></mat-label>
+                      <input formControlName="class_of_seed" readonly matInput placeholder="To Stage" type="text">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline" >
+                      <mat-label>FG Pack Size <sup style="color: red">*</sup></mat-label>
+                      <input formControlName="fg_pack_size" readonly matInput placeholder="FG Pack Size" type="text">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center"
+                     style="margin-bottom: 15px">
+                  <div fxLayout="column" style="width: 80px; margin-top: 10px">
+                    <button [disabled]="addItemLotForm.invalid" (click)="AddProcessTransferLine()"
+                            aria-label="Submit"
+                            color="accent"
+                            mat-raised-button
+                    >
+                      Add
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+
+              <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+
+                <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline" (click)="check_from_stage_and_item_no()" >
+                      <mat-label>Find Item Lot No <sup style="color: red">*</sup></mat-label>
+
+                      <mat-select autocomplete="off" formControlName="LotNo" >
+                        <input [(ngModel)]="searchByItemLotNo"
+                               [ngModelOptions]="{standalone:true}"
+                               (ngModelChange)="setItemLots()"
+                               autocomplete="off" class="myInput"
+                               focused="'true'" matInput placeholder="Search" type="text">
+                        <mat-option>None</mat-option>
+                        <mat-option *ngFor="let item_lot_no of itemLotNo" (click)="setAvailableQty(item_lot_no)"
+                                    [value]="item_lot_no.lot_no">{{item_lot_no.lot_no}}</mat-option>
+                      </mat-select>
+                      <mat-error>
+                        Find Item Lot No is required
+                      </mat-error>
+
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline" >
+                      <mat-label>Total Available Bags<sup style="color: red">*</sup></mat-label>
+                      <input formControlName="total_available_bags" readonly matInput placeholder="Total Available Bags" type="text">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline" >
+                      <mat-label>Total Available Qty<sup style="color: red">*</sup></mat-label>
+                      <input formControlName="total_available_qty" readonly matInput placeholder="Total Available Qty" type="text">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline" >
+                      <mat-label>Required Bags<sup style="color: red">*</sup></mat-label>
+                      <input formControlName="required_bags" (keyup) = "check_available_bags()"
+                             matInput placeholder="Required Bags" type="number">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline" >
+                      <mat-label>Required Qty<sup style="color: red">*</sup></mat-label>
+                      <input formControlName="required_qty" (keyup) = "check_available_qty()"
+                             matInput placeholder="Required Qty" type="number">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </form>
+
+        </div>
+
+        <div class="h3 mb-8 p-16">
+          <div [hidden]="start">
+            <div class="example-container">
+              <table #matSort="matSort" [dataSource]="dataSource" mat-table matSort>
+                <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+                  <th *matHeaderCellDef mat-header-cell>
+                    <div class="filterHeader">
+                      <b mat-sort-header>{{column|firstAnd_Split}}</b><br>
+                      <input (keyup)="applyFilter($event.target.value,column)"
+                             *ngIf="column!='Action'"
+                             [placeholder]="column|firstAnd_Split">
+                    </div>
+                  </th>
+                  <td *matCellDef="let element;let i=index" mat-cell>
+                    <p *ngIf="column!='process_loss_qty' && column!='marketing_lot_no' && column!='packing_item_code'
+                      && column!='good_no_of_bags' && column!='good_qty' && column!='lint_no_of_bags' && column!='lint_qty'
+                      && column!='remenant_no_of_bags' && column!='remenant_qty' && column!='to_location_code'
+                      && column!='Action';else elseAction">{{element[column]}}</p>
+                    <ng-template #elseAction>
+                      <button (click)="delete_line(element)" *ngIf="column=='Action'"
+                              mat-icon-button>
+                        <mat-icon class="icon-size">delete</mat-icon>
+                      </button>
+                      <p *ngIf="column=='created_on'">{{element[column]|date:'dd/MM/yyyy HH:MM a'}}</p>
+                    </ng-template>
+
+                    <div class="CellColumn"
+                      *ngIf="column=='process_loss_qty'">
+                      <input [(ngModel)]="element['process_loss_qty']" readonly
+                             autocomplete="off"
+                             class="myInput"
+                             focused="'true'"
+                             placeholder="process loss qty"
+                             matInput pattern="[0-9]*"
+                             type="number">
+                    </div>
+                    <div class="CellColumn"
+                         *ngIf="column=='marketing_lot_no'">
+                      <input [(ngModel)]="element['marketing_lot_no']"
+                             [readonly] = "processTransferForm.get('from_stage').value == 'RAW'
+                              || processTransferForm.get('from_stage').value == 'GIN'
+                              || processTransferForm.get('from_stage').value == 'DINT'
+                              || processTransferForm.get('from_stage').value == 'PROCESS'"
+                             autocomplete="off"
+                             class="myInput"
+                             focused="'true'"
+                             placeholder="marketing lot no"
+                             matInput type="text">
+                    </div>
+                    <div *ngIf="column=='packing_item_code'" >
+                      <mat-form-field appearance="outline" style="width: 180px" >
+                        <mat-label>packing item code </mat-label>
+                        <mat-select autocomplete="off"
+                              [formControl]="packing_item_code"
+                              [disabled]="processTransferForm.get('from_stage').value == 'RAW'
+                              || processTransferForm.get('from_stage').value == 'GIN'
+                              || processTransferForm.get('from_stage').value == 'DINT'
+                              || processTransferForm.get('from_stage').value == 'PROCESS'" >
+                          <input [(ngModel)]="element['packing_item_code']"
+                                 [ngModelOptions]="{standalone:true}"
+                                 (ngModelChange)="get_Item_On_Line(this.CropId,element)"
+                                 autocomplete="off" class="myInput"
+                                 focused="'true'" matInput placeholder="Search" type="text">
+                          <mat-option>None</mat-option>
+                          <mat-option *ngFor="let item_list_on_row of itemlistonrow" (click)="set_item_on_line(element,i,item_list_on_row)"
+                            [value]="item_list_on_row.item_no">{{item_list_on_row.name + ' ( ' + item_list_on_row.item_no + ' )' + ' ( ' + item_list_on_row.baseuom + ' ) '}}</mat-option>
+                        </mat-select>
+                        <mat-error>
+                          packing item code is required
+                        </mat-error>
+
+                      </mat-form-field>
+
+                    </div>
+                    <div class="CellColumn"
+                         *ngIf="column=='good_no_of_bags'">
+                      <input [(ngModel)]="element['good_no_of_bags']"
+                             (keyup)="change_good_bags(element,i)"
+                             autocomplete="off"
+                             class="myInput"
+                             focused="'true'"
+                             placeholder="good bags"
+                             matInput pattern="[0-9]*"
+                             type="number">
+                    </div>
+                    <div class="CellColumn"
+                         *ngIf="column=='good_qty'">
+                      <input [(ngModel)]="element['good_qty']"
+                             (keyup)="change_good_qty(element,i)"
+                             [readonly] = "processTransferForm.get('to_stage').value == 'PACKING'"
+                             autocomplete="off"
+                             class="myInput"
+                             focused="'true'"
+                             placeholder="good qty"
+                             matInput pattern="[0-9]*"
+                             type="number">
+                    </div>
+                    <div class="CellColumn"
+                         *ngIf="column=='lint_no_of_bags'">
+                      <input [(ngModel)]="element['lint_no_of_bags']"
+                             [readonly] = "processTransferForm.get('from_stage').value == 'GIN'
+                              || processTransferForm.get('from_stage').value == 'DINT'
+                              || processTransferForm.get('from_stage').value == 'PROCESS'
+                              || processTransferForm.get('from_stage').value == 'CLEANING' "
+                             (keyup)="change_lint_bags(element,i)"
+                             autocomplete="off"
+                             class="myInput"
+                             focused="'true'"
+                             placeholder="lint no of bags"
+                             matInput pattern="[0-9]*"
+                             type="number">
+                    </div>
+                    <div class="CellColumn"
+                         *ngIf="column=='lint_qty'">
+                      <input [(ngModel)]="element['lint_qty']"
+                             [readonly] = "processTransferForm.get('from_stage').value == 'GIN'
+                              || processTransferForm.get('from_stage').value == 'DINT'
+                              || processTransferForm.get('from_stage').value == 'PROCESS'
+                              || processTransferForm.get('from_stage').value == 'CLEANING'"
+                             (keyup)="change_lint_qty(element,i)"
+                             autocomplete="off"
+                             class="myInput"
+                             focused="'true'"
+                             placeholder="lint qty"
+                             matInput pattern="[0-9]*"
+                             type="number">
+                    </div>
+                    <div class="CellColumn"
+                         *ngIf="column=='remenant_no_of_bags'">
+                      <input [(ngModel)]="element['remenant_no_of_bags']"
+                             [readonly] = "processTransferForm.get('from_stage').value == 'RAW'
+                              || processTransferForm.get('from_stage').value == 'GIN' "
+                             (keyup)="change_remenant_bags(element,i)"
+                             autocomplete="off"
+                             class="myInput"
+                             focused="'true'"
+                             placeholder="remenant no of bags"
+                             matInput pattern="[0-9]*"
+                             type="number">
+                    </div>
+                    <div class="CellColumn"
+                         *ngIf="column=='remenant_qty'">
+                      <input [(ngModel)]="element['remenant_qty']"
+                             [readonly] = "processTransferForm.get('from_stage').value == 'RAW'
+                              || processTransferForm.get('from_stage').value == 'GIN'"
+                             (keyup)="change_remenant_qty(element,i)"
+                             autocomplete="off"
+                             class="myInput"
+                             focused="'true'"
+                             placeholder="remenant qty"
+                             matInput pattern="[0-9]*"
+                             type="number">
+                    </div>
+                    <div class="CellColumn"
+                         *ngIf="column=='to_location_code'">
+                      <input [(ngModel)]="element['to_location_code']"
+                             autocomplete="off"
+                             class="myInput"
+                             focused="'true'"
+                             placeholder="to location code"
+                             matInput type="text">
+                    </div>
+                  </td>
+                  <td *matFooterCellDef mat-footer-cell>
+                    <p *ngIf="column=='from_bincode'">
+                      Total
+                    </p>
+                    <p *ngIf="column!='lot_no' && column!='from_bincode' && column!='marketing_lot_no' && column!='packing_item_code' && column!='lint_bincode' && column!='remenant_bincode' && column!='to_location_code' && column!='date_of_testing' && column!='expiry_date' && column!='condition' && column!='message' && column!='Action' && dataSource?.data?.length>0">
+                      {{sum_footer(dataSource.data, column) }}
+                    </p>
+                  </td>
+                </ng-container>
+                <tr *matHeaderRowDef="displayedColumns ; sticky: true" mat-header-row></tr>
+                <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+                <tr *matFooterRowDef="displayedColumns; sticky: true" mat-footer-row></tr>
+              </table>
+              <div *ngIf="dataSource?.data?.length<=0" class="h3 m-16">No Record Found.</div>
+              <mat-divider *ngIf="dataSource?.data?.length<=0"></mat-divider>
+            </div>
+            <mat-paginator #matpaginator="matPaginator" [pageSizeOptions]="[ 5, 10, 20, 30,40,50]"
+                           showFirstLastButtons></mat-paginator>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

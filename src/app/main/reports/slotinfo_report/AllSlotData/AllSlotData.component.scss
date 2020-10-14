@@ -1,0 +1,113 @@
+@import "src/@pristine/scss/pristine";
+
+.mail-compose-dialog {
+
+    @include media-breakpoint('xs') {
+        width: 100%;
+    }
+
+    @include media-breakpoint('gt-xs') {
+        width: 740px;
+    }
+
+    .mat-dialog-container {
+        padding: 0;
+
+        .compose-form {
+
+            .mat-form-field {
+                width: 100%;
+            }
+
+            .show-hide-extra-fields {
+                text-align: right;
+                cursor: pointer;
+                font-size: 12px;
+            }
+
+            .attachment-list {
+                font-size: 13px;
+
+                .attachment {
+                    border: 1px solid;
+                    border-radius: 20px;
+                    padding-left: 16px;
+                    margin-top: 8px;
+
+                    .filename {
+                        font-weight: 600;
+                    }
+
+                    &:last-child {
+                        margin-bottom: 0;
+                    }
+                }
+            }
+        }
+    }
+
+    .dialog-content-wrapper {
+        max-height: 85vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .stepperButton {
+        border-color: #C73026 !important;
+        border-radius: 20px;
+        padding: 0px 5px;
+        height: 33px;
+        font-size: 12px;
+    }
+
+    .stepperButton:disabled {
+        border-color: rgba(199, 48, 38, 0.35) !important;
+    }
+
+    .mat-horizontal-stepper-header {
+        pointer-events: none !important;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.28);
+        margin-bottom: 10px;
+    }
+
+    .mat-step-header {
+        margin-top: 2px;
+        height: 40px;
+    }
+
+    .mat-step-header .mat-step-icon-selected, .mat-step-header .mat-step-icon-state-done,
+    .mat-step-header .mat-step-icon-state-edit {
+        background-color: red !important;
+    }
+
+    .example-right-align {
+        text-align: right;
+    }
+
+    input.example-right-align::-webkit-outer-spin-button,
+    input.example-right-align::-webkit-inner-spin-button {
+        display: none;
+    }
+
+    input.example-right-align {
+        -moz-appearance: textfield;
+    }
+
+    .mydivPosition {
+        text-align: right;
+
+        .mycustomClosebutton {
+            height: 30px !important;
+            width: 30px !important;
+            position: absolute;
+            z-index: 99;
+            margin-left: -45px;
+            margin-top: 5px;
+
+            mat-icon {
+                margin-top: -10px;
+            }
+        }
+    }
+
+}

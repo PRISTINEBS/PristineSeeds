@@ -1,0 +1,154 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="createcustomer">
+  <div class="p-16" pristinePerfectScrollbar>
+    <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+      <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column" fxLayoutAlign="start">
+        <div class="h3 mb-8 p-16" fxLayout="column" style="padding-top: 10px">
+          <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+            <b>Create Customer( </b><b
+            style="color: red"> {{ sessionManageMent.getLocationName}} </b><b>)</b>
+          </div>
+          <div *ngIf="GeneralInformation.valid && this.addressData.length>0" fxFlex="20" fxLayout="row" fxLayoutAlign="end">
+            <button (click)="create_customer()"
+                    aria-label="Submit"
+                    color="accent"
+                    mat-raised-button>
+              Submit
+            </button>
+          </div>
+        </div>
+          <div fxFlex="" fxLayout="column">
+            <mat-divider></mat-divider>
+          </div>
+        <div fxFlex="" fxLayout="column" fxLayout.lt-sm="column" fxLayoutAlign="start" class="p-4 pt-8">
+          <div style="color: red;padding-left:4px">Customer General Info</div>
+          <div fxFlex fxLayout="column" [formGroup]="GeneralInformation">
+            <div fxFlex="" class="p-4" fxLayout="Row wrap" fxLayout.lt-sm="column" fxLayoutAlign="start"
+                 fxLayoutGap="10px" fxLayoutGap.lt-sm="10px">
+              <mat-form-field appearance="outline" fxFlex="32" fxFlex.lt-sm="100">
+                <mat-label>Name</mat-label>
+                <input formControlName="Name" matInput placeholder="Name" type="text">
+                <mat-error
+                  *ngIf="GeneralInformation.get('Name').hasError('required') && GeneralInformation.get('Name').dirty && GeneralInformation.get('Name').touched">
+                 Name is required*
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" fxFlex="32" fxFlex.lt-sm="auto">
+                <mat-label>Email</mat-label>
+                <input formControlName="Email" matInput placeholder="Email" type="text">
+                <mat-error
+                  *ngIf="GeneralInformation.get('Email').hasError('required') && GeneralInformation.get('Email').dirty && GeneralInformation.get('Email').touched">
+                  Email is required*
+                </mat-error>
+                <mat-error
+                  *ngIf="GeneralInformation.get('Email').hasError('pattern')">
+                  Invalid email Id !please enter Valid email(ex:abc@123.com)
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" fxFlex="32" fxFlex.lt-sm="auto">
+                <mat-label>Mobile Number</mat-label>
+                <input formControlName="MobileNumber" matInput placeholder="Mobile Number" type="text">
+                <mat-error
+                  *ngIf="GeneralInformation.get('MobileNumber').hasError('required') && GeneralInformation.get('MobileNumber').dirty
+                  && GeneralInformation.get('MobileNumber').touched">
+                  Mobile is required*
+                </mat-error>
+                <mat-error
+                  *ngIf="GeneralInformation.get('MobileNumber').hasError('pattern')">
+                  Invalid! Mobile Number is not valid
+                </mat-error>
+                <mat-error
+                  *ngIf="GeneralInformation.get('MobileNumber').hasError('maxLength')">
+                  Invalid!Length should not more than 10 digit
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" fxFlex="32" fxFlex.lt-sm="auto">
+                <mat-label>Pan Number</mat-label>
+                <input formControlName="PanNumber" matInput placeholder="Pan Number"  type="text">
+                <mat-error
+                  *ngIf="GeneralInformation.get('PanNumber').hasError('required') && GeneralInformation.get('PanNumber').dirty
+                  && GeneralInformation.get('PanNumber').touched">
+                  Pan is required*
+                </mat-error>
+                <mat-error
+                  *ngIf="GeneralInformation.get('PanNumber').hasError('pattern')">
+                  Invalid!Please Enter Valid Pan number
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" fxFlex="32" fxFlex.lt-sm="auto">
+                <mat-label>GST Type</mat-label>
+                <mat-select formControlName="GstType"  placeholder="GST Type" (selectionChange)="OnRegTypeSelectionChange()">
+                  <mat-option [value]="type" *ngFor="let type of GSTType">{{type}}</mat-option>
+                </mat-select>
+<!--                <input formControlName="GstType" matInput placeholder="GST Type"  type="text">-->
+                <mat-error
+                  *ngIf="GeneralInformation.get('GstType').hasError('required') && GeneralInformation.get('GstType').dirty
+                  && GeneralInformation.get('GstType').touched">
+                  GST type is required*
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field *ngIf="GeneralInformation.get('GstType').value == 'Registered' ||GeneralInformation.get('GstType').value == 'Import'" appearance="outline" fxFlex="32" fxFlex.lt-sm="auto">
+                <mat-label>GST registration Number</mat-label>
+                <input formControlName="GstNumber" matInput placeholder="GST registration Number"  type="text">
+                <mat-error
+                  *ngIf="GeneralInformation.get('GstNumber').hasError('required') && GeneralInformation.get('GstNumber').dirty
+                  && GeneralInformation.get('GstNumber').touched">
+                  GST Number is required*
+                </mat-error>
+                <mat-error
+                  *ngIf="GeneralInformation.get('GstNumber').hasError('pattern')">
+                  Invalid!Please Enter Valid GST Number
+                </mat-error>
+              </mat-form-field>
+
+            </div>
+          </div>
+          <div fxFlex="" fxLayout="column">
+            <mat-divider></mat-divider>
+          </div>
+
+          <div fxFlex="" fxLayout="column" class="p-4">
+            <div fxLayout="row wrap" fxLayout.lt-sm="column" fxFlex="" fxLayoutGap="10px">
+              <mat-card style="border: dashed rgba(0,0,0,0.23);height:280px;width:auto;text-align:center;display:inline-block" fxFlex="30" class="product" >
+                <mat-card-content>
+                  <mat-icon (click)="openDialog()" style="cursor:pointer;color: rgba(125,129,140,0.46);font-size:50px;padding-top:50px;padding-right:60px">add</mat-icon><br>
+                  <b style="font-weight:900;font-size:20px;color: rgba(41,43,47,0.76);">Add Address</b>
+                </mat-card-content>
+              </mat-card>
+
+              <mat-card *ngFor="let address of addressData;index as i" class="product" fxFlex="30"  >
+                <mat-card-content  class="card-table">
+                  <button (click)="addressData.splice(i,1)" style="float:right" mat-icon-button>
+                    <mat-icon>close</mat-icon>
+                  </button>
+                  <table >
+                    <tr>
+                      <td style="font-size:25px"><b>&nbsp;{{address.name}}</b></td>
+                    </tr>
+                    <tr>
+                      <td><b>Town/City:</b>&nbsp;{{address.city}}</td>
+                    </tr>
+                    <tr>
+                      <td><b>State:</b>&nbsp;{{address.state}}</td>
+                    </tr>
+                     <tr>
+                       <td><b>Village:</b>&nbsp;{{address.village}}</td>
+                     </tr>
+                     <tr>
+                       <td><b>Taluka:</b>&nbsp;{{address.taluka}}</td>
+                     </tr>
+                    <tr>
+                      <td><b>Country:</b>&nbsp;{{address.country}}</td>
+                    </tr>
+                    <tr>
+                      <td ><b>Address:</b>&nbsp;{{address.address}}</td>
+                    </tr>
+                  </table>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>

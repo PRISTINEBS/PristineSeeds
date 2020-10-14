@@ -1,0 +1,87 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="reshipment">
+    <div class="p-16" pristinePerfectScrollbar>
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+            <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column"
+                 fxLayoutAlign="start">
+                <div class="h3 mb-8 p-16" fxLayout="column" style="padding-top: 20px">
+                    <div fxFlex="1 0 auto" fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px">
+                        <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column"
+                             fxLayoutAlign="space-between center">
+                            <div fxFlex="50">
+                                <b>Reshipment List ( </b><b
+                                style="color: red"> {{ sessionManageMent.getLocationName}} </b><b>
+                                ) </b>
+                            </div>
+                        </div>
+                        <div fxFlex="20" fxLayout="row" fxLayoutAlign="end" fxLayoutAlign.lt-sm="center"
+                             fxLayoutGap="20px">
+                            <button
+                                (click)="change('dspawb')" class="mr-sm-12" color="accent" mat-raised-button
+                                mat-ripple matTooltip="New Dsp and awb no">
+                                <b>New DSP & AWB</b>
+                            </button>
+                        </div>
+                        <div fxFlex="15" fxLayout="row" fxLayoutAlign="end" fxLayoutAlign.lt-sm="center"
+                             fxLayoutGap="20px">
+                            <button
+                                (click)="change('awb')" class="mr-sm-12" color="accent" mat-raised-button
+                                mat-ripple matTooltip="Only New AWB Number">
+                                <b>New AWB</b>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <mat-divider></mat-divider>
+                <br>
+                <div class="p-8" fxFlex fxLayout="column" fxLayout.lt-sm="column">
+                    <div class="example-container">
+                        <table [dataSource]="dataSource" mat-table matSort>
+                            <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+                                <th *matHeaderCellDef mat-header-cell>
+                                    <div *ngIf="column!='select'; else elsepartheader" class="filterHeader">
+                                        <b mat-sort-header>{{column|firstAnd_Split}}</b><br>
+                                        <input (keyup)="applyFilter($event.target.value,column)"
+                                               [placeholder]="column|firstAnd_Split">
+                                    </div>
+                                    <ng-template #elsepartheader>
+
+                                        <mat-checkbox (change)="$event ? masterToggle() : null"
+                                                      [aria-label]="checkboxLabel()"
+                                                      [checked]="selection.hasValue() && isAllSelected()"
+                                                      [indeterminate]="selection.hasValue() && !isAllSelected()">
+                                        </mat-checkbox>
+
+                                    </ng-template>
+                                </th>
+                                <td *matCellDef="let element" mat-cell>
+                                    <p *ngIf="column!='select'; else elsepartdata">
+                                        {{element[column]}}
+                                    </p>
+                                    <ng-template #elsepartdata>
+                                        <mat-checkbox (change)="$event ? selection.toggle(element) : null"
+                                                      (click)="$event.stopPropagation()"
+                                                      [aria-label]="checkboxLabel(element)"
+                                                      [checked]="selection.isSelected(element)">
+                                        </mat-checkbox>
+                                    </ng-template>
+                                </td>
+                            </ng-container>
+
+
+                            <tr *matHeaderRowDef="displayedColumns; sticky: true" mat-header-row></tr>
+                            <tr (click)="selection.toggle(row)" *matRowDef="let row; columns: displayedColumns;"
+                                mat-row>
+                            </tr>
+                        </table>
+                        <div *ngIf="dataSource?.data?.length<=0" class="h3 m-16">No Record Found.</div>
+                        <mat-divider *ngIf="dataSource?.data?.length<=0"></mat-divider>
+                    </div>
+                    <mat-paginator [pageSizeOptions]="[ 5, 10, 20, 30,40,50]" showFirstLastButtons></mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

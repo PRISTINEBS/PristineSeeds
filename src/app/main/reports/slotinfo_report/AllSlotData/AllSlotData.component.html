@@ -1,0 +1,21 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar style="background-color: #FFFFFF;">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{_data.zonedata.sorting_zone}}&nbsp;Slot
+            </span>
+            <button (click)="matDialogRef.close()" aria-label="Close dialog" mat-icon-button>
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-divider></mat-divider>
+    <!-- HORIZONTAL STEPPER EXAMPLE -->
+    <mat-card pristinePerfectScrollbar>
+        <mat-spinner *ngIf="loading" diameter="30" mode="indeterminate"></mat-spinner>
+        <mat-chip-list>
+            <mat-chip (click)="openSlot('get_SlotData',slot)"
+                      *ngFor="let slot of AllSlotArray">{{slot.slot_id}}</mat-chip>
+        </mat-chip-list>
+    </mat-card>
+    <!-- / HORIZONTAL STEPPER EXAMPLE -->
+</div>

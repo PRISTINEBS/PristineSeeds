@@ -1,0 +1,55 @@
+#ForceAssignMentMaster {
+    .wrapper {
+        max-width: 100%;
+        width: 100%;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .example-container {
+        overflow-x: auto;
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+
+            th {
+                padding: 8px;
+            }
+
+            td {
+                padding: 8px;
+            }
+
+            th.mat-column-pick_no {
+                font-weight: bold;
+            }
+
+            th.mat-column-priorty {
+                font-weight: bold;
+            }
+
+            th.mat-column-created_datetime {
+                font-weight: bold;
+            }
+
+            td.mat-column-pick_no {
+
+            }
+
+            td.mat-column-priorty {
+                mat-select {
+                    width: 100px;
+                }
+            }
+
+            td.mat-column-created_datetime {
+            }
+
+            td.mat-column-Action {
+                width: 20px;
+            }
+
+        }
+    }
+}

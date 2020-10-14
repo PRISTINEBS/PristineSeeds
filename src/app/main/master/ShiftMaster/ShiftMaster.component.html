@@ -1,0 +1,69 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="shiftMaster">
+    <div class="content p-20" pristinePerfectScrollbar>
+        <div class="mb-24" fxLayout="column" fxLayout.gt-md="row" fxLayoutAlign="start">
+            <div class="mat-card mat-elevation-z1 p-16" fxFlex="1 0 auto" fxLayout="column"
+                 fxLayoutAlign="start">
+                <div class="h3 mb-24"> Shift Master</div>
+                <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
+
+                    <div fxFlex="100">
+                        <mat-chip-list aria-label="Shift Master">
+                            <mat-chip (click)="openAdd_UpdateDialog('Update shift',shift)" (removed)="RemoveShiftData(shift.id)"
+                                      *ngFor="let shift of AllShift;let i=index"
+                                      [removable]="true">
+                                <div class="shiftInnerClass">
+                                    {{shift.shift_name}} (
+                                    <b>{{shift.start_time|time24to12}}</b>&nbsp;To&nbsp;<b>{{shift.end_time|time24to12}}</b>
+                                    )
+                                </div>
+                                <mat-icon matChipRemove>cancel</mat-icon>
+                            </mat-chip>
+                            <mat-chip (click)="openAdd_UpdateDialog('Add Shift',null)">
+                                <mat-icon>add</mat-icon>
+                            </mat-chip>
+                        </mat-chip-list>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+            <div class="mat-card mat-elevation-z1 p-16" fxFlex="1 0 auto" fxLayout="column"
+                 fxLayoutAlign="start">
+                <div class="h2 mb-8"> Shift Roster
+                    <button (click)="router.navigateByUrl('ui/rostermaster')" mat-icon-button
+                            matTooltip="Go To Roster Page" style="float: right">
+                        <mat-icon>open_in_new</mat-icon>
+                    </button>
+                </div>
+                <div *ngFor="let rowlist of _shiftMasterService.AllManagerRosterList;let i=index;">
+                    <div class="h2 p-4"><b matTooltip="Work Type">{{rowlist.work_type}}</b>
+                        {{rowlist.shift_name}} (
+                        <b style="color: red;">{{rowlist.start_time|time24to12}}</b>&nbsp;To&nbsp;<b
+                            style="color: red;">{{rowlist.end_time|time24to12}}</b>
+                        )
+                        (<b matTooltip="Created by" style="color: #386499;font-size: 11px">{{rowlist.created_by}}</b>)
+                    </div>
+                    <mat-divider></mat-divider>
+                    <div [cdkDropListData]="rowlist.rl"
+                         cdkDropList>
+                        <div *ngFor="let groupZone of rowlist.rl" [cdkDragData]="groupZone"
+                             cdkDrag
+                             cdkDropListGroup class="example-container">
+                            <h2>{{groupZone.picking_zone}}</h2>
+                            <div [cdkDropListData]="groupZone.picker" [id]="groupZone.picking_zone"
+                                 cdkDropList
+                                 class="example-list">
+                                <div *ngFor="let item of groupZone.picker"
+                                     [cdkDragData]="item"
+                                     cdkDrag class="example-box">
+                                    {{item.picker_id}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

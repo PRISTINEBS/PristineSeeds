@@ -1,0 +1,155 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="saleorderview">
+    <div class="p-16" pristinePerfectScrollbar>
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+            <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column"
+                 fxLayoutAlign="start">
+                <div class="h3 mb-8 p-16" fxLayout="column" style="padding-top: 10px">
+                    <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+                        <b>Sales Order View ( </b><b
+                        style="color: red"> {{ sessionManageMent.getLocationName}} </b><b> )</b>
+                    </div>
+
+                </div>
+                <div class="p-8" fxFlex fxLayout="column" fxLayout.lt-sm="column">
+                    <mat-tab-group>
+                        <mat-tab label="Order">
+                            <div class="headertable" fxLayout="column" fxLayoutGap="10px">
+                                <table *ngIf="order?.sales?.length>0" style=" border:0px;margin-top: 10px;">
+                                    <tbody style="font-size: 12px;">
+                                    <tr>
+                                        <th>Bill To</th>
+                                        <th>Ship To</th>
+                                        <th>Order Detail</th>
+                                    </tr>
+                                    <tr>
+                                        <td><b> Name : </b>{{order.bilTo.name}}</td>
+                                        <td><b> Name : </b>{{order.shioTo.name}}</td>
+                                        <td><b> Customer Id : </b>{{order.sales[0].cust_no}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b> Address : </b>{{order.bilTo.address}}</td>
+                                        <td><b> Address : </b>{{order.shioTo.address}}</td>
+                                        <td><b> Sales Order No : </b>{{order.sales[0].document_no}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b> District : </b>{{order.bilTo.city}}</td>
+                                        <td><b> District : </b>{{order.shioTo.city}}</td>
+                                        <td><b> Order DateTime
+                                            : </b>{{order.sales[0].order_datetime|date:'dd/MM/yyyy hh:mm aa'}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b> Taluka : </b>{{order.bilTo.taluka}}</td>
+                                        <td><b> Taluka : </b>{{order.shioTo.taluka}}</td>
+                                        <td><b> Order Status : </b>{{order.sales[0].order_status}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b> Village : </b>{{order.bilTo.village}}</td>
+                                        <td><b> Village : </b>{{order.shioTo.village}}</td>
+                                        <td><b> Payment Method : </b>{{order.sales[0].payment_type}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b> PostOffice : </b>{{order.bilTo.pincode}}</td>
+                                        <td><b> PostOffice : </b>{{order.shioTo.pincode}}</td>
+                                        <td><b> Canceled : </b>{{order.sales[0].canceled}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b> Email : </b>{{order.bilTo.email_id}}</td>
+                                        <td><b> Email : </b>{{order.shioTo.email_id}}</td>
+                                        <td><b> DSP : </b>{{order.sales[0].ship_agent_code}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td><b> Phone No : </b>{{order.bilTo.mobile_no}}</td>
+                                        <td><b> Phone No : </b>{{order.shioTo.mobile_no}}</td>
+                                        <td><b> AWB No : </b>{{order.sales[0].docket_no}}</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <br>
+                            <mat-divider></mat-divider>
+                            <br>
+                            <b style="margin-left:5px; color: red ">Item List</b>
+                            <br><br>
+                            <div class="example-container">
+                                <table [dataSource]="dataSource" mat-table matSort>
+                                    <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+                                        <th *matHeaderCellDef mat-header-cell>
+                                            <div class="filterHeader">
+                                                <b mat-sort-header>{{column|firstAnd_Split}}</b><br>
+                                                <input (keyup)="applyFilter($event.target.value,column)"
+                                                       *ngIf="column!='Edit' && column!='View'"
+                                                       [placeholder]="column|firstAnd_Split"
+                                                       matInput>
+                                            </div>
+                                        </th>
+                                        <td *matCellDef="let element" mat-cell>
+                                            <a (click)="item_info(element[column])"
+                                               *ngIf="column=='item_no' else other">
+                                                {{element[column]}}
+                                            </a>
+                                            <ng-template #other><p>{{element[column]}}</p></ng-template>
+
+                                        </td>
+                                        <td *matFooterCellDef mat-footer-cell>
+                                            <b *ngIf="column=='item_no'">
+                                                Total :
+                                            </b>
+                                            <b *ngIf="column!='item_no' && column!='line_status' && dataSource?.data?.length>0">
+                                                {{sum_footer(dataSource.data, column) }}
+                                            </b>
+                                        </td>
+                                    </ng-container>
+                                    <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+                                    <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+                                    <tr *matFooterRowDef="displayedColumns; sticky: true" mat-footer-row></tr>
+                                </table>
+                                <div *ngIf="dataSource?.data?.length<=0" class="h3 m-16">No Record Found.</div>
+                                <mat-divider *ngIf="dataSource?.data?.length<=0"></mat-divider>
+                            </div>
+                            <mat-paginator [pageSizeOptions]="[ 5, 10, 20, 30,40,50]"
+                                           showFirstLastButtons></mat-paginator>
+
+                        </mat-tab>
+                        <mat-tab label="Invoice">
+                            <div class="example-container">
+                                <table [dataSource]="invoicedataSource" mat-table matSort="invoicematsort">
+                                    <ng-container *ngFor="let column of invoicedisplayedColumns"
+                                                  [matColumnDef]="column">
+                                        <th *matHeaderCellDef mat-header-cell>
+                                            <div class="filterHeader">
+                                                <b mat-sort-header>{{column|firstAnd_Split}}</b><br>
+                                                <input (keyup)="applyFilter($event.target.value,column)"
+                                                       *ngIf="column!='Edit' && column!='View'"
+                                                       [placeholder]="column|firstAnd_Split"
+                                                       matInput>
+                                            </div>
+                                        </th>
+                                        <td *matCellDef="let element" mat-cell>
+                                            <p *ngIf="column!='View'; else elseAction">{{element[column]}}</p>
+                                            <ng-template #elseAction>
+                                                <button (click)="viewinfo(element)"
+                                                        mat-icon-button>
+                                                    <mat-icon class="icon-size">visibility</mat-icon>
+                                                </button>
+                                            </ng-template>
+                                        </td>
+                                    </ng-container>
+                                    <tr *matHeaderRowDef="invoicedisplayedColumns" mat-header-row></tr>
+                                    <tr *matRowDef="let row; columns: invoicedisplayedColumns;" mat-row></tr>
+                                </table>
+                                <div *ngIf="invoicedataSource?.data?.length<=0" class="h3 m-16">No Record Found.</div>
+                                <mat-divider *ngIf="invoicedataSource?.data?.length<=0"></mat-divider>
+                            </div>
+                            <mat-paginator [pageSizeOptions]="[ 5, 10, 20, 30,40,50]"
+                                           showFirstLastButtons></mat-paginator>
+                        </mat-tab>
+                        <mat-tab label="Activity Log">
+
+                        </mat-tab>
+                    </mat-tab-group>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

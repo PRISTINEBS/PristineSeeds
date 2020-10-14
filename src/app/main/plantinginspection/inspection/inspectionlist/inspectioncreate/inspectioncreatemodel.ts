@@ -1,0 +1,41 @@
+export class Inspectioncreatemodel {
+
+  condition:string;
+  planting_no:string;
+  planting_line_id:number;
+  line_id:number;
+  season:string;
+  organiser_code:string;
+  organiser_name:string;
+  fsio_no:string;
+  grower_no:string;
+  grower_name:string;
+  item_no:string;
+  item_name:string;
+  category:string;
+  sub_category:string;
+  class_of_seed:string;
+  crop_type:string;
+  class_of_variety:string;
+  sowing_date_other:string;
+  sowing_area_in_r:number;
+  production_lot_no:string;
+  revised_yield:number;
+  land_lease:number;
+  inspection_1:number;
+  inspection_2:number;
+  inspection_3:number;
+  inspection_4:number;
+  inspection_qc:number;
+  address:string;
+  address2:string;
+  post_code:string;
+  city:string;
+  country:string;
+  zone:string;
+  state:string;
+  region:string;
+  district:string;
+  taluka:string;
+  mobile_number:string;
+}

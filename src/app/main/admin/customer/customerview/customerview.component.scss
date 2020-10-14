@@ -1,0 +1,18 @@
+@import "src/@pristine/scss/pristine";
+
+#Viewcustomer {
+  .card-table {
+    height: 100%;
+
+    table {
+      border-collapse: collapse;
+      table-layout: fixed;
+
+      td {
+        //line-break: auto;
+        word-break: break-all;
+        padding: 5px;
+      }
+    }
+  }
+}

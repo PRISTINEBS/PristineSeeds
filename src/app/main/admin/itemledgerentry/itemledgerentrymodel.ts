@@ -1,0 +1,30 @@
+export class item_ledger_entry {
+  condition:string;
+  ile_no:string;
+  entry_type:string;
+  document_type:string;
+  order_no:string;
+  document_no:string;
+  sales_order_no:string;
+  item_type:string;
+  crop_type:string;
+  class_of_seed:string;
+  class_of_variety:string;
+  variant_code:string;
+  season:string;
+  main_category:string;
+  sub_category:string;
+  item_no:string;
+  item_name:string;
+  item_group:string;
+  production_lot_no:string;
+  lot_no:string;
+  no_of_bags:number;
+  location_id:string;
+  quantity:number;
+  invoiced_quantity:number;
+  remaining_quantity:number;
+  loss_type:string;
+  created_by:string;
+  created_on:string;
+}

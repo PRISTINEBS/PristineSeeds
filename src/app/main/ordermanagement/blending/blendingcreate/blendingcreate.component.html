@@ -1,0 +1,298 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="createblending">
+  <div class="content p-20" pristinePerfectScrollbar>
+    <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+      <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column" fxLayoutAlign="start">
+        <div class="h3 mb-8 p-16"><b>Create Blending ( </b> <b
+          style="color: red"> {{sessionManageMent.getLocationName}}</b><b>
+          ) </b>
+
+          <button (click)="CreateBlending()"
+                  style="float: right" aria-label="Submit"
+                  color="accent"
+                  mat-raised-button
+          >
+            Submit
+          </button>
+        </div>
+        <div class="p-16">
+
+          <form [formGroup]="blendingForm" name="blendingForm" novalidate>
+
+            <div fxLayout="column" fxLayoutGap="10px">
+
+              <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+
+                <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline" fxFlex="22.5">
+                      <mat-label>Crop</mat-label>
+                      <mat-select formControlName="crop" >
+                        <mat-option *ngFor="let cat of ItemCategoryList"
+                                    [value]="cat.code">{{cat.code}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline" fxFlex="22.5">
+                      <mat-label>Season</mat-label>
+                      <mat-select formControlName="season">
+                        <mat-option *ngFor="let season of seasonMaster"
+                                    [value]="season.season_code">{{season.season_code}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Location <sup style="color: red">*</sup></mat-label>
+                      <mat-select autocomplete="off" formControlName="location" >
+                        <input #searchBylocation
+                               readonly
+                               autocomplete="off" class="myInput"
+                               focused="'true'" matInput placeholder="Search" type="text">
+                        <mat-option
+                          disabled
+                          *ngFor="let loc of locationlist|searchlocation: searchBylocation.value"
+                          [value]="loc.location_id">{{loc.location_name + ' ( ' + loc.location_id + ' ) ' }}</mat-option>
+                      </mat-select>
+                      <mat-error>
+                        Location is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline" >
+                      <mat-label>Stage <sup style="color: red">*</sup></mat-label>
+                      <input formControlName="stage" readonly matInput placeholder="Stage" type="text">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline" >
+                      <mat-label>Bincode <sup style="color: red">*</sup></mat-label>
+                      <input formControlName="bincode" readonly matInput placeholder="Bincode" type="text">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+              </div>
+
+              <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+
+                <div fxFlex="45" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline" (click)="check_crop()">
+                      <mat-label>Find Item By Name Or No <sup style="color: red">*</sup></mat-label>
+
+                      <mat-select autocomplete="off" formControlName="ItemNo" >
+                        <input [(ngModel)]="searchByItemNameorNo"
+                               [ngModelOptions]="{standalone:true}"
+                               (ngModelChange)="get_Item()"
+                               autocomplete="off" class="myInput"
+                               focused="'true'" matInput placeholder="Search" type="text">
+                        <mat-option>None</mat-option>
+                        <mat-option (click)="setItemDetails(item_list)"
+                                    *ngFor="let item_list of itemlist"
+                                    [value]="item_list.item_no">{{item_list.name + ' ( ' + item_list.item_no + ' )' + ' ( ' + item_list.baseuom + ' ) '}}</mat-option>
+                      </mat-select>
+                      <mat-error>
+                        Item Name or Number is required
+                      </mat-error>
+
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline" >
+                      <mat-label>Item Crop<sup style="color: red">*</sup></mat-label>
+                      <input formControlName="item_crop" readonly matInput placeholder="Item Crop" type="text">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline" >
+                      <mat-label>Class Of Seeds<sup style="color: red">*</sup></mat-label>
+                      <input formControlName="class_of_seed" readonly matInput placeholder="Class Of Seed" type="text">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline" >
+                      <mat-label>FG Pack Size <sup style="color: red">*</sup></mat-label>
+                      <input formControlName="fg_pack_size" readonly matInput placeholder="FG Pack Size" type="text">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center"
+                     style="margin-bottom: 15px">
+                  <div fxLayout="column" style="width: 80px; margin-top: 10px">
+                    <button
+                            (click)="AddBlendingLine()"
+                            aria-label="Submit"
+                            color="accent"
+                            mat-raised-button
+                    >
+                      Add
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+
+              <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+
+                <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline" >
+                      <mat-label>Find Item Lot No <sup style="color: red">*</sup></mat-label>
+
+                      <mat-select autocomplete="off" formControlName="LotNo" >
+                        <input [(ngModel)]="searchByItemLotNo"
+                               [ngModelOptions]="{standalone:true}"
+                               (ngModelChange)="setItemLots()"
+                               autocomplete="off" class="myInput"
+                               focused="'true'" matInput placeholder="Search" type="text">
+                        <mat-option>None</mat-option>
+                        <mat-option *ngFor="let item_lot_no of itemLotNo" (click)="setAvailableQty(item_lot_no)"
+                                    [value]="item_lot_no.lot_no">{{item_lot_no.lot_no}}</mat-option>
+                      </mat-select>
+                      <mat-error>
+                        Find Item Lot No is required
+                      </mat-error>
+
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline" >
+                      <mat-label>Total Available Bags<sup style="color: red">*</sup></mat-label>
+                      <input formControlName="total_available_bags" readonly matInput placeholder="Total Available Bags" type="text">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline" >
+                      <mat-label>Total Available Qty<sup style="color: red">*</sup></mat-label>
+                      <input formControlName="total_available_qty" readonly matInput placeholder="Total Available Qty" type="text">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline" >
+                      <mat-label>Required Bags<sup style="color: red">*</sup></mat-label>
+                      <input formControlName="required_bags" (keyup) = "check_available_bags()"
+                             matInput placeholder="Required Bags" type="number">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline" >
+                      <mat-label>Required Qty<sup style="color: red">*</sup></mat-label>
+                      <input formControlName="required_qty" (keyup) = "check_available_qty()"
+                             matInput placeholder="Required Qty" type="number">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+              </div>
+
+              <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+                <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline" >
+                      <mat-label>New Lot No </mat-label>
+                      <input formControlName="new_lot_no" readonly matInput placeholder="New Lot No" type="text">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div fxFlex="45" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline" >
+                      <mat-label>Remarks </mat-label>
+                      <input formControlName="remarks" matInput placeholder="Remarks" type="text">
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </form>
+
+        </div>
+
+        <div class="h3 mb-8 p-16">
+          <div >
+            <div class="example-container">
+              <table #matSort="matSort" [dataSource]="dataSource" mat-table matSort>
+                <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+                  <th *matHeaderCellDef mat-header-cell>
+                    <div class="filterHeader">
+                      <b mat-sort-header>{{column|firstAnd_Split}}</b><br>
+                      <input (keyup)="applyFilter($event.target.value,column)"
+                             *ngIf="column!='Action'"
+                             [placeholder]="column|firstAnd_Split">
+                    </div>
+                  </th>
+                  <td *matCellDef="let element;let i=index" mat-cell>
+                    <p *ngIf="column!='Action';else elseAction">{{element[column]}}</p>
+                    <ng-template #elseAction>
+                      <button (click)="delete_line(element)" *ngIf="column=='Action'"
+                              mat-icon-button>
+                        <mat-icon class="icon-size">delete</mat-icon>
+                      </button>
+                      <p *ngIf="column=='created_on'">{{element[column]|date:'dd/MM/yyyy HH:MM a'}}</p>
+                    </ng-template>
+
+                  </td>
+                  <td *matFooterCellDef mat-footer-cell>
+                    <p *ngIf="column=='bincode'">
+                      Total
+                    </p>
+                    <p *ngIf="column!='lot_no' && column!='bincode' && column!='item_no' && column!='item_name' && column!='item_uom' && column!='Action' && dataSource?.data?.length>0">
+                      {{sum_footer(dataSource.data, column) }}
+                    </p>
+                  </td>
+                </ng-container>
+                <tr *matHeaderRowDef="displayedColumns ; sticky: true" mat-header-row></tr>
+                <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+                <tr *matFooterRowDef="displayedColumns; sticky: true" mat-footer-row></tr>
+              </table>
+              <div *ngIf="dataSource?.data?.length<=0" class="h3 m-16">No Record Found.</div>
+              <mat-divider *ngIf="dataSource?.data?.length<=0"></mat-divider>
+            </div>
+            <mat-paginator #matpaginator="matPaginator" [pageSizeOptions]="[ 5, 10, 20, 30,40,50]"
+                           showFirstLastButtons></mat-paginator>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

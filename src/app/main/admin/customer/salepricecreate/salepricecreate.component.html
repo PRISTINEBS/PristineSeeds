@@ -1,0 +1,100 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="salepricecreation">
+    <div class="p-16" pristinePerfectScrollbar>
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+            <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column" fxLayoutAlign="start">
+                <div class="h3 mb-8 p-16">
+                    <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-between center"
+                           fxLayoutGap="10px">
+                        <div fxFlex="50">
+                          <b>Sale Price Create( </b><b
+                          style="color: red"> {{ sessionManageMent.getLocationName}} </b><b>
+                          ){{currentdate | date: 'dd/MM/yyyy hh:mm a'}} </b>
+                        </div>
+                      </div>
+                </div>
+                    <mat-divider></mat-divider>
+                    <br>
+                    <div [formGroup]="GeneralInformation">
+                        <div fxFlex="" fxLayout="column">
+                            <div class="p-8" fxFlex="" fxLayout="Row wrap" fxLayout.lt-sm="column" fxLayoutAlign="start"
+                                 fxLayoutGap="20px" fxLayoutGap.lt-sm="0px">
+                                <mat-form-field appearance="outline" fxFlex="22.5">
+                                    <mat-label>Sales Type</mat-label>
+                                  <mat-select formControlName="SalesType"  placeholder="Sales Type">
+                                    <mat-option [value]="salestype" *ngFor="let salestype of SalesType">{{salestype}}</mat-option>
+                                  </mat-select>
+                                </mat-form-field>
+                              <mat-form-field appearance="outline"  fxFlex="22.5">
+                                <mat-label>Find Item By Name Or No</mat-label>
+                                <mat-select formControlName="ItemNo" >
+                                  <input (ngModelChange)="get_Item()"
+                                         [(ngModel)]="searchByItemNameorNo"
+                                         [ngModelOptions]="{standalone:true}"
+                                         autocomplete="off" class="myInput"
+                                         focused="'true'" matInput placeholder="Search" type="text">
+                                  <mat-option>None</mat-option>
+                                  <mat-option
+                                    *ngFor="let shippingOrder of itemlist"
+                                    [value]="shippingOrder.item_no">{{shippingOrder.name + '( ' + shippingOrder.item_no + ' )'}}</mat-option>
+                                </mat-select>
+                                <mat-error>
+                                  Item Name or Number is required
+                                </mat-error>
+
+                              </mat-form-field>
+
+                                <mat-form-field appearance="outline" fxFlex="22.5">
+                                    <mat-label>Unit Of Measure</mat-label>
+                                    <mat-select formControlName="UnitOfMeasure"  placeholder="Unit Of Measure" >
+                                    <mat-option [value]="uom.name" *ngFor="let uom of GetBaseUom">{{uom.name}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                              <mat-form-field appearance="outline" fxFlex="22.5">
+                                <mat-label>Minimum Quantity</mat-label>
+                                <input matInput formControlName="Quantity" type="number" pattern="[0-9]*" placeholder="Minimum Quantity">
+                              </mat-form-field>
+
+                              <mat-form-field appearance="outline" fxFlex="22.5">
+                                <mat-label>Unit price</mat-label>
+                                <input matInput formControlName="UnitPrice" type="number" pattern="[0-9]*" placeholder="Unit price">
+                              </mat-form-field>
+
+                              <mat-form-field appearance="outline" fxFlex="22.5">
+                                <mat-label>Mrp</mat-label>
+                                <input matInput formControlName="Mrp" type="number" pattern="[0-9]*" placeholder="Mrp">
+                              </mat-form-field>
+                              <mat-form-field appearance="outline" fxFlex="22.5">
+                                <mat-label>Starting Date<sup style="color: red">*</sup></mat-label>
+                                <input (focusin)="Sdate.open()" [matDatepicker]="Sdate"
+                                       formControlName="StartingDate"
+                                       matInput
+                                       placeholder="Choose starting date"
+                                >
+                                <mat-datepicker #Sdate="matDatepicker"
+                                ></mat-datepicker>
+                                <mat-icon class="secondary-text" matSuffix>date_range</mat-icon>
+                              </mat-form-field>
+                              <mat-form-field appearance="outline" fxFlex="22.5">
+                                <mat-label>End Date<sup style="color: red">*</sup></mat-label>
+                                <input (focusin)="Edate.open()" [matDatepicker]="Edate"
+                                       formControlName="EndDate"
+                                       matInput
+                                       placeholder="Choose end date"
+                                >
+                                <mat-datepicker #Edate="matDatepicker"
+                                ></mat-datepicker>
+                                <mat-icon class="secondary-text" matSuffix>date_range</mat-icon>
+                              </mat-form-field>
+                            </div>
+                            <div fxFlex="" class="p-8" fxLayout="row" fxLayoutAlign="end">
+                                <button (click)="ItemCreate()" color="accent" mat-raised-button>
+                                    <mat-icon>save</mat-icon>&nbsp;Save
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>

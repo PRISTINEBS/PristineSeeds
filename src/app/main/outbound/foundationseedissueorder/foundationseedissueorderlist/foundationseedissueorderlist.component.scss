@@ -1,0 +1,82 @@
+@import "src/@pristine/scss/pristine";
+
+#saleorderlist {
+
+    .example-container {
+        overflow-x: auto;
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+
+            th {
+                padding: 8px;
+                color: black;
+            }
+
+            td {
+                padding: 8px;
+            }
+
+            th.mat-column-pick_no {
+                font-weight: bold;
+            }
+
+            th.mat-column-priorty {
+                font-weight: bold;
+            }
+
+            th.mat-column-created_datetime {
+                font-weight: bold;
+            }
+
+            td.mat-column-pick_no {
+
+            }
+
+            td.mat-column-priorty {
+                mat-select {
+                    width: 100px;
+                }
+            }
+
+            td.mat-column-created_datetime {
+            }
+
+            td.mat-column-Action {
+                width: 20px;
+            }
+
+        }
+    }
+
+    .filterHeader {
+        input {
+            width: 120px;
+            padding: 10px 8px;
+            display: inline-block;
+            //  border: 1px solid #ccc;
+            border-radius: 40px;
+            box-sizing: border-box;
+            background: #f4f4f4;
+            transition: all 0.3s ease;
+        }
+
+        input:hover {
+            box-shadow: 0px 0px 4px #8d8d8d;
+        }
+
+        input:focus::-webkit-input-placeholder {
+            color: #ccc;
+        }
+
+        input:focus {
+            //border: 1px solid #EF4023;
+            box-shadow: 0px 0px 4px #aaaaaa;
+
+            ::-webkit-input-placeholder {
+                // color: #F5968F;
+            }
+        }
+    }
+}

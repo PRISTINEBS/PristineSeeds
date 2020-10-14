@@ -1,0 +1,50 @@
+<div fxFlex fxLayout="column" fxLayoutAlign="start" id="ViewInspection">
+  <div mat-dialog-title style="margin-top: -35px">
+    <div class="h5 mb-8 pt-16" style="font-size: 18px;">View All Inspection Of
+      ( <b style="color: red">{{this.inspection_create_model.production_lot_no}}</b> ) & Category
+      ( <b style="color: red">{{this.inspection_create_model.category}}</b> )
+    </div>
+    <div fxLayout="column" fxLayoutAlign="start">
+      <mat-divider></mat-divider>
+    </div>
+  </div>
+
+  <div class="p-8" fxFlex fxLayout="column" fxLayout.lt-sm="column">
+    <div class="headertable" fxLayout="column">
+      <table>
+        <tr>
+          <td style="width: 100px"></td>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+        <tbody style="font-size: 12px;">
+
+          <tr>
+            <td><b>Inspection1</b></td>
+            <td>{{ this.inspection_create_model.inspection_1 == 0 ? 'OPEN' : 'DONE' }}</td>
+            <td><button *ngIf="this.show_inspection1 == true" (click)="create_inspection1()" mat-icon-button ><mat-icon>send</mat-icon></button></td>
+          </tr>
+
+          <tr>
+            <td><b>Inspection2</b></td>
+            <td>{{ this.inspection_create_model.inspection_2 == 0 ? 'OPEN' : 'DONE' }}</td>
+            <td><button *ngIf="this.show_inspection2 == true" (click)="create_inspection2()" mat-icon-button ><mat-icon>send</mat-icon></button></td>
+          </tr>
+
+          <tr>
+            <td><b>Inspection3</b></td>
+            <td>{{ this.inspection_create_model.inspection_3 == 0 ? 'OPEN' : 'DONE' }}</td>
+            <td><button *ngIf="this.show_inspection3 == true" (click)="create_inspection3()" mat-icon-button ><mat-icon>send</mat-icon></button></td>
+          </tr>
+
+          <tr>
+            <td><b>Inspection4</b></td>
+            <td>{{ this.inspection_create_model.inspection_4 == 0 ? 'OPEN' : 'DONE' }}</td>
+            <td><button *ngIf="this.show_inspection4 == true" (click)="create_inspection4()" mat-icon-button ><mat-icon>send</mat-icon></button></td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

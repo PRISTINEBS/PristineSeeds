@@ -1,0 +1,67 @@
+<div fxLayout="row" fxLayoutAlign="space-between center">
+
+    <b> Update Approval </b>
+
+    <button (click)="send()" mat-dialog-close mat-icon-button>
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+<br>
+<mat-divider></mat-divider>
+<br>
+
+<div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+
+
+    <form [formGroup]="approvaldata" name="approvaldata" novalidate>
+        <div fxLayout="column" fxLayoutGap="10px">
+
+
+            <div fxFlex="20" fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
+                <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Order Status</mat-label>
+                        <mat-select (selectionChange)="this.approvaldata.get('OrderStatus').value=='Rejected' ? this.approvaldata.get('Reason').enable(): this.approvaldata.get('Reason').disable();"
+                                    formControlName="OrderStatus">
+                            <mat-option>None</mat-option>
+                            <mat-option *ngFor="let values of orderstatus" [value]="values">{{values}}  </mat-option>
+                        </mat-select>
+                        <mat-error>
+                            Order Status is required
+                        </mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+
+            <div fxFlex="1 0 auto" fxLayout="row wrap" fxLayoutAlign="start center">
+
+                <mat-form-field appearance="outline" style="width: 80%;">
+                    <mat-label>Rejection Reason</mat-label>
+                    <textarea formControlName="Reason" matInput>
+                                Rejection Reason
+                            </textarea>
+                    <mat-icon class="secondary-text" matSuffix>description</mat-icon>
+                </mat-form-field>
+
+            </div>
+
+
+        </div>
+    </form>
+
+
+    <div class="pl-8" fxFlex fxFlex.sm fxLayout="column" fxLayout.lt-sm="column"
+         fxLayoutAlign="start"
+         style="margin-top: 20px">
+        <div fxFlex fxLayoutAlign.lt-sm="center">
+            <button (click)="send_approval()" [disabled]="approvaldata.invalid" aria-label="Submit"
+                    color="accent"
+                    mat-raised-button>
+                Submit
+            </button>
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,346 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="pickcreate">
+    <div class="p-16" pristinePerfectScrollbar>
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+            <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column" fxLayoutAlign="start">
+                <div class=" h3 mb-8 p-16">
+                    <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column"
+                         fxLayoutAlign="space-between center"
+                         fxLayoutGap="10px">
+                        <div fxFlex="30">
+                            <b>Pick Creation </b><b
+                            style="color: red"> {{ sessionManageMent.getLocationName}} </b>
+                        </div>
+                    </div>
+                </div>
+
+                <mat-divider></mat-divider>
+
+                <div class="p-16">
+                    <div fxFlex="100" fxLayout="column" fxLayoutGap="10px">
+                        <form [formGroup]="find_order" name="find_grn" novalidate>
+                            <div fxLayout="column" fxLayoutGap="10px">
+                                <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+                                    <div fxFlex="50" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                        <div fxLayout="column" style="width: 80%;">
+                                            <mat-form-field appearance="outline">
+                                                <mat-label>Pick Type</mat-label>
+                                                <mat-select formControlName="PickType">
+                                                    <mat-option>None</mat-option>
+                                                    <mat-option value="Pick">Pick</mat-option>
+                                                    <mat-option value="Repick">Repick</mat-option>
+                                                </mat-select>
+                                                <mat-error>
+                                                    Pick Type is required
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div fxFlex="50" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                        <div fxLayout="column" style="width: 80%;">
+                                            <mat-form-field appearance="outline">
+                                                <mat-label>Document Type</mat-label>
+                                                <mat-select (selectionChange)="document_typechange()"
+                                                            formControlName="DocumentType">
+                                                    <mat-option>None</mat-option>
+                                                    <mat-option *ngFor="let values of documentType"
+                                                                [value]="values">{{values}}</mat-option>
+                                                </mat-select>
+                                                <mat-error>
+                                                    Document Type is required
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div fxFlex="34" fxHide="{{this.find_order.get('OrderType').disabled}}"
+                                         fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                        <div fxLayout="column" style="width: 80%;">
+                                            <mat-form-field appearance="outline">
+                                                <mat-label>Order Type</mat-label>
+                                                <mat-select formControlName="OrderType">
+                                                    <mat-option>None</mat-option>
+                                                    <mat-option *ngFor="let values of orderType"
+                                                                [value]="values">{{values}}  </mat-option>
+                                                </mat-select>
+                                                <mat-error>
+                                                    Order Type is required
+                                                </mat-error>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                    <div fxFlex="50" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                        <div fxLayout="column">
+                                            <button (click)="find_order_for_pick()" [disabled]="find_order.invalid"
+                                                    color="accent" mat-raised-button style="margin-top: 15px">Find
+                                                Orders
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <mat-accordion class="example-headers-align" multi>
+                                <mat-expansion-panel (opened)="setStep(1)" [expanded]="step === 1" hideToggle>
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title style="color: blue">
+                                            Filters
+                                        </mat-panel-title>
+                                        <mat-panel-description style="color: black">
+                                            *Use '|' for multi filter in Order and Pincode
+                                        </mat-panel-description>
+                                    </mat-expansion-panel-header>
+                                    <div fxLayout="column" fxLayoutGap="10px">
+                                        <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+                                            <div fxFlex="33" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                                <div fxLayout="column" style="width: 80%;">
+                                                    <mat-form-field appearance="outline">
+                                                        <mat-label>State</mat-label>
+                                                        <mat-select formControlName="State" multiple>
+                                                            <input [(ngModel)]="searchBydata"
+                                                                   [ngModelOptions]="{standalone:true}"
+                                                                   autocomplete="off"
+                                                                   class="myInput"
+                                                                   focused="'true'" matInput placeholder="Search"
+                                                                   type="text">
+                                                            <mat-option
+                                                                *ngFor="let values of dropdownState| searchdsp:searchBydata"
+                                                                [value]="values.name">{{values.name}}</mat-option>
+                                                        </mat-select>
+                                                        <mat-error>
+                                                            State is required
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div fxFlex="33" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                                <div fxLayout="column" style="width: 80%;">
+                                                    <mat-form-field appearance="outline">
+                                                        <mat-label>City</mat-label>
+                                                        <mat-select formControlName="City" multiple>
+                                                            <input [(ngModel)]="searchByCity"
+                                                                   [ngModelOptions]="{standalone:true}"
+                                                                   autocomplete="off"
+                                                                   class="myInput"
+                                                                   focused="'true'" matInput placeholder="Search"
+                                                                   type="text">
+                                                            <mat-option
+                                                                *ngFor="let values of dropdownCity| searchdsp:searchByCity"
+                                                                [value]="values.name">{{values.name}}</mat-option>
+                                                        </mat-select>
+                                                        <mat-error>
+                                                            City is required
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div fxFlex="34" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                                <div fxLayout="column" style="width: 80%;">
+                                                    <mat-form-field appearance="outline">
+                                                        <mat-label>Shipping Agent</mat-label>
+                                                        <mat-select formControlName="ShippingAgent" multiple>
+                                                            <input [(ngModel)]="searchByAgent"
+                                                                   [ngModelOptions]="{standalone:true}"
+                                                                   autocomplete="off"
+                                                                   class="myInput"
+                                                                   focused="'true'" matInput placeholder="Search"
+                                                                   type="text">
+                                                            <mat-option
+                                                                *ngFor="let values of dropdownShippingAgent| searchdsp:searchByAgent"
+                                                                [value]="values.name">{{values.name}}  </mat-option>
+                                                        </mat-select>
+                                                        <mat-error>
+                                                            Shipping Agent is required
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div fxLayout="column" fxLayoutGap="10px">
+                                        <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+                                            <div fxFlex="50" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                                <div fxLayout="column" style="width: 80%;">
+                                                    <mat-form-field appearance="outline">
+                                                        <mat-label>Priority</mat-label>
+                                                        <mat-select formControlName="Priority" multiple>
+                                                            <mat-option value="2">High</mat-option>
+                                                            <mat-option value="1">Default</mat-option>
+                                                            <mat-option value="0">Low</mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div fxFlex="50" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                                <div fxLayout="column" style="width: 80%;">
+                                                    <mat-form-field appearance="outline">
+                                                        <mat-label>Bin Zone</mat-label>
+                                                        <mat-select formControlName="BinZone" multiple>
+                                                            <mat-option
+                                                                *ngFor="let values of dropdownBinZone"
+                                                                [value]="values.zone_type">{{values.zone_type}}</mat-option>
+                                                        </mat-select>
+                                                        <mat-error>
+                                                            Bin Zone is required
+                                                        </mat-error>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div fxLayout="column" fxLayoutGap="10px">
+                                        <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+                                            <div fxFlex="50" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                                <div fxLayout="column" style="width: 80%;">
+                                                    <mat-form-field appearance="outline">
+                                                        <mat-label>Orders</mat-label>
+                                                        <textarea formControlName="OrderNo" matInput></textarea>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                            <div fxFlex="50" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                                <div fxLayout="column" style="width: 80%;">
+                                                    <mat-form-field appearance="outline">
+                                                        <mat-label>Pincode</mat-label>
+                                                        <textarea formControlName="Pincode" matInput></textarea>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </mat-expansion-panel>
+                                <mat-expansion-panel (opened)="setStep(2)" [expanded]="step === 2" hideToggle>
+                                    <mat-expansion-panel-header>
+                                        <mat-panel-title>
+                                            Create Pick
+                                        </mat-panel-title>
+                                    </mat-expansion-panel-header>
+
+                                    <div fxFlex="60">
+                                        <div class="example-container">
+                                            <table [dataSource]="dataSource" mat-table matSort>
+                                                <ng-container *ngFor="let column of displayedColumns"
+                                                              [matColumnDef]="column">
+                                                    <th *matHeaderCellDef mat-header-cell>
+                                                        <div *ngIf="column!='select'; else elsepartheader"
+                                                             class="filterHeader">
+                                                            <b mat-sort-header>{{column|firstAnd_Split}}</b><br>
+                                                            <input (keyup)="applyFilter($event.target.value,column)"
+                                                                   [placeholder]="column|firstAnd_Split">
+                                                        </div>
+                                                        <ng-template #elsepartheader>
+
+                                                            <mat-checkbox (change)="$event ? masterToggle() : null"
+                                                                          [aria-label]="checkboxLabel()"
+                                                                          [checked]="selection.hasValue() && isAllSelected()"
+                                                                          [disabled]="true"
+                                                                          [indeterminate]="selection.hasValue() && !isAllSelected()">
+                                                            </mat-checkbox>
+
+                                                        </ng-template>
+                                                    </th>
+                                                    <td *matCellDef="let element" mat-cell>
+                                                        <p *ngIf="column!='select'; else elsepartdata">
+                                                            {{element[column]}}
+                                                        </p>
+                                                        <ng-template #elsepartdata>
+                                                            <mat-checkbox
+                                                                (change)="$event ? selection.toggle(element) : null"
+                                                                (click)="$event.stopPropagation()"
+                                                                [aria-label]="checkboxLabel(element)"
+                                                                [checked]="selection.isSelected(element)"
+                                                                [disabled]="true">
+                                                            </mat-checkbox>
+                                                        </ng-template>
+                                                    </td>
+                                                </ng-container>
+
+
+                                                <tr *matHeaderRowDef="displayedColumns; sticky: true"
+                                                    mat-header-row></tr>
+                                                <tr
+                                                    *matRowDef="let row; columns: displayedColumns;"
+                                                    mat-row>
+                                                </tr>
+                                            </table>
+                                            <div *ngIf="dataSource?.data?.length<=0" class="h3 m-16">No Record Found.
+                                            </div>
+                                            <mat-divider *ngIf="dataSource?.data?.length<=0"></mat-divider>
+                                        </div>
+                                        <mat-paginator [pageSizeOptions]="[ 5, 10, 20, 30,40,50]"
+                                                       showFirstLastButtons></mat-paginator>
+                                    </div>
+                                    <div class="p-16" fxFlex="40" fxLayout="column">
+                                        <form [formGroup]="create_pick_group" name="create_pick_group" novalidate>
+                                            <div fxLayout="column" fxLayoutGap="10px">
+                                                <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+                                                    <table *ngIf="dataSource?.data?.length>0" class="headertable">
+                                                        <tr>
+                                                            <td>No of Order : {{ this.dataSource.data.length }}</td>
+                                                            <td>Total Quantity to Pick
+                                                                : {{ this.dataSource.data[0]?.no_of_qty }}</td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            <div fxLayout="column" fxLayoutGap="10px">
+                                                <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+                                                    <div fxLayout="column" style="width: 80%;">
+                                                        <mat-form-field appearance="outline">
+                                                            <mat-label>No of Orders to pick</mat-label>
+                                                            <input (keyup)="select_no_of_order()"
+                                                                   formControlName="Nooforder"
+                                                                   matInput
+                                                                   type="number">
+                                                            <mat-error>
+                                                                No of Orders to pick is required
+                                                            </mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="manual" fxLayout="column">
+                                                <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+                                                    <div fxLayout="column" style="width: 80%;">
+                                                        <mat-form-field appearance="outline">
+                                                            <mat-label>Picker</mat-label>
+                                                            <mat-select formControlName="Picker" multiple>
+                                                                <input [(ngModel)]="searchByPicker"
+                                                                       [ngModelOptions]="{standalone:true}"
+                                                                       autocomplete="off"
+                                                                       class="myInput"
+                                                                       focused="'true'" matInput placeholder="Search"
+                                                                       type="text">
+                                                                <mat-option
+                                                                    *ngFor="let values of pickerlist| searchdsp:searchByPicker"
+                                                                    [value]="values.email">{{values.name}}</mat-option>
+                                                            </mat-select>
+                                                            <mat-error>
+                                                                Picker is required
+                                                            </mat-error>
+                                                        </mat-form-field>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div fxLayout="column">
+                                                <div fxFlex="50" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                                    <div fxLayout="column">
+                                                        <button (click)="create_pick()"
+                                                                [disabled]="create_pick_group.invalid"
+                                                                color="accent" mat-raised-button
+                                                                style="margin-top: 15px">
+                                                            Create Pick
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                    </div>
+
+                                </mat-expansion-panel>
+                            </mat-accordion>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

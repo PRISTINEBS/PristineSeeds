@@ -1,0 +1,192 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="dspawb">
+    <div class="p-16" pristinePerfectScrollbar>
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+            <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column" fxLayoutAlign="start">
+                <div class="h3 mb-8 p-16" fxLayout="column" style="padding-top: 20px">
+
+                    <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column"
+                         fxLayoutAlign="space-between center">
+                        <div fxFlex="50">
+                            <b>DSP AWB (</b><b
+                            style="color: red"> {{ sessionManageMent.getLocationName}} </b><b>) </b>
+                        </div>
+
+                    </div>
+                </div>
+
+                <mat-tab-group>
+                    <mat-tab label="Find Docket No (AWB)">
+                        <div class="p-16" fxFlex fxLayout="column" fxLayout.lt-sm="column">
+                            <div fxLayout="column" fxLayoutGap="10px">
+                                <form [formGroup]="findawb" name="findawb" novalidate>
+                                    <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+                                        <div fxFlex="30" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                            <div fxLayout="column" style="width: 80%;">
+                                                <mat-form-field appearance="outline">
+                                                    <mat-label>DSP (Delivery Partner)</mat-label>
+                                                    <mat-select formControlName="DSP">
+                                                        <input [(ngModel)]="searchDSP"
+                                                               [ngModelOptions]="{standalone:true}"
+                                                               autocomplete="false"
+                                                               class="myInput"
+                                                               id="search"
+                                                               matInput
+                                                               placeholder="Search" type="text">
+                                                        <mat-option
+                                                            *ngFor="let value of dspPartnerList | searchdsp:searchDSP"
+                                                            [value]="value.name">
+                                                            {{value.name}}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                    <mat-error>
+                                                        DSP (Delivery Partner) is required
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div fxFlex="30" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                            <div fxLayout="column" style="width: 80%;">
+                                                <mat-form-field appearance="outline">
+                                                    <mat-label>Payment Type</mat-label>
+                                                    <mat-select formControlName="PaymentType">
+                                                        <mat-option>None</mat-option>
+                                                        <mat-option *ngFor="let value of paymentTypeList"
+                                                                    [value]="value">
+                                                            {{value}}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                    <mat-error>
+                                                        Payment Type is required
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center"
+                                             style="margin-top: 15px">
+                                            <div fxLayout="column">
+                                                <button (click)="awb_list()" [disabled]="findawb.invalid"
+                                                        class="mr-sm-12" color="accent"
+                                                        mat-raised-button>Search
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div *ngIf="pendingAWB?.length>0" fxLayout="column" fxLayoutGap="10px">
+                                <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+                                    <mat-chip-list>
+                                        <mat-chip *ngFor="let value of pendingAWB"
+                                                  matBadgeColor="accent">{{value.awb_no}}</mat-chip>
+                                    </mat-chip-list>
+                                </div>
+                                <div fxFlex fxLayout="row" fxLayoutGap="10px">
+                                    <div fxFlex="70" fxLayoutAlign="start">
+                                        <button (click)="previous()" [disabled]="pageNo==0" aria-label="Submit"
+                                                color="accent"
+                                                mat-raised-button
+                                                style="margin-top: 10px; height: 45px">
+                                            Previous
+                                        </button>
+                                    </div>
+                                    <div fxFlex="30" fxLayoutAlign="end">
+                                        <button (click)="next()" [disabled]="error" aria-label="Submit"
+                                                color="accent" mat-raised-button
+                                                style="margin-top: 10px; height: 45px">
+                                            Next
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-tab>
+                    <mat-tab label="Upload Docket No (AWB)">
+                        <div class="p-16" fxFlex fxLayout="column" fxLayout.lt-sm="column">
+                            <div fxLayout="column" fxLayoutGap="10px">
+                                <form [formGroup]="findawb" name="findawb" novalidate>
+                                    <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+                                        <div fxFlex="35" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                            <div fxLayout="column" style="width: 80%;">
+                                                <mat-form-field appearance="outline">
+                                                    <mat-label>DSP (Delivery Partner)</mat-label>
+                                                    <mat-select formControlName="DSP">
+                                                        <input [(ngModel)]="searchDSP"
+                                                               [ngModelOptions]="{standalone:true}"
+                                                               autocomplete="false"
+                                                               class="myInput"
+                                                               id="search1"
+                                                               matInput
+                                                               placeholder="Search" type="text">
+                                                        <mat-option
+                                                            *ngFor="let value of dspPartnerList | searchdsp:searchDSP"
+                                                            [value]="value.name">
+                                                            {{value.name}}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                    <mat-error>
+                                                        DSP (Delivery Partner) is required
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div fxFlex="35" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                            <div fxLayout="column" style="width: 80%;">
+                                                <mat-form-field appearance="outline">
+                                                    <mat-label>Payment Type</mat-label>
+                                                    <mat-select formControlName="PaymentType">
+                                                        <mat-option>None</mat-option>
+                                                        <mat-option *ngFor="let value of paymentTypeList"
+                                                                    [value]="value">
+                                                            {{value}}
+                                                        </mat-option>
+                                                    </mat-select>
+                                                    <mat-error>
+                                                        Payment Type is required
+                                                    </mat-error>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div fxFlex="20" fxLayout.lt-sm="row" fxLayoutAlign="space-between">
+                                            <div fxFlex="10" fxLayout="row">
+                                                <div class="file-uploader">
+                                                    <input #fileInput hidden type="file"/>
+                                                    <button (click)="File_upload_To_Server()"
+                                                            [@animate]="{value:'*', params:{delay:'300ms',scale:'0.2'}}"
+                                                            aria-label="Add file"
+                                                            class="add-file-button"
+                                                            color="primary"
+                                                            mat-fab
+                                                            matTooltip="Upload AWBNo file"
+                                                            matTooltipHideDelay="1000"
+                                                            matTooltipPosition="above">
+                                                        <mat-icon>add</mat-icon>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <div fxFlex="10" fxLayout="row">
+                                                <div class="file-uploader">
+                                                    <button (click)="downloadsamplefile()"
+                                                            [@animate]="{value:'*', params:{delay:'300ms',scale:'0.2'}}"
+                                                            aria-label="Download Sample file"
+                                                            class="add-file-button"
+                                                            color="accent"
+                                                            mat-fab
+                                                            matTooltip="Download Sample file"
+                                                            matTooltipHideDelay="1000"
+                                                            matTooltipPosition="above">
+                                                        <mat-icon>cloud_download</mat-icon>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </mat-tab>
+                </mat-tab-group>
+            </div>
+        </div>
+    </div>
+</div>
+

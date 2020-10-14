@@ -1,0 +1,44 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="PickDistribution">
+    <div class="content p-20" pristinePerfectScrollbar>
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+            <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column"
+                 fxLayoutAlign="start">
+                <div class="h3 p-16">Pick Distribution Report
+                    <button
+                        (click)="pickDistributionReportService.ExportToExcel(pickDistributionReportService.PickDistribution_list,'Pick Distribution Report')"
+                        mat-icon-button matTooltip="Download Excel" style="float: right;margin-top:-10px">
+                        <mat-icon>cloud_download</mat-icon>
+                    </button>
+                </div>
+                <div class="p-16">
+                    <div class="example-container">
+                        <table [dataSource]="dataSource" mat-table matSort>
+                            <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column"
+                                          [sticky]="column=='pick_no' || column=='pick_zone'">
+                                <th *matHeaderCellDef mat-header-cell>
+                                    <div class="filterHeader">
+                                        <b mat-sort-header>{{column|firstAnd_Split}}</b><br>
+                                        <input (keyup)="applyFilter($event.target.value,column)"
+                                               *ngIf="column!='id' && column!='quantity' && column!='distribution_create_datetime'"
+                                               [placeholder]="column|firstAnd_Split">
+                                    </div>
+                                </th>
+                                <td *matCellDef="let element" mat-cell>
+                                    <p *ngIf="column!='distribution_create_datetime' && column!='zone_enter_datetime';else elseblock">{{element[column]}}</p>
+                                    <ng-template #elseblock>
+                                        <p>{{element[column]|date :'dd/MM/yyyy hh:mm a'}}</p>
+                                    </ng-template>
+                                </td>
+                            </ng-container>
+                            <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+                            <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+                        </table>
+                        <div *ngIf="dataSource?.data?.length<=0" class="h3 m-16">No Record Found.</div>
+                        <mat-divider *ngIf="dataSource?.data?.length<=0"></mat-divider>
+                    </div>
+                    <mat-paginator [pageSizeOptions]="[ 10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

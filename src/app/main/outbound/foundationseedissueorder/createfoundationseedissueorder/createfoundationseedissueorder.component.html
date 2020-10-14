@@ -1,0 +1,417 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="createsaleorder">
+    <div class="content p-20" pristinePerfectScrollbar>
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+            <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column" fxLayoutAlign="start">
+
+                <div class=" h3 mb-8 p-16">
+                    <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-between"
+                         fxLayoutGap="10px">
+                        <div fxFlex="60" fxFlex.sm fxLayout.lt-sm="column">
+                            <b>Create Foundation Seed Issue Order ( </b> <b
+                            style="color: red"> {{sessionManageMent.getLocationName}}</b><b>
+                            ) {{currentdate | date: 'dd/MM/yyyy hh:mm a'}} </b>
+                        </div>
+
+                        <div *ngIf="hidden==true" fxFlex="20" fxLayout="row" fxLayoutAlign="end">
+                            <button (click)="CreateSaleOrder()"
+                                    aria-label="Submit"
+                                    color="accent"
+                                    mat-raised-button>
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <mat-divider></mat-divider>
+                <mat-horizontal-stepper #stepper linear>
+                  <mat-step [stepControl]="CustomerInfo" label="Customer Information">
+                    <form [formGroup]="CustomerInfo" >
+                      <div class="p-16" fxFlex fxLayout="column">
+                        <div fxLayout="column" fxLayoutGap="10px">
+                          <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+                            <div fxFlex="33" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                              <div fxLayout="column" style="width: 80%;">
+                                <mat-form-field appearance="outline">
+                                  <mat-label>Customer Name or Mobile No</mat-label>
+                                  <mat-select (selectionChange)="get_CustomerFull_info(CustomerInfo.get('CustomerNameorNo').value)" autocomplete="off"
+                                              formControlName="CustomerNameorNo">
+                                    <input (ngModelChange)="get_CustomerNo()"
+                                           [(ngModel)]="searchByCustomerNameorNo"
+                                           [ngModelOptions]="{standalone:true}"
+                                           autocomplete="off" class="myInput"
+                                           focused="'true'" matInput placeholder="Search"
+                                           type="text">
+                                    <mat-option>None</mat-option>
+                                    <mat-option
+                                      *ngFor="let shippingOrder of customerlist"
+                                      [value]="shippingOrder.customer_id">{{shippingOrder.full_name}}</mat-option>
+                                  </mat-select>
+                                  <mat-error>
+                                    Customer Name or Number is required
+                                  </mat-error>
+
+                                </mat-form-field>
+                              </div>
+                            </div>
+                            <div fxFlex="33" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                              <div fxLayout="column" style="width: 80%;">
+                                <mat-form-field appearance="outline">
+                                  <mat-label>Land In R</mat-label>
+                                  <input matInput formControlName="LandInR" >
+                                  <mat-error>
+                                    Land In R is required
+                                  </mat-error>
+                                </mat-form-field>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div *ngIf="addresslist?.length>0">
+                          <b>Addresses </b>
+                          <br><br>
+                        </div>
+                        <div class="cardcontent" fxFlex fxLayout="row wrap" fxLayout.lt-sm="column"
+                             fxLayoutGap="20px" fxLayoutGap.lt-sm="20px">
+                          <div *ngFor="let address of addresslist; let i = index;" class="pristine-card"
+                               fxFlex="25">
+                            <div class="p-16 pb-0">
+                              <div class="h3 font">{{address.name}}</div>
+                            </div>
+                            <div class="p-16 pt-0 line-height-1.75">
+                              {{address.address + ',' + address.taluka + ',' + address.village
+                            + ',' + address.city + ',' + address.state + ',' + address.pincode}}
+                              <br>
+                              {{'Mobile no:' + '' + address.mobile_no}}
+                            </div>
+                            <div class="p-8 pt-0" fxLayout="row" fxLayoutAlign="start center">
+                              <mat-chip-list aria-label="Fish selection" multiple="true">
+                                <mat-chip (click)="billclick(i)" [selected]="address.billtoselected"
+                                          color="warn">Bill To
+                                </mat-chip>
+                                <mat-chip (click)="shipclick(i)" [selected]="address.shiptoselected"
+                                          color="primary">Ship To
+                                </mat-chip>
+                              </mat-chip-list>
+                            </div>
+                          </div>
+                        </div>
+                        <div fxLayout="row wrap" fxLayout.lt-sm="column" fxLayoutAlign="start center"
+                             style="margin-top: 20px">
+                          <button [disabled]="CustomerInfo.invalid" color="accent" mat-button
+                                  mat-raised-button matStepperNext style="width: 80px;">Next
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                  </mat-step>
+                  <mat-step [stepControl]="AddItem" label="Add Order Line">
+                    <form [formGroup]="AddItem">
+                      <div fxLayout="column" fxLayoutGap="10px">
+                        <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+                          <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                            <div fxLayout="column" style="width: 80%;">
+                              <mat-form-field appearance="outline">
+                                <mat-label>Sales Type<sup style="color: red">*</sup></mat-label>
+                                <mat-select [disabled]="this.dataSource?.data?.length>0" formControlName="SalesType">
+                                  <mat-option>None</mat-option>
+                                  <mat-option [value]="salestype" *ngFor="let salestype of SalesType">{{salestype}}</mat-option>
+                                </mat-select>
+                                <mat-error>
+                                  Sales Type is required
+                                </mat-error>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                          <div fxFlex="25"  fxLayout="row" fxLayoutAlign.lt-sm="center" >
+                            <div fxLayout="column" style="width: 80%;">
+                              <mat-form-field appearance="outline">
+                                <mat-label>Session<sup style="color: red">*</sup></mat-label>
+                                <mat-select [disabled]="this.dataSource?.data?.length>0" formControlName="Session" >
+                                  <mat-option [value]="session.season_code" *ngFor="let session of sessionList">{{session.season_code}}</mat-option>
+                                </mat-select>
+                                <mat-error>
+                                  Session is required
+                                </mat-error>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                          <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                            <div fxLayout="column" style="width: 80%;">
+                              <mat-form-field appearance="outline">
+                                <mat-label>Crop Code<sup style="color: red">*</sup></mat-label>
+                                <mat-select [disabled]="this.dataSource?.data?.length>0" formControlName="CropCode" (selectionChange)="GetChildSeedType(AddItem.get('CropCode').value,$event)">
+                                  <mat-option>None</mat-option>
+                                  <mat-option [value]="cropcode.id" *ngFor="let cropcode of ItemCategoryList">
+                                    {{cropcode.cat_code}}</mat-option>
+                                </mat-select>
+                                <mat-error>
+                                  Crop Code is required
+                                </mat-error>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                          <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                            <div fxLayout="column" style="width: 80%;">
+                              <mat-form-field appearance="outline">
+                                <mat-label>Child Seed Type<sup style="color: red">*</sup></mat-label>
+                                <mat-select [disabled]="this.dataSource?.data?.length>0" formControlName="ChildSeedType" >
+                                  <mat-option>None</mat-option>
+                                  <mat-option [value]="seed.class_of_seed" *ngFor="let seed of seedtype" (click)="getChildItemDetails(seed.class_of_seed)">
+                                    {{seed.class_of_seed}}
+                                  </mat-option>
+                                </mat-select>
+                                <mat-error>
+                                  Child Seed Type required
+                                </mat-error>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                        </div>
+                        <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+                          <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                            <div fxLayout="column" style="width: 80%;">
+                              <mat-form-field appearance="outline">
+                                <mat-label>Child Seed<sup style="color: red">*</sup></mat-label>
+                                <mat-select [disabled]="this.dataSource?.data?.length>0" formControlName="ChildSeed" >
+                                  <mat-option [value]="get_child_item.item_no" (click)="getBsioItemNo(get_child_item.item_no)"
+                                              *ngFor="let get_child_item of getchilditem">
+                                    {{get_child_item.item_det}}
+                                  </mat-option>
+                                </mat-select>
+<!--                                <input #itemno matInput formControlName="ChildSeed" (keyup)="getBsioItemNo(itemno.value)">-->
+                                <mat-error>
+                                  Child Seed is required
+                                </mat-error>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                          <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                            <div fxLayout="column" style="width: 80%;">
+                              <mat-form-field appearance="outline">
+                                <mat-label>Item No</mat-label>
+                                <mat-select  formControlName="ItemNo" (selectionChange)="getLine();getItemLotNO()" >
+                                  <mat-option [value]="item.item_no" *ngFor="let item of itemdetail">{{item.item_no}}</mat-option>
+                                </mat-select>
+                                <mat-error>
+                                  Item No is required
+                                </mat-error>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                          <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                            <div fxLayout="column" style="width: 80%;">
+                              <mat-form-field appearance="outline">
+                                <mat-label>Item Name</mat-label>
+                                <input matInput formControlName="ItemName" readonly>
+                                <mat-error>
+                                  Item Name is required
+                                </mat-error>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                          <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                            <div fxLayout="column" style="width: 80%;">
+                              <mat-form-field appearance="outline">
+                                <mat-label>Stage</mat-label>
+                                <input matInput formControlName="stage" readonly>
+                                <mat-error>
+                                  Stage is required
+                                </mat-error>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                        </div>
+                        <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+                          <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                            <div fxLayout="column" style="width: 80%;">
+                              <mat-form-field appearance="outline">
+                                <mat-label>Malel/Female</mat-label>
+                                <input matInput formControlName="malefemale" readonly>
+                                <mat-error>
+                                  Malel/Female is required
+                                </mat-error>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                          <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                            <div fxLayout="column" style="width: 80%;">
+                              <mat-form-field appearance="outline">
+                                <mat-label>Class Of Seed</mat-label>
+                                <input matInput formControlName="ClassOfSeed" readonly >
+                                <mat-error>
+                                  Child Seed is required
+                                </mat-error>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                          <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                            <div fxLayout="column" style="width: 80%;">
+                              <mat-form-field appearance="outline">
+                                <mat-label>Variety Group</mat-label>
+                                <input matInput formControlName="VarietyGroup" readonly>
+                                <mat-error>
+                                  Variety Groupis required
+                                </mat-error>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                          <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                            <div fxLayout="column" style="width: 80%;">
+                              <mat-form-field appearance="outline" style="width: 180px" >
+                                <mat-label>Lot No </mat-label>
+                                <mat-select  placeholder="lot_no" formControlName="LotNo" >
+                                  <mat-option>None</mat-option>
+                                  <mat-option [value]="lot.lot_no"  *ngFor="let lot of lotNo">{{lot.lot_no+' '+'('+'rem. qty='+' '+lot.remaining_quantity+')'}}</mat-option>
+                                </mat-select>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                        </div>
+                        <div  fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+                          <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                            <div fxLayout="column" style="width: 80%;">
+                              <mat-form-field appearance="outline" *ngIf="AddItem.get('LotNo').value!=''">
+                                <mat-label>F.G Pack Size<sup style="color: red">*</sup></mat-label>
+                                <input  matInput type="number" formControlName="FGPackSize" readonly>
+                                <mat-error>
+                                  F.G Pack Size is required
+                                </mat-error>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                          <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                            <div fxLayout="column" style="width: 80%;">
+                              <mat-form-field appearance="outline"  *ngIf="AddItem.get('LotNo').value!=''">
+                                <mat-label>No. Of Bags<sup style="color: red">*</sup></mat-label>
+                                <input (keyup)="getQty();Get_inventory_check()" matInput type="number"
+                                       pattern="^[0-9]+(.[0-9]{0,2})?$" formControlName="NoOfBags">
+                                <mat-error>
+                                  No. Of Bags is required
+                                </mat-error>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                          <div fxFlex="25" fxLayout="row"  fxLayoutAlign.lt-sm="center">
+                            <div fxLayout="column" style="width: 80%;">
+                              <mat-form-field appearance="outline" *ngIf="AddItem.get('LotNo').value!=''">
+                                <mat-label>Quantity</mat-label>
+                                <input  autocomplete="off"  formControlName="Quantity" matInput
+                                       pattern="^[0-9]+(.[0-9]{0,2})?$"
+                                       type="text" readonly>
+                                <mat-error>
+                                  Quantity is Wrong
+                                </mat-error>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                          <div fxFlex="25" fxLayout="row"  fxLayoutAlign.lt-sm="center">
+                            <div fxLayout="column" style="width: 80%;">
+                              <mat-form-field appearance="outline" *ngIf="AddItem.get('LotNo').value!=''">
+                                <mat-label>Unit/Price</mat-label>
+                                <input  autocomplete="off" formControlName="UnitPrice" matInput
+                                       pattern="^[0-9]+(.[0-9]{0,2})?$"
+                                       type="text" readonly>
+                                <mat-error>
+                                  Unit/Price is Wrong
+                                </mat-error>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                        </div>
+                        <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+
+                          <div fxFlex="25" fxLayout="row"  fxLayoutAlign.lt-sm="center">
+                            <div fxLayout="column" style="width: 80%;">
+                              <mat-form-field appearance="outline" *ngIf="AddItem.get('LotNo').value!=''">
+                                <mat-label>Line Amount</mat-label>
+                                <input  autocomplete="off" formControlName="LineAmount" matInput
+                                       pattern="^[0-9]+(.[0-9]{0,2})?$"
+                                       type="text" readonly>
+                                <mat-error>
+                                  Discount Percentage is Wrong
+                                </mat-error>
+                              </mat-form-field>
+                            </div>
+                          </div>
+                          <div fxFlex="25" fxLayout="row"  fxLayoutAlign.lt-sm="center"
+                               style="margin-bottom: 15px">
+                            <div fxLayout="column" style="width: 80px; margin-top: 10px" *ngIf="AddItem.get('LotNo').value!=''">
+                              <button (click)="addnewitem()" [disabled]="AddItem.invalid"
+                                      aria-label="Submit"
+                                      color="accent"
+                                      mat-raised-button>
+                                Add
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                    <div class="h3 mb-8 p-16">
+                      <div class="example-container">
+                        <table #matSort="matSort" [dataSource]="dataSource" mat-table matSort>
+                          <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+                            <th *matHeaderCellDef mat-header-cell>
+                              <div class="filterHeader">
+                                <b mat-sort-header>{{column|firstAnd_Split}}</b><br>
+                                <input (keyup)="applyFilter($event.target.value,column)"
+                                       *ngIf="column!='Action'"
+                                       [placeholder]="column|firstAnd_Split">
+                              </div>
+                            </th>
+                            <td *matCellDef="let element;let i=index" mat-cell>
+                              <p *ngIf="column!='Action';else elseAction">{{element[column]}}</p>
+                              <ng-template #elseAction>
+                                <button (click)="delete_line(element)" *ngIf="column=='Action'"
+                                        mat-icon-button>
+                                  <mat-icon class="icon-size">delete</mat-icon>
+                                </button>
+                              </ng-template>
+
+                            </td>
+                            <td *matFooterCellDef mat-footer-cell>
+                            </td>
+                          </ng-container>
+                          <tr *matHeaderRowDef="displayedColumns ; sticky: true" mat-header-row></tr>
+                          <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+                          <tr *matFooterRowDef="displayedColumns; sticky: true" mat-footer-row></tr>
+                        </table>
+                        <div *ngIf="dataSource?.data?.length<=0" class="h3 m-16">No Record Found.</div>
+                        <mat-divider *ngIf="dataSource?.data?.length<=0"></mat-divider>
+                      </div>
+                      <mat-paginator #matpaginator="matPaginator" [pageSizeOptions]="[ 5, 10, 20, 30,40,50]"
+                                     showFirstLastButtons></mat-paginator>
+
+                    </div>
+                    <!--            <div fxFlex="row" fxLayoutGap="10px">
+                                    <button mat-button color="warn"
+                                            mat-raised-button matStepperPrevious>Back
+                                    </button>
+                                </div>-->
+
+                  </mat-step>
+                </mat-horizontal-stepper>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

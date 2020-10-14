@@ -1,0 +1,96 @@
+<div fxLayout="row" fxLayoutAlign="space-between center">
+
+  <b>Add New Address</b>
+
+  <button (click)="dialogref.close({data:''})"  mat-icon-button>
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+<div class="p-8" fxLayout="column">
+  <mat-divider></mat-divider>
+</div>
+<div  fxLayout="column" fxLayout.lt-sm="column" fxLayoutAlign="start" class="p-4 pt-8">
+  <div  fxLayout="column" [formGroup]="Address">
+    <div fxFlex="" class="p-4" fxLayout="Row wrap" fxLayout.lt-sm="column" fxLayoutAlign="start"
+         fxLayoutGap="10px" fxLayoutGap.lt-sm="10px">
+      <mat-form-field appearance="outline" fxFlex="32" fxFlex.lt-sm="100">
+        <mat-label>Address</mat-label>
+        <input formControlName="Address" matInput placeholder="Address" type="text">
+        <mat-icon matSuffix>home</mat-icon>
+        <mat-error
+          *ngIf="Address.get('Address').hasError('required') && Address.get('Address').dirty
+          && Address.get('Address').touched">
+          Address is required*
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" fxFlex="32" fxFlex.lt-sm="auto">
+        <mat-label>Pin Code</mat-label>
+        <input formControlName="PinCode" matInput placeholder="Pin Code" type="text">
+        <mat-icon matSuffix>local_post_office</mat-icon>
+        <mat-error
+          *ngIf="Address.get('PinCode').hasError('required') && Address.get('PinCode').dirty && Address.get('PinCode').touched">
+          Pin Code is required*
+        </mat-error>
+        <mat-error
+          *ngIf="Address.get('PinCode').hasError('pattern')">
+          Invalid pin code
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" fxFlex="32" fxFlex.lt-sm="auto">
+        <mat-label>Town/City</mat-label>
+        <input formControlName="City" matInput placeholder="Town/City" type="text">
+        <mat-icon matSuffix>location_city</mat-icon>
+        <mat-error
+          *ngIf="Address.get('City').hasError('required') && Address.get('City').dirty && Address.get('City').touched">
+          Town/City is required*
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" fxFlex="32" fxFlex.lt-sm="auto">
+        <mat-label>State</mat-label>
+        <mat-select formControlName="State" placeholder="State"  >
+          <mat-option [value]="state.name" *ngFor="let state of stateList">{{state.name}}</mat-option>
+        </mat-select>
+        <mat-error
+          *ngIf="Address.get('State').hasError('required') && Address.get('State').dirty && Address.get('State').touched">
+          State is required*
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" fxFlex="32" fxFlex.lt-sm="auto">
+        <mat-label>Village</mat-label>
+        <input formControlName="Village" matInput placeholder="Village"  type="text">
+      </mat-form-field>
+      <mat-form-field appearance="outline" fxFlex="32" fxFlex.lt-sm="auto">
+        <mat-label>Taluka</mat-label>
+        <input formControlName="Taluka" matInput placeholder="Taluka"  type="text">
+      </mat-form-field>
+      <mat-form-field appearance="outline" fxFlex="32" fxFlex.lt-sm="auto">
+        <mat-label>Country</mat-label>
+        <mat-select formControlName="Country" placeholder="Select Country">
+          <mat-option [value]="'India'">India</mat-option>
+        </mat-select>
+<!--        <input formControlName="Country" matInput placeholder="Country"  type="text">-->
+        <mat-error
+          *ngIf="Address.get('Country').hasError('required') && Address.get('Country').dirty && Address.get('Country').touched">
+          Country is required*
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" fxFlex="32" fxFlex.lt-sm="auto">
+        <mat-label>Address Type</mat-label>
+        <input formControlName="AddressType" matInput placeholder="Ex:Home,Work,Warehouse etc"  type="text">
+        <mat-error
+          *ngIf="Address.get('AddressType').hasError('required') && Address.get('AddressType').dirty && Address.get('AddressType').touched">
+          Address Type is required*
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div align="right">
+<!--      <button (click)="dialogref.close({data:''})" mat-raised-button color="accent">-->
+<!--        Cancle-->
+<!--      </button>&nbsp;&nbsp;-->
+      <button (click)="onsubmit()" [disabled]="Address.invalid" mat-raised-button color="accent">
+        <mat-icon>add</mat-icon>&nbsp;Add
+      </button>
+    </div>
+  </div>
+</div>
+

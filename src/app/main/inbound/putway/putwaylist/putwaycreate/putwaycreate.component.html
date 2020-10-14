@@ -1,0 +1,90 @@
+<div fxLayout="row" fxLayoutAlign="space-between center">
+
+    <b> Create New Putway </b>
+
+    <button (click)="send()" mat-dialog-close mat-icon-button>
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+<br>
+<mat-divider></mat-divider>
+<br>
+
+<div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+
+
+    <form [formGroup]="newputway" name="newputway" novalidate>
+        <div fxLayout="column" fxLayoutGap="10px">
+
+            <div fxFlex="100" fxFlex.sm fxLayout.lt-sm="column">
+                <div fxFlex="50" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                    <div fxLayout="column" style="width: 80%;">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Putway Type</mat-label>
+                            <mat-select (selectionChange)="get_grn_header()"
+                                        autocomplete="off" formControlName="PutwayType">
+                                <input [(ngModel)]="searchByputwaytype"
+                                       [ngModelOptions]="{standalone:true}"
+                                       autocomplete="off" class="myInput"
+                                       focused="'true'" matInput placeholder="Search"
+                                       type="text">
+                                <mat-option
+                                    *ngFor="let shippingOrder of documentType|searchShippingOrderData: searchByputwaytype"
+                                    [value]="shippingOrder"
+                                >{{shippingOrder}}</mat-option>
+                            </mat-select>
+                            <mat-error>
+                                Putway Type is required
+                            </mat-error>
+                            <mat-icon class="secondary-text" matSuffix>
+                                select
+                            </mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxFlex="50" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                    <div fxLayout="column" style="width: 80%;">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Goods Receipt Number</mat-label>
+                            <mat-select autocomplete="off"
+                                        formControlName="GRNHeaderNo">
+                                <input [(ngModel)]="searchGRNHeaderNo"
+                                       [ngModelOptions]="{standalone:true}"
+                                       autocomplete="off" class="myInput"
+                                       focused="'true'" matInput placeholder="Search"
+                                       type="text">
+                                <mat-option
+                                    *ngFor="let shippingOrder of grnHeaderlist|searchShippingOrderData: searchGRNHeaderNo"
+                                    [value]="shippingOrder.document_no"
+                                >{{shippingOrder.document_no}}</mat-option>
+                            </mat-select>
+                            <mat-error>
+                                Goods Receipt Number is required
+                            </mat-error>
+                            <mat-icon class="secondary-text" matSuffix>
+                                receipt
+                            </mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </form>
+
+
+    <div class="pl-8" fxFlex fxFlex.sm fxLayout="column" fxLayout.lt-sm="column"
+         fxLayoutAlign="start"
+         style="margin-top: 20px">
+        <div fxFlex fxLayoutAlign.lt-sm="center">
+            <button (click)="Createputway()" [disabled]="newputway.invalid" aria-label="Submit"
+                    color="accent"
+                    mat-raised-button
+            >
+                Submit
+            </button>
+        </div>
+    </div>
+</div>
+
+

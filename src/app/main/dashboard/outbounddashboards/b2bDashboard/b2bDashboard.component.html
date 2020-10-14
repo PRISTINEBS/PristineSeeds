@@ -1,0 +1,125 @@
+<div class="page-layout simple right-sidebar inner-scroll" fxLayout="column" id="dashboard-analytics12">
+    <!-- CENTER -->
+    <div class="center" fxFlex>
+        <div class="main-widget" pristinePerfectScrollbar>
+            <mat-progress-bar *ngIf="!dashboardData"
+                              [bufferValue]="'85'"
+                              [color]="'warn'"
+                              [mode]="'indeterminate'"
+                              [value]="'75'"
+                              class="example-margin">
+            </mat-progress-bar>
+            <div class="wrapper">
+                <div fxLayout="column" fxLayout.gt-sm="row"
+                     fxLayoutAlign="start" fxLayoutAlign.gt-sm="start start">
+                    <div class="widget" fxFlex="100" fxFlex.gt-sm="33.33">
+
+                        <div [ngClass.gt-sm]="'mb-0 mr-32'" class="pristine-card auto-width mb-32">
+
+                            <div class="p-16 pb-0" fxLayout="row wrap" fxLayoutAlign="start end">
+
+                                <div class="pr-16">
+                                    <div class="h2 secondary-text">Total Pick</div>
+                                    <div class="font-size-54 font-weight-300 line-height-1 mt-8">
+                                        <mat-icon class="warn-fg mr-4 font-size-40">add_shopping_cart</mat-icon>
+                                        &nbsp;{{dashboardData.length > 0 ? dashboardData[0].total_pick : 0}}
+                                    </div>
+                                </div>
+
+                                <div class="py-4 font-size-16" fxLayout="row" fxLayoutAlign="start center">
+                                    <div class="warn-fg" fxFlex="row" fxLayoutAlign="start center">
+                                        <!--                                        <mat-icon class="green-fg mr-4">trending_up</mat-icon>-->
+                                        <span>{{dashboardData.length > 0 ? dashboardData[0]?.total_pick_person : 0}}</span>
+                                    </div>
+                                    <div class="ml-4 text-nowrap">Picker</div>
+                                </div>
+
+                            </div>
+
+                            <div class="h-50 w-100-p">
+                                &nbsp;
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="widget" fxFlex="100" fxFlex.gt-sm="33.33">
+
+                        <div [ngClass.gt-sm]="'mb-0 mr-32'" class="pristine-card auto-width mb-32">
+
+                            <div class="p-16 pb-0" fxLayout="row wrap" fxLayoutAlign="start end">
+
+                                <div class="pr-16">
+                                    <div class="h2 secondary-text">Under Distribution</div>
+                                    <div class="font-size-54 font-weight-300 line-height-1 mt-8">
+                                        <mat-icon class="warn-fg mr-4 font-size-40">equalizer
+                                        </mat-icon>&nbsp;&nbsp;{{dashboardData.length > 0 ? dashboardData[0].total_pick_distribution : 0}}
+                                    </div>
+                                </div>
+
+                                <div class="py-4 font-size-16" fxLayout="row" fxLayoutAlign="start center">
+                                    <div class="warn-fg" fxFlex="row" fxLayoutAlign="start center">
+                                        <!--                                        <mat-icon class="green-fg mr-4">trending_up</mat-icon>-->
+                                        <span></span>
+                                    </div>
+                                    <div class="ml-4 text-nowrap"></div>
+                                </div>
+
+                            </div>
+                            <div class="h-50 w-100-p">
+                                &nbsp;
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="widget" fxFlex="100" fxFlex.gt-sm="33.33">
+
+                        <div [ngClass.gt-sm]="'mb-0 mr-4'" class="pristine-card auto-width mb-32">
+
+                            <div class="p-16 pb-0" fxLayout="row wrap" fxLayoutAlign="start end">
+
+                                <div class="pr-16">
+                                    <div class="h2 secondary-text">For Priority Change</div>
+                                    <div class="font-size-54 font-weight-300 line-height-1 mt-8">
+                                        <mat-icon class="warn-fg mr-4 font-size-40">low_priority
+                                        </mat-icon>&nbsp;&nbsp;{{dashboardData.length > 0 ? dashboardData[0].total_pick_priority : 0}}
+                                    </div>
+                                </div>
+
+                                <div class="py-4 font-size-16" fxLayout="row" fxLayoutAlign="start center">
+                                    <div class="warn-fg" fxFlex="row" fxLayoutAlign="start center">
+                                        <!--                                        <mat-icon class="green-fg mr-4">trending_up</mat-icon>-->
+                                        <span></span>
+                                    </div>
+                                    <div class="ml-4 text-nowrap"></div>
+                                </div>
+
+                            </div>
+                            <div class="h-50 w-100-p">
+                                &nbsp;
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="wrapper">
+                <div fxLayout="column" fxLayout.gt-sm="row"
+                     fxLayoutAlign="start" fxLayoutAlign.gt-sm="start start">
+                    <div class="widget" fxFlex="100" fxFlex.gt-sm="100">
+
+                        <div class="pristine-card auto-width mb-32">
+
+                            <div class="p-16" fxLayout="row wrap" fxLayoutAlign="start end">
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

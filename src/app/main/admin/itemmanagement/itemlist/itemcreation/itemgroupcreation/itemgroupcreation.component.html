@@ -1,0 +1,54 @@
+<div fxFlex fxLayout="column" fxLayoutAlign="start" id="AddItemCategory">
+    <div mat-dialog-title style="margin-top: -35px">
+        <div class="h5 mb-8 pt-16">Create Item Group
+        </div>
+        <div fxLayout="column" fxLayoutAlign="start">
+            <mat-divider></mat-divider>
+        </div>
+    </div>
+    <div [formGroup]="ItemGroup" fxFlex=" 1 0 Auto" fxLayout="column">
+      <div fxFlex="1 0 Auto" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="start" fxLayoutGap="20px" fxLayoutGap.lt-sm="0px">
+            <mat-form-field appearance="outline" style="width:100%!important;">
+              <mat-label>Item Code<sub style="color:red">*</sub></mat-label>
+              <input matInput type="text" formControlName="item_code" placeholder="Item Code"/>
+              <mat-error
+                *ngIf="ItemGroup.get('item_code').hasError('required') && ItemGroup.get('item_code').touched && ItemGroup.get('item_code').dirty">
+                Seed Type Required
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" style="width:100%!important;">
+                <mat-label>Male/Female<sub style="color:red">*</sub></mat-label>
+              <mat-select formControlName="gen" >
+                <mat-option *ngFor="let gen of GenderType"
+                            [value]="gen">{{gen}}</mat-option>
+
+              </mat-select>
+                <mat-error
+                    *ngIf="ItemGroup.get('gen').hasError('required') && ItemGroup.get('gen').touched && ItemGroup.get('gen').dirty">
+                    Category Code Required
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" style="width:100%!important;">
+                <mat-label>Class Of Seed<sub style="color: red">*</sub></mat-label>
+              <mat-select formControlName="seed_class" >
+                <mat-option *ngFor="let seedclass of SeedClass"
+                            [value]="seedclass">{{seedclass}}</mat-option>
+
+              </mat-select>
+                <mat-error
+                    *ngIf="ItemGroup.get('seed_class').hasError('required') && ItemGroup.get('seed_class').touched && ItemGroup.get('seed_class').dirty">
+                    Category Name Required
+                </mat-error>
+            </mat-form-field>
+        </div>
+      <div class="pt-16" fxLayout="row" fxLayoutAlign="end">
+        <button [disabled]="ItemGroup.invalid" (click)="CreateItemGroup()" class="mat-accent mr-16" mat-raised-button>Save
+        </button>
+        <button (click)="cancle()" color="warn" mat-raised-button>Cancel</button>
+    </div>
+    </div>
+</div>
+
+
+

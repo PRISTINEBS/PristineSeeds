@@ -1,0 +1,114 @@
+<div fxLayout="row" fxLayoutAlign="space-between center">
+    <b>Add DSP Service Area</b>
+    <button (click)="send()" mat-dialog-close mat-icon-button>
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+<br>
+<mat-divider></mat-divider>
+<br>
+<div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+
+
+    <form [formGroup]="newdsp" name="newdsp" novalidate>
+        <div fxLayout="column" fxLayoutGap="10px">
+            <div fxFlex="100" fxFlex.sm fxLayout.lt-sm="column">
+                <div fxFlex="33" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                    <div fxLayout="column" style="width: 80%;">
+                        <mat-form-field appearance="outline">
+                            <mat-label>DSP Code</mat-label>
+                            <mat-select formControlName="DSPCode">
+                                <mat-option>None</mat-option>
+                                <mat-option *ngFor="let values of dspList" [value]="values.dsp_code"
+                                >{{values.dsp_code}}  </mat-option>
+
+                            </mat-select>
+
+                            <mat-error>
+                                DSP Code is required
+                            </mat-error>
+
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxFlex="33" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                    <div fxLayout="column" style="width: 80%;">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Pincode</mat-label>
+                            <input autocomplete="off"
+                                   focused="true"
+                                   formControlName="Pincode" matInput placeholder="Pincode"
+                                   type="text">
+
+                            <mat-error>
+                                Pincode is required
+                            </mat-error>
+                            <mat-icon class="secondary-text" matSuffix>receipt
+                            </mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxFlex="34" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                    <div fxLayout="column" style="width: 80%;">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Cost</mat-label>
+                            <input autocomplete="off"
+                                   focused="true"
+                                   formControlName="Cost" matInput placeholder="Cost"
+                                   type="text">
+
+                            <mat-error>
+                                Cost is required
+                            </mat-error>
+
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div fxLayout="column" fxLayoutGap="10px">
+            <div fxFlex="33" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                <div fxLayout="column" style="width: 80%;">
+                    <mat-checkbox formControlName="Express">Express</mat-checkbox>
+                </div>
+            </div>
+            <div fxFlex="33" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                <div fxLayout="column" style="width: 80%;">
+                    <mat-checkbox formControlName="ReversePickUp">ReversePickUp</mat-checkbox>
+                </div>
+            </div>
+        </div>
+        <div fxLayout="row" fxLayoutGap="10px" style="margin-top: 10px">
+            <div fxFlex="33" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Priority</mat-label>
+                        <mat-select formControlName="Priority">
+                            <mat-option>None</mat-option>
+                            <mat-option *ngFor="let values of priortiylist | keyvalue" [value]="values.key"
+                            >{{values.value}}  </mat-option>
+
+                        </mat-select>
+
+                        <mat-error>
+                            Priority is required
+                        </mat-error>
+
+                    </mat-form-field>
+                </div>
+            </div>
+            <div fxFlex="100" fxFlex.sm fxLayout.lt-sm="column">
+                <div fxFlex="30" fxLayoutAlign="end" fxLayoutAlign.lt-sm="center">
+                    <button (click)="CreateDSP()" [disabled]="newdsp.invalid" aria-label="Submit"
+                            color="accent" mat-raised-button
+                            style="margin-top: 10px; height: 45px">
+                        Submit
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+

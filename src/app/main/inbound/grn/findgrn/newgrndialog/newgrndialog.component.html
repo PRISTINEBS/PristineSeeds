@@ -1,0 +1,169 @@
+<div fxLayout="row" fxLayoutAlign="space-between center">
+
+    <b> Create Goods Receipt Note (GRN) </b>
+
+    <button (click)="send()" mat-dialog-close mat-icon-button>
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+<br>
+<mat-divider></mat-divider>
+<br>
+
+<div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+
+
+    <form [formGroup]="newgrn" name="newgrn" novalidate>
+        <div *ngIf="vendor_country.toLowerCase()!='india' && vendor_country.toLowerCase()!='in' " fxLayout="column"
+             fxLayoutGap="10px">
+
+            <div fxFlex="100" fxFlex.sm fxLayout.lt-sm="column">
+                <div fxFlex="33" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                    <div fxLayout="column" style="width: 80%;">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Bil of Entry No (BOE)</mat-label>
+                            <input autocomplete="off"
+                                   focused="'true'"
+                                   formControlName="BilofEntryNo" matInput placeholder="Bil of Entry No"
+                                   type="text">
+
+                            <mat-error>
+                                Bil of Entry No is required
+                            </mat-error>
+                            <mat-icon class="secondary-text" matSuffix>receipt
+                            </mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxFlex="33" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                    <div fxLayout="column" style="width: 80%;">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Bil of Entry Amount</mat-label>
+                            <input autocomplete="off"
+                                   focused="'true'"
+                                   formControlName="BilofEntryAmount" matInput pattern="[0-9]*"
+                                   placeholder="Bil of Entry Amount" type="text">
+
+                            <mat-error>
+                                Bil of Entry Amount is required
+                            </mat-error>
+                            <mat-icon class="secondary-text" matSuffix>receipt
+                            </mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxFlex="33" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                    <div fxLayout="column" style="width: 80%;">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Bil of Entry Date</mat-label>
+                            <input (focusin)="bdate.open()"
+                                   [matDatepicker]="bdate"
+                                   formControlName="BilofEntryDate"
+                                   matInput
+                                   placeholder="Choose Invoice date">
+                            <mat-datepicker #bdate="matDatepicker"></mat-datepicker>
+                            <mat-icon class="secondary-text" matSuffix>date_range</mat-icon>
+                            <mat-error>
+                                Bil of Entry Date is required
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div fxLayout="column" fxLayoutGap="10px">
+            <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row"
+                 fxLayout.lt-sm="column">
+                <div fxFlex="40" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                    <div fxLayout="column" style="width: 80%;">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Invoice No</mat-label>
+                            <input autocomplete="off"
+                                   focused="'true'"
+                                   formControlName="InvoiceNo" matInput placeholder="Invoice No"
+                                   type="text">
+
+                            <mat-error>
+                                Invoice No is required
+                            </mat-error>
+                            <mat-icon class="secondary-text" matSuffix>receipt
+                            </mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div fxFlex="40" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                    <div fxLayout="column" style="width: 80%;">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Invoice Date</mat-label>
+                            <input (focusin)="idate.open()" [matDatepicker]="idate"
+                                   formControlName="InvoiceDate"
+                                   matInput
+                                   placeholder="Choose Invoice date">
+                            <mat-datepicker #idate="matDatepicker"></mat-datepicker>
+                            <mat-icon class="secondary-text" matSuffix>date_range</mat-icon>
+                            <mat-error>
+                                Invoice Date is required
+                            </mat-error>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="gateentry==1">
+                <div fxFlex="30" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                    <div fxLayout="column" style="width: 80%;">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Gate Entry Number</mat-label>
+                            <mat-select autocomplete="off"
+                                        formControlName="GateEntry">
+                                <input [(ngModel)]="searchBygateentry"
+                                       [ngModelOptions]="{standalone:true}"
+                                       autocomplete="off" class="myInput"
+                                       focused="'true'" matInput placeholder="Search"
+                                       type="text">
+                                <mat-option
+                                    *ngFor="let shippingOrder of gateentrylist|searchShippingOrderData: searchBygateentry"
+                                    [value]="shippingOrder.document_no"
+                                >{{shippingOrder.document_no}}</mat-option>
+                            </mat-select>
+                            <mat-error>
+                                Gate Entry Number is required
+                            </mat-error>
+                            <mat-icon class="secondary-text" matSuffix>
+                                supervised_user_circle
+                            </mat-icon>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div fxLayout="column" fxLayoutGap="10px">
+            <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+                <div fxFlex="100" fxFlex.sm fxLayout.lt-sm="column">
+                    <b>Pick any one</b> <br>
+                    <mat-radio-group formControlName="grnway">
+                        <mat-radio-button value='With Scan'>With Scan</mat-radio-button>
+                        <br>
+                        <mat-radio-button value="Without Scan">Without Scan</mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+    <div class="pl-8" fxFlex fxFlex.sm fxLayout="column" fxLayout.lt-sm="column"
+         fxLayoutAlign="start"
+         style="margin-top: 20px">
+        <div fxFlex fxLayoutAlign.lt-sm="center">
+            <button (click)="CreateGRN()" [disabled]="newgrn.invalid" aria-label="Submit"
+                    color="accent"
+                    mat-raised-button
+            >
+                Submit
+            </button>
+        </div>
+    </div>
+</div>
+
+

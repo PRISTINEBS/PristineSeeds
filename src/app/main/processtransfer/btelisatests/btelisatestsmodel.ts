@@ -1,0 +1,39 @@
+export class btelisamodel{
+  id : number;
+  bt_elisa_test_no : string;
+  crop_code : string;
+  item_no : string;
+  item_name : string;
+  lot_no : string;
+  sample_code : string;
+  stage_code : string;
+  arrival_qty : number;
+  location_code : number;
+  created_by : string
+  created_on : string;
+  total_test_sample : number;
+  positive_for_cry_1ac : number;
+  positive_for_cry_2ab : number;
+  positive_for_cry_1ac_per : number;
+  positive_for_cry_2ab_per : number;
+  result : string;
+  date_of_testing : string;
+  bt_elisa_test_done : number;
+  bt_elisa_test_done_by : string;
+  bt_elisa_test_done_on : string;
+  sub_cat_name : string;
+  crop_type : string;
+  class_of_seed : string;
+}
+
+export class btelisa_update{
+  id : number;
+  total_test_sample : number;
+  positive_for_cry_1ac : number;
+  positive_for_cry_2ab : number;
+  positive_for_cry_1ac_per : number;
+  positive_for_cry_2ab_per : number;
+  result : string;
+  date_of_testing : string;
+  bt_elisa_test_done : number;
+}

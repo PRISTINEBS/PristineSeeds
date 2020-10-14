@@ -1,0 +1,145 @@
+<div fxLayout="row" fxLayoutAlign="space-between center">
+
+    <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-between center"
+         fxLayoutGap="10px">
+        <div fxFlex="30">
+            <b>Create Bin ( </b><b
+            style="color: red"> {{ sessionManageMent.getLocationName}} </b><b>
+            ) </b>
+        </div>
+    </div>
+
+    <button (click)="send()" mat-dialog-close mat-icon-button>
+        <mat-icon>close</mat-icon>
+    </button>
+</div>
+<br>
+<mat-divider></mat-divider>
+<br>
+
+<div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+
+
+    <form [formGroup]="newbin" name="newbin" novalidate>
+
+        <div fxFlex="100" fxFlex.sm fxLayout.lt-sm="column">
+            <div fxLayout="column" fxLayoutGap="10px">
+                <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+                    <div fxFlex="40" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                        <div fxLayout="column" style="width: 80%;">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Bin Type</mat-label>
+
+                                <mat-select formControlName="BinType" placeholder="Bin Type">
+                                    <mat-option>None</mat-option>
+                                    <mat-option *ngFor="let value of binType" [value]="value">
+                                        {{value}}
+                                    </mat-option>
+                                </mat-select>
+
+
+                                <mat-error>
+                                    Bin Type is required
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div fxFlex="40" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                        <div fxLayout="column" style="width: 80%;">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Bincode</mat-label>
+                                <input autocomplete="off"
+                                       focused="'true'"
+                                       formControlName="Bincode" matInput placeholder="Bincode"
+                                       type="text">
+                                <mat-error>
+                                    Bincode is required
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div fxFlex="40" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                        <div fxLayout="column" style="width: 80%;">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Zone</mat-label>
+                                <input autocomplete="off"
+                                       focused="'true'"
+                                       formControlName="Zone" matInput placeholder="Zone"
+                                       type="text">
+
+                                <mat-error>
+                                    Zone is required
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div fxLayout="column" fxLayoutGap="10px">
+                <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+                    <div fxFlex="40" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                        <div fxLayout="column" style="width: 80%;">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Row</mat-label>
+                                <input autocomplete="off"
+                                       focused="'true'"
+                                       formControlName="Row" matInput placeholder="Row"
+                                       type="text">
+
+                                <mat-error>
+                                    Row is required
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div fxFlex="40" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                        <div fxLayout="column" style="width: 80%;">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Rack</mat-label>
+                                <input autocomplete="off"
+                                       focused="'true'"
+                                       formControlName="Rack" matInput placeholder="Rack"
+                                       type="text">
+
+                                <mat-error>
+                                    Rack is required
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div fxFlex="40" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                        <div fxLayout="column" style="width: 80%;">
+                            <mat-form-field appearance="outline">
+                                <mat-label>Sequence</mat-label>
+                                <input autocomplete="off"
+                                       focused="'true'"
+                                       formControlName="Sequence" matInput placeholder="Sequence"
+                                       type="text">
+
+                                <mat-error>
+                                    Sequence is required
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+
+    <div class="pl-8" fxFlex fxFlex.sm fxLayout="column" fxLayout.lt-sm="column"
+         fxLayoutAlign="start"
+         style="margin-top: 20px">
+        <div fxFlex fxLayoutAlign.lt-sm="center">
+            <button (click)="CreateBIN()" [disabled]="newbin.invalid" aria-label="Submit"
+                    color="accent" mat-raised-button>
+                Submit
+            </button>
+        </div>
+    </div>
+</div>
+
+

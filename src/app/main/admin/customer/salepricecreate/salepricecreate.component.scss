@@ -1,0 +1,65 @@
+@import "../../../../../@pristine/scss/pristine";
+
+#salepricecreation {
+
+  .myInput {
+    height: 50px !important;
+    padding: 10px !important;
+  }
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .Heading {
+        border: 1px solid rgba(215, 158, 165, 0.23);
+        color: black;
+        font-weight: 600;
+        border-radius: 20px;
+        background-color: rgba(15, 125, 184, 0.03);
+        padding: 5px;
+        width: 100%;
+
+    }
+
+    .browse-btn {
+        box-sizing: border-box;
+        display: inline-block;
+        margin: 0.5rem;
+        position: relative;
+        width: 150px;
+        height: 150px;
+        border: 1px solid #ccc;
+        text-align: center;
+    }
+
+    .img {
+        height: 150px;
+        width: 150px;
+        display: block; /* remove extra space below image */
+    }
+
+    .browse-image {
+        position: relative;
+        //top: 10%;
+
+        background-color: #ffffff;
+    }
+
+    #cameraImg {
+        cursor: pointer;
+        opacity: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 3;
+    }
+
+
+}
+

@@ -1,0 +1,67 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="Viewcustomer">
+  <div class="p-16" pristinePerfectScrollbar>
+    <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+      <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column" fxLayoutAlign="start">
+        <div class="h3 mb-8 p-16" fxLayout="column" style="padding-top: 10px">
+          <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+            <b>Customer View( </b><b
+            style="color: red"> {{ sessionManageMent.getLocationName}} </b><b>)</b>
+          </div>
+        </div>
+        <div fxFlex="" fxLayout="column">
+          <mat-divider></mat-divider>
+        </div>
+        <div *ngIf="CustomerInfo.length>0 && CustomerInfo[0].condition=='True'" fxFlex="" fxLayout="column" fxLayout.lt-sm="column" fxLayoutAlign="start" class="p-4 pt-4">
+          <div style="color: red;padding-left:4px"><h3>Customer General Info</h3></div>
+          <div class="p-4"  fxLayout="row wrap" fxLayout.lt-sm="column" fxFlex="" fxLayoutGap.lt-sm="5px" fxLayoutGap="30px">
+
+            <div fxFlex="30"><b>Customer Name:</b>&nbsp;{{CustomerInfo[0].full_name}}</div>
+            <div fxFlex="30"><b>Email:</b>&nbsp;{{CustomerInfo[0].email_no}}</div>
+            <div fxFlex="30"><b>Mobile:</b>&nbsp;{{CustomerInfo[0].mobile_no}}</div>
+            <div fxFlex="30" class="pt-8"><b>Pan:</b>&nbsp;{{CustomerInfo[0].pan_no}}</div>
+            <div fxFlex="30" class="pt-8"><b>GST Type:</b>&nbsp;{{CustomerInfo[0].gst_type}}</div>
+            <div fxFlex="30" class="pt-8"><b>Gst Number:</b>&nbsp;{{CustomerInfo[0].gst_no}}</div>
+          </div>
+          <div class="pt-16" fxFlex="" fxLayout="column">
+            <mat-divider></mat-divider>
+          </div>
+          <div class="pt-4" style="color: red;padding-left:4px;font-weight:600"><h3>Address</h3></div>
+          <div fxFlex="" fxLayout="column" class="p-4 pt-8">
+            <div fxLayout="row wrap" fxLayout.lt-sm="column" fxFlex="" fxLayoutGap="10px">
+              <mat-card *ngFor="let address of CustomerInfo" class="product" fxFlex="30"  >
+                <mat-card-content class="card-table">
+                  <table >
+                    <tr>
+                      <td style="font-size:20px"><b>&nbsp;{{address.name}}</b></td>
+                    </tr>
+                    <tr>
+                      <td><b>Town/City:</b>&nbsp;{{address.city}}</td>
+                    </tr>
+                    <tr>
+                      <td><b>State:</b>&nbsp;{{address.state}}</td>
+                    </tr>
+                    <tr>
+                      <td><b>Village:</b>&nbsp;{{address.village}}</td>
+                    </tr>
+                    <tr>
+                      <td><b>Taluka:</b>&nbsp;{{address.taluka}}</td>
+                    </tr>
+                    <tr>
+                      <td><b>Country:</b>&nbsp;{{address.country}}</td>
+                    </tr>
+                    <tr>
+                      <td><b>Pin:</b>&nbsp;{{address.pincode}}</td>
+                    </tr>
+                    <tr>
+                      <td ><b>Address:</b>&nbsp;{{address.address}}</td>
+                    </tr>
+                  </table>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

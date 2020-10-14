@@ -1,0 +1,190 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="putwaywork">
+    <div class="content p-20" pristinePerfectScrollbar>
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+            <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column" fxLayoutAlign="start">
+
+                <div class=" h3 mb-8 p-16">
+                    <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column"
+                         fxLayoutAlign="space-between center"
+                         fxLayoutGap="10px">
+                        <div fxFlex="60">
+                            <b>Putway Scan ( </b> <b
+                            style="color: red"> {{sessionManageMent.getLocationName}}</b><b>
+                            ) </b>
+                        </div>
+
+                        <div fxFlex="20" fxLayout="row" fxLayoutAlign="end">
+                            <button (click)="complete_putway()"
+                                    aria-label="Submit"
+                                    color="accent"
+                                    mat-raised-button>
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <mat-divider></mat-divider>
+
+
+                <div class="h3 mb-8 p-16">
+                    <b>Document Information</b>
+                    <br>
+                    <div *ngIf="this.putwaydata?.length>0">
+                        <div class="headertable" fxLayout="column" fxLayoutGap="10px">
+                            <table style=" border:0px;margin-top: 10px;">
+                                <tbody style="font-size: 12px;">
+                                <tr>
+                                    <th>Putway No</th>
+                                    <th>Putway Type</th>
+                                    <th>GRN No</th>
+                                    <th>Putway Create Date</th>
+                                    <th>Putway Create By</th>
+                                    <th>Putway Lines</th>
+                                </tr>
+                                <tr>
+                                    <td>{{this.putwaydata[0]?.putway_no}}</td>
+                                    <td>{{this.putwaydata[0]?.putway_type}}</td>
+                                    <td>{{this.putwaydata[0]?.grn_no }}</td>
+                                    <td>{{this.putwaydata[0]?.created_on| date : 'dd/MM/yyyy'}}</td>
+                                    <td>{{this.putwaydata[0]?.created_by }}</td>
+                                    <td>
+                                        <button (click)="delete_line()"
+                                                mat-icon-button>
+                                            <mat-icon svgIcon="choices"></mat-icon>
+                                        </button>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                    <br>
+                    <mat-divider></mat-divider>
+                    <br>
+
+                    <div [formGroup]="putway_work" name="putway_work" novalidate>
+
+                        <div fxLayout="column" fxLayoutGap="10px">
+                            <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+                                <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                    <div fxLayout="column" style="width: 80%;">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Work Type</mat-label>
+                                            <mat-select formControlName="work_type">
+                                                <mat-option
+                                                    (click)="values=='Scan' ? this.scan_type = 'Barcode': this.scan_type = 'Item No'"
+                                                    *ngFor="let values of worktypelist"
+                                                    [value]="values">
+                                                    {{values}}
+                                                </mat-option>
+                                            </mat-select>
+                                            <mat-error>
+                                                Work Type is required
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                    <div fxLayout="column" style="width: 80%;">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Bincode</mat-label>
+                                            <input #bincode (keydown.enter)="bincode_scan()"
+                                                   autocomplete="off"
+                                                   formControlName="bincode"
+                                                   matInput
+                                                   placeholder="Scan Bincode"
+                                            >
+
+                                            <mat-icon class="secondary-text" matSuffix>widgets</mat-icon>
+                                            <mat-error>
+                                                Bincode is required
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                    <div fxLayout="column" style="width: 80%;">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>{{ scan_type}}</mat-label>
+                                            <input #barcode (keydown.enter)="line_with_scan()" autocomplete="off"
+                                                   formControlName="barcode"
+                                                   matInput
+                                                   placeholder="Scan {{scan_type}}">
+
+                                            <mat-icon class="secondary-text" matSuffix>barcode</mat-icon>
+                                            <mat-error>
+                                                {{scan_type}} is required
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="this.putway_work.get('work_type').value=='Without Scan'" fxFlex="20"
+                                     fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                    <div fxLayout="column" style="width: 80%;">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Quantity</mat-label>
+                                            <input autocomplete="false" formControlName="quantity"
+                                                   matInput
+                                                   placeholder="enter quantity">
+                                            <mat-icon class="secondary-text" matSuffix>number</mat-icon>
+                                            <mat-error>
+                                                Quantity is required
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div *ngIf="this.putway_work.get('work_type').value=='Without Scan'" fxFlex="20"
+                                     fxLayout="row" fxLayoutAlign="end" fxLayoutAlign.lt-sm="center">
+                                    <div fxLayout="column" style="margin-top: 12px">
+                                        <button (click)="line_without_scan()"
+                                                [disabled]="putway_work.invalid" aria-label="Submit"
+                                                color="accent"
+                                                mat-raised-button>
+                                            Add
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="example-container">
+                        <table [dataSource]="dataSource" mat-table matSort>
+                            <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+                                <th *matHeaderCellDef mat-header-cell>
+                                    <div class="filterHeader">
+                                        <b mat-sort-header>{{column|firstAnd_Split}}</b><br>
+                                        <input (keyup)="applyFilter($event.target.value,column)"
+                                               [placeholder]="column|firstAnd_Split">
+                                    </div>
+                                </th>
+                                <td *matCellDef="let element" mat-cell>
+
+                                    <p *ngIf="column!='View'">{{element[column]}}</p>
+
+                                    <div *ngIf="column=='View'">
+                                        <button (click)="viewinfo(element)" mat-icon-button>
+                                            <mat-icon class="icon-size">visibility</mat-icon>
+                                        </button>
+                                    </div>
+
+                                </td>
+
+                            </ng-container>
+                            <tr *matHeaderRowDef="displayedColumns ; sticky: true" mat-header-row></tr>
+                            <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+                        </table>
+                        <div *ngIf="dataSource?.data?.length<=0" class="h3 m-16">No Record Found.</div>
+                        <mat-divider *ngIf="dataSource?.data?.length<=0"></mat-divider>
+                    </div>
+                    <mat-paginator [pageSizeOptions]="[5, 10, 20, 30,40,50]" showFirstLastButtons></mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

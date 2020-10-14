@@ -1,0 +1,84 @@
+<div fxLayout="row" fxLayoutAlign="space-between center">
+  <div fxFlex="1 0 auto" fxLayout="row" fxLayout.lt-sm="row" fxLayoutGap="10px">
+    <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="10px">
+      <div fxFlex="70">
+        <b>Post Pending GRN Quantity ( </b><b
+        style="color: red"> {{ this.dataSource_pending_grn.data[0].document_no}} </b><b> )</b>
+      </div>
+      <div fxFlex="20" fxLayout="row" fxLayoutAlign="end">
+        <button (click)="confirm()" aria-label="Submit"
+                color="accent"
+                mat-raised-button>
+          Confirm
+        </button>
+      </div>
+      <div fxFlex="10" fxLayout="row" fxLayoutAlign="end">
+        <button (click)="send()" mat-dialog-close mat-icon-button>
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+<br>
+<mat-divider></mat-divider>
+<br>
+<div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+  <div class="example-container">
+    <table [dataSource]="dataSource_pending_grn" mat-table matSort>
+      <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+        <th *matHeaderCellDef mat-header-cell>
+          <div class="filterHeader">
+            <b mat-sort-header>{{column|firstAnd_Split}}</b><br>
+            <input (keyup)="applyFilter($event.target.value,column)"
+                   *ngIf="column!='Edit' && column!='View'"
+                   [placeholder]="column|firstAnd_Split"
+                   matInput>
+          </div>
+        </th>
+        <td *matCellDef="let element;let i=index" mat-cell>
+          <p *ngIf="column!='pending_grn_quantity' && column!='pending_no_of_bags' && column!='Edit' && column!='View'">{{element[column]}}</p>
+
+          <div class="CellColumn"
+               *ngIf="column=='pending_no_of_bags'">
+            <input style="background-color: whitesmoke;"
+                   [(ngModel)]="element['pending_no_of_bags']"
+                   (keyup)="change_pending_no_of_bags(element,i)"
+                   autocomplete="off"
+                   class="myInput"
+                   focused="'true'"
+                   placeholder="pending no_of_bags"
+                   matInput pattern="[0-9]*"
+                   type="number">
+          </div>
+
+          <div class="CellColumn"
+               *ngIf="column=='pending_grn_quantity'">
+            <input style="background-color: whitesmoke;"
+                   [(ngModel)]="element['pending_grn_quantity']"
+                   (keyup)="change_pending_grn_qty(element,i)"
+                   autocomplete="off"
+                   class="myInput"
+                   focused="'true'"
+                   placeholder="pending grn qty"
+                   matInput pattern="[0-9]*"
+                   type="number">
+          </div>
+
+        </td>
+
+      </ng-container>
+      <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+      <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+
+    </table>
+    <div *ngIf="dataSource_pending_grn?.data?.length<=0" class="h3 m-16">No Record Found.</div>
+    <mat-divider *ngIf="dataSource_pending_grn?.data?.length<=0"></mat-divider>
+  </div>
+  <mat-paginator [pageSizeOptions]="[ 5, 10, 20, 30,40,50]"
+                 showFirstLastButtons></mat-paginator>
+
+</div>
+
+

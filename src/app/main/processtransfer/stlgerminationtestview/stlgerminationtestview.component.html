@@ -1,0 +1,311 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="stlgerminationview">
+  <div class="p-16" pristinePerfectScrollbar>
+    <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+      <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column"
+           fxLayoutAlign="start">
+        <div class="h3 mb-8 p-16" fxLayout="column" style="padding-top: 20px">
+          <div fxFlex="1 0 auto" fxLayout="row" fxLayout.lt-sm="row" fxLayoutGap="10px">
+            <b>STL Germination Test ( </b><b
+            style="color: red"> {{ sessionManageMent.getLocationName}} </b><b> )  ( </b>
+            <b style="color: red"> {{this.stl_germination_test_no}} </b><b> )</b>
+          </div>
+        </div>
+
+        <mat-divider></mat-divider>
+        <br>
+
+        <div class="h3 mb-8 p-16">
+          <div *ngIf="this.dataSource?.data?.length>0" class="headertable" fxLayout="column" fxLayoutGap="10px">
+            <table style=" border:0px;margin-top: 10px;">
+              <tbody style="font-size: 12px;">
+              <tr>
+                <th>Crop Code :</th>
+                <td>{{this.dataSource.data[0]?.crop_code}}</td>
+                <th>Item No :</th>
+                <td>{{this.dataSource.data[0]?.item_no}}</td>
+                <th>Item Name :</th>
+                <td>{{this.dataSource.data[0]?.item_name}}</td>
+              </tr>
+
+              <tr>
+                <th>Sub Category Name :</th>
+                <td>{{this.dataSource.data[0]?.sub_cat_name}}</td>
+                <th>Crop Type :</th>
+                <td>{{this.dataSource.data[0]?.crop_type}}</td>
+                <th>Class Of Seed :</th>
+                <td>{{this.dataSource.data[0]?.class_of_seed}}</td>
+              </tr>
+
+              <tr>
+                <th>Sample Code :</th>
+                <td>{{this.dataSource.data[0]?.sample_code}}</td>
+                <th>Stage Code :</th>
+                <td>{{this.dataSource.data[0]?.stage_code}}</td>
+                <th>Arrival Qty :</th>
+                <td>{{this.dataSource.data[0]?.arrival_qty}}</td>
+              </tr>
+
+              </tbody>
+            </table>
+          </div>
+          <br>
+          <mat-divider></mat-divider>
+        </div>
+
+        <div class="p-8" fxFlex fxLayout="column" fxLayout.lt-sm="column">
+          <mat-tab-group>
+            <mat-tab label="Count 1">
+              <br>
+              <div *ngIf="this.dataSource.data[0].count1_done == 0" class="h3 mb-8 p-16" fxLayout="column" style="padding-top: 20px">
+                <div fxFlex="1 0 auto" fxLayout="row" fxLayout.lt-sm="row" fxLayoutGap="10px">
+
+                  <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-between center"
+                       fxLayoutGap="10px">
+                    <div fxFlex="30">
+                    </div>
+                  </div>
+
+                  <div fxFlex="15" fxLayout="row" fxLayoutAlign.lt-sm="center" style="padding-left: 30px;padding-top: 15px">
+                    <div fxLayout="column" fxLayoutAlign.lt-sm="center">
+                      <button (click)="savecount1()" mat-flat-button style="background-color: #2ac12adb;color: white">
+                        Save Count 1
+                      </button>
+                    </div>
+                  </div>
+
+                  <div fxFlex="15" fxLayout="row" fxLayoutAlign.lt-sm="center" style="padding-left: 30px;padding-top: 15px">
+                    <div fxLayout="column" fxLayoutAlign.lt-sm="center">
+                      <button (click)="submitcount1()" mat-flat-button color="accent">
+                        Submit Count 1
+                      </button>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <div class="headertable" fxLayout="column">
+                <table>
+                  <tr>
+                    <td style="width: 100px"></td>
+                    <th>Normal Seed Lings</th>
+                    <th>Abnormal Seed Lings</th>
+                    <th>Fresh Un-Germinated</th>
+                    <th>Hard Seed</th>
+                    <th>Dead Seed</th>
+                    <th>Total</th>
+                  </tr>
+                  <tbody style="font-size: 12px;">
+
+                  <tr>
+                    <td style="width: 100px"><b>R-I : </b></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count1_done == 1" [(ngModel)]="this.dataSource.data[0].count1_r1_nsl" type="number"></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count1_done == 1" [(ngModel)]="this.dataSource.data[0].count1_r1_asl" type="number"></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count1_done == 1" [(ngModel)]="this.dataSource.data[0].count1_r1_fug" type="number"></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count1_done == 1" [(ngModel)]="this.dataSource.data[0].count1_r1_hs" type="number"></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count1_done == 1" [(ngModel)]="this.dataSource.data[0].count1_r1_ds" type="number"></td>
+                    <td class="CellColumn" ><input readOnly [value]="c1_r_sum(this.dataSource.data[0].count1_r1_nsl,
+                    this.dataSource.data[0].count1_r1_asl,this.dataSource.data[0].count1_r1_fug,this.dataSource.data[0].count1_r1_hs,
+                    this.dataSource.data[0].count1_r1_ds)" type="text"></td>
+                  </tr>
+
+                  <tr>
+                    <td style="width: 100px"><b>R-II : </b></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count1_done == 1" [(ngModel)]="this.dataSource.data[0].count1_r2_nsl" type="number"></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count1_done == 1" [(ngModel)]="this.dataSource.data[0].count1_r2_asl" type="number"></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count1_done == 1" [(ngModel)]="this.dataSource.data[0].count1_r2_fug" type="number"></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count1_done == 1" [(ngModel)]="this.dataSource.data[0].count1_r2_hs" type="number"></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count1_done == 1" [(ngModel)]="this.dataSource.data[0].count1_r2_ds" type="number"></td>
+                    <td class="CellColumn" ><input readOnly [value]="c1_r_sum(this.dataSource.data[0].count1_r2_nsl,
+                    this.dataSource.data[0].count1_r2_asl,this.dataSource.data[0].count1_r2_fug,this.dataSource.data[0].count1_r2_hs,
+                    this.dataSource.data[0].count1_r2_ds)" type="text"></td>
+                  </tr>
+
+                  <tr>
+                    <td style="width: 100px"><b>R-III : </b></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count1_done == 1" [(ngModel)]="this.dataSource.data[0].count1_r3_nsl" type="number"></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count1_done == 1" [(ngModel)]="this.dataSource.data[0].count1_r3_asl" type="number"></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count1_done == 1" [(ngModel)]="this.dataSource.data[0].count1_r3_fug" type="number"></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count1_done == 1" [(ngModel)]="this.dataSource.data[0].count1_r3_hs" type="number"></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count1_done == 1" [(ngModel)]="this.dataSource.data[0].count1_r3_ds" type="number"></td>
+                    <td class="CellColumn" ><input readOnly [value]="c1_r_sum(this.dataSource.data[0].count1_r3_nsl,
+                    this.dataSource.data[0].count1_r3_asl,this.dataSource.data[0].count1_r3_fug,this.dataSource.data[0].count1_r3_hs,
+                    this.dataSource.data[0].count1_r3_ds)" type="text"></td>
+                  </tr>
+
+                  <tr>
+                    <td style="width: 100px"><b>R-IV : </b></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count1_done == 1" [(ngModel)]="this.dataSource.data[0].count1_r4_nsl" type="number"></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count1_done == 1" [(ngModel)]="this.dataSource.data[0].count1_r4_asl" type="number"></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count1_done == 1" [(ngModel)]="this.dataSource.data[0].count1_r4_fug" type="number"></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count1_done == 1" [(ngModel)]="this.dataSource.data[0].count1_r4_hs" type="number"></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count1_done == 1" [(ngModel)]="this.dataSource.data[0].count1_r4_ds" type="number"></td>
+                    <td class="CellColumn" ><input readOnly [value]="c1_r_sum(this.dataSource.data[0].count1_r4_nsl,
+                    this.dataSource.data[0].count1_r4_asl,this.dataSource.data[0].count1_r4_fug,this.dataSource.data[0].count1_r4_hs,
+                    this.dataSource.data[0].count1_r4_ds)" type="text"></td>
+                  </tr>
+
+                  <tr>
+                    <td style="width: 100px"><b>Total : </b></td>
+                    <td class="CellColumn" ><input readOnly [value]="c1_c_sum(this.dataSource.data[0].count1_r1_nsl,
+                    this.dataSource.data[0].count1_r2_nsl,this.dataSource.data[0].count1_r3_nsl,this.dataSource.data[0].count1_r4_nsl)" type="number"></td>
+                    <td class="CellColumn" ><input readOnly [value]="c1_c_sum(this.dataSource.data[0].count1_r1_asl,
+                    this.dataSource.data[0].count1_r2_asl,this.dataSource.data[0].count1_r3_asl,this.dataSource.data[0].count1_r4_asl)" type="number"></td>
+                    <td class="CellColumn" ><input readOnly [value]="c1_c_sum(this.dataSource.data[0].count1_r1_fug,
+                    this.dataSource.data[0].count1_r2_fug,this.dataSource.data[0].count1_r3_fug,this.dataSource.data[0].count1_r4_fug)" type="number"></td>
+                    <td class="CellColumn" ><input readOnly [value]="c1_c_sum(this.dataSource.data[0].count1_r1_hs,
+                    this.dataSource.data[0].count1_r2_hs,this.dataSource.data[0].count1_r3_hs,this.dataSource.data[0].count1_r4_hs)" type="number"></td>
+                    <td class="CellColumn" ><input readOnly [value]="c1_c_sum(this.dataSource.data[0].count1_r1_ds,
+                    this.dataSource.data[0].count1_r2_ds,this.dataSource.data[0].count1_r3_ds,this.dataSource.data[0].count1_r4_ds)" type="number"></td>
+                    <td class="CellColumn" ></td>
+                  </tr>
+
+                  <tr>
+                    <td style="width: 100px"><b>Count 1 % : </b></td>
+                    <td class="CellColumn" ><input readOnly [value]="c1_per_nsl(this.dataSource.data[0].count1_r1_nsl,
+                    this.dataSource.data[0].count1_r2_nsl,this.dataSource.data[0].count1_r3_nsl,this.dataSource.data[0].count1_r4_nsl)" type="number"></td>
+                    <td><b>Count 1 Result : </b></td>
+                    <td class="CellColumn" >{{this.dataSource?.data[0]?.count1_result}}</td>
+                    <td><b>Count 1 Result Date : </b></td>
+                    <td colspan="2" class="CellColumn" >{{this.dataSource?.data[0]?.count1_result_date}}</td>
+                  </tr>
+
+                  </tbody>
+                </table>
+              </div>
+              <br>
+            </mat-tab>
+            <mat-tab label="Count 2">
+
+              <br>
+
+              <div *ngIf="this.dataSource.data[0].count2_done == 0 && this.dataSource.data[0].count1_done == 1" class="h3 mb-8 p-16" fxLayout="column" style="padding-top: 20px">
+                <div fxFlex="1 0 auto" fxLayout="row" fxLayout.lt-sm="row" fxLayoutGap="10px">
+
+                  <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-between center"
+                       fxLayoutGap="10px">
+                    <div fxFlex="30">
+                    </div>
+                  </div>
+
+                  <div fxFlex="15" fxLayout="row" fxLayoutAlign.lt-sm="center" style="padding-left: 30px;padding-top: 15px">
+                    <div fxLayout="column" fxLayoutAlign.lt-sm="center">
+                      <button (click)="savecount2()" mat-flat-button style="background-color: #2ac12adb;color: white">
+                        Save Count 2
+                      </button>
+                    </div>
+                  </div>
+
+                  <div fxFlex="15" fxLayout="row" fxLayoutAlign.lt-sm="center" style="padding-left: 30px;padding-top: 15px">
+                    <div fxLayout="column" fxLayoutAlign.lt-sm="center">
+                      <button (click)="submitcount2()" mat-flat-button color="accent">
+                        Submit Count 2
+                      </button>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <div *ngIf="this.dataSource.data[0].count1_done == 0">
+                <p style="color: red"><b>Please Perform Count 1 Test First</b></p>
+              </div>
+              <div *ngIf="this.dataSource.data[0].count1_done == 1" class="headertable" fxLayout="column">
+                <table>
+                  <tr>
+                    <td style="width: 100px"></td>
+                    <th>Normal Seed Lings</th>
+                    <th>Abnormal Seed Lings</th>
+                    <th>Fresh Un-Germinated</th>
+                    <th>Hard Seed</th>
+                    <th>Dead Seed</th>
+                    <th>Total</th>
+                  </tr>
+                  <tbody style="font-size: 12px;">
+
+                  <tr>
+                    <td style="width: 100px"><b>R-I : </b></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count2_done == 1" [(ngModel)]="this.dataSource.data[0].count2_r1_nsl" type="number"></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count2_done == 1" [(ngModel)]="this.dataSource.data[0].count2_r1_asl" type="number"></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count2_done == 1" [(ngModel)]="this.dataSource.data[0].count2_r1_fug" type="number"></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count2_done == 1" [(ngModel)]="this.dataSource.data[0].count2_r1_hs" type="number"></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count2_done == 1" [(ngModel)]="this.dataSource.data[0].count2_r1_ds" type="number"></td>
+                    <td class="CellColumn" ><input readOnly [value]="c2_r_sum(this.dataSource.data[0].count2_r1_nsl,
+                    this.dataSource.data[0].count2_r1_asl,this.dataSource.data[0].count2_r1_fug,this.dataSource.data[0].count2_r1_hs,
+                    this.dataSource.data[0].count2_r1_ds)" type="text"></td>
+                  </tr>
+
+                  <tr>
+                    <td style="width: 100px"><b>R-II : </b></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count2_done == 1" [(ngModel)]="this.dataSource.data[0].count2_r2_nsl" type="number"></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count2_done == 1" [(ngModel)]="this.dataSource.data[0].count2_r2_asl" type="number"></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count2_done == 1" [(ngModel)]="this.dataSource.data[0].count2_r2_fug" type="number"></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count2_done == 1" [(ngModel)]="this.dataSource.data[0].count2_r2_hs" type="number"></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count2_done == 1" [(ngModel)]="this.dataSource.data[0].count2_r2_ds" type="number"></td>
+                    <td class="CellColumn" ><input readOnly [value]="c2_r_sum(this.dataSource.data[0].count2_r2_nsl,
+                    this.dataSource.data[0].count2_r2_asl,this.dataSource.data[0].count2_r2_fug,this.dataSource.data[0].count2_r2_hs,
+                    this.dataSource.data[0].count2_r2_ds)" type="text"></td>
+                  </tr>
+
+                  <tr>
+                    <td style="width: 100px"><b>R-III : </b></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count2_done == 1" [(ngModel)]="this.dataSource.data[0].count2_r3_nsl" type="number"></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count2_done == 1" [(ngModel)]="this.dataSource.data[0].count2_r3_asl" type="number"></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count2_done == 1" [(ngModel)]="this.dataSource.data[0].count2_r3_fug" type="number"></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count2_done == 1" [(ngModel)]="this.dataSource.data[0].count2_r3_hs" type="number"></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count2_done == 1" [(ngModel)]="this.dataSource.data[0].count2_r3_ds" type="number"></td>
+                    <td class="CellColumn" ><input readOnly [value]="c2_r_sum(this.dataSource.data[0].count2_r3_nsl,
+                    this.dataSource.data[0].count2_r3_asl,this.dataSource.data[0].count2_r3_fug,this.dataSource.data[0].count2_r3_hs,
+                    this.dataSource.data[0].count2_r3_ds)" type="text"></td>
+                  </tr>
+
+                  <tr>
+                    <td style="width: 100px"><b>R-IV : </b></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count2_done == 1" [(ngModel)]="this.dataSource.data[0].count2_r4_nsl" type="number"></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count2_done == 1" [(ngModel)]="this.dataSource.data[0].count2_r4_asl" type="number"></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count2_done == 1" [(ngModel)]="this.dataSource.data[0].count2_r4_fug" type="number"></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count2_done == 1" [(ngModel)]="this.dataSource.data[0].count2_r4_hs" type="number"></td>
+                    <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].count2_done == 1" [(ngModel)]="this.dataSource.data[0].count2_r4_ds" type="number"></td>
+                    <td class="CellColumn" ><input readOnly [value]="c2_r_sum(this.dataSource.data[0].count2_r4_nsl,
+                    this.dataSource.data[0].count2_r4_asl,this.dataSource.data[0].count2_r4_fug,this.dataSource.data[0].count2_r4_hs,
+                    this.dataSource.data[0].count2_r4_ds)" type="text"></td>
+                  </tr>
+
+                  <tr>
+                    <td style="width: 100px"><b>Total : </b></td>
+                    <td class="CellColumn" ><input readOnly [value]="c2_c_sum(this.dataSource.data[0].count2_r1_nsl,
+                    this.dataSource.data[0].count2_r2_nsl,this.dataSource.data[0].count2_r3_nsl,this.dataSource.data[0].count2_r4_nsl)" type="number"></td>
+                    <td class="CellColumn" ><input readOnly [value]="c2_c_sum(this.dataSource.data[0].count2_r1_asl,
+                    this.dataSource.data[0].count2_r2_asl,this.dataSource.data[0].count2_r3_asl,this.dataSource.data[0].count2_r4_asl)" type="number"></td>
+                    <td class="CellColumn" ><input readOnly [value]="c2_c_sum(this.dataSource.data[0].count2_r1_fug,
+                    this.dataSource.data[0].count2_r2_fug,this.dataSource.data[0].count2_r3_fug,this.dataSource.data[0].count2_r4_fug)" type="number"></td>
+                    <td class="CellColumn" ><input readOnly [value]="c2_c_sum(this.dataSource.data[0].count2_r1_hs,
+                    this.dataSource.data[0].count2_r2_hs,this.dataSource.data[0].count2_r3_hs,this.dataSource.data[0].count2_r4_hs)" type="number"></td>
+                    <td class="CellColumn" ><input readOnly [value]="c2_c_sum(this.dataSource.data[0].count2_r1_ds,
+                    this.dataSource.data[0].count2_r2_ds,this.dataSource.data[0].count2_r3_ds,this.dataSource.data[0].count2_r4_ds)" type="number"></td>
+                    <td class="CellColumn" ></td>
+                  </tr>
+
+                  <tr>
+                    <td style="width: 100px"><b>Count 2 % : </b></td>
+                    <td class="CellColumn" ><input readOnly [value]="c2_per_nsl(this.dataSource.data[0].count2_r1_nsl,
+                    this.dataSource.data[0].count2_r2_nsl,this.dataSource.data[0].count2_r3_nsl,this.dataSource.data[0].count2_r4_nsl)" type="number"></td>
+                    <td><b>Count 2 Result : </b></td>
+                    <td class="CellColumn" >{{this.dataSource?.data[0]?.count2_result}}</td>
+                    <td><b>Count 2 Result Date : </b></td>
+                    <td colspan="2" class="CellColumn" >{{this.dataSource?.data[0]?.count2_result_date}}</td>
+                  </tr>
+
+                  </tbody>
+                </table>
+              </div>
+              <br>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+

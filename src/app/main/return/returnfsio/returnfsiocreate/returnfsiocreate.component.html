@@ -1,0 +1,171 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="createfsioreturn">
+  <div class="content p-20" pristinePerfectScrollbar>
+    <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+      <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column" fxLayoutAlign="start">
+        <div class="h3 mb-8 p-16"><b>Create FSIO Return ( </b> <b
+          style="color: red"> {{sessionManageMent.getLocationName}}</b><b>
+          ) </b>
+
+          <button style="float: right" aria-label="Submit"
+                  (click)="create_return_fsio()"
+                  color="accent"
+                  mat-raised-button
+          >
+            Submit
+          </button>
+        </div>
+        <div class="p-16">
+          <form [formGroup]="fsioReturnForm" name="bsioReturnForm" novalidate>
+            <div fxLayout="column" fxLayoutGap="10px">
+              <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+
+                <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Location <sup style="color: red">*</sup></mat-label>
+                      <mat-select autocomplete="off" formControlName="location" disabled >
+                        <input #searchBylocation
+                               autocomplete="off" class="myInput"
+                               focused="'true'" matInput placeholder="Search" type="text">
+                        <mat-option
+                          *ngFor="let loc of locationlist|searchlocation: searchBylocation.value"
+                          [value]="loc.location_id">{{loc.location_name + ' ( ' + loc.location_id + ' ) ' }}</mat-option>
+                      </mat-select>
+                      <mat-error>
+                        Location is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Customer Name or Mobile No</mat-label>
+                      <mat-select autocomplete="off"
+                                  formControlName="CustomerNameorNo">
+                        <input [(ngModel)]="searchByCustomerNameorNo"
+                               (ngModelChange)="get_CustomerNo()"
+                               [ngModelOptions]="{standalone:true}"
+                               autocomplete="off" class="myInput"
+                               focused="'true'" matInput placeholder="Search"
+                               type="text">
+                        <mat-option>None</mat-option>
+                        <mat-option
+                          *ngFor="let shippingOrder of customerlist" (click)="get_bsio_no_from_ile(shippingOrder)"
+                          [value]="shippingOrder.customer_id">{{shippingOrder.full_name}}</mat-option>
+                      </mat-select>
+                      <mat-error>
+                        Customer Name or Number is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline">
+                      <mat-label>FSIO No</mat-label>
+                      <mat-select autocomplete="off"
+                                  formControlName="fsiono">
+                        <mat-option>None</mat-option>
+                        <mat-option
+                          *ngFor="let get_doc_no of get_document_no_from_ile"
+                          [value]="get_doc_no.document_no">{{get_doc_no.document_no}}</mat-option>
+                      </mat-select>
+                      <mat-error>
+                        FSIO No is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div fxFlex="15" fxLayout="row" fxLayoutAlign.lt-sm="center" style="margin-top: 15px" >
+                  <div fxLayout="column" style="width: 80%;">
+                    <button style="float: right" aria-label="Submit" (click)="get_order()"
+                            color="accent"
+                            mat-raised-button >
+                      Get Order
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </form>
+
+          <b>Records From Item Ledger Entry </b>
+          <br><br>
+
+        </div>
+
+        <div class="h3 mb-8 p-16">
+          <div [hidden]="start">
+            <div class="example-container">
+              <table #matSort="matSort" [dataSource]="dataSource" mat-table matSort>
+                <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+                  <th *matHeaderCellDef mat-header-cell>
+                    <div class="filterHeader">
+                      <b mat-sort-header>{{column|firstAnd_Split}}</b><br>
+                      <input (keyup)="applyFilter($event.target.value,column)"
+                             *ngIf="column!='Action'"
+                             [placeholder]="column|firstAnd_Split">
+                    </div>
+                  </th>
+                  <td *matCellDef="let element;let i=index" mat-cell>
+                    <p *ngIf="column!='return_no_of_bags' && column!='return_quantity'">{{element[column]}}</p>
+
+                    <div class="CellColumn"
+                         *ngIf="column=='return_no_of_bags'">
+                      <input [(ngModel)]="element['return_no_of_bags']"
+                             (keyup)="calreturnqty(element)"
+                             autocomplete="off"
+                             class="myInput"
+                             focused="'true'"
+                             placeholder="Return No Of Bags"
+                             matInput pattern="[0-9]*"
+                             type="number">
+                    </div>
+
+                    <div class="CellColumn"
+                         *ngIf="column=='return_quantity'">
+                      <input [(ngModel)]="element['return_quantity']"
+                             readonly
+                             autocomplete="off"
+                             class="myInput"
+                             focused="'true'"
+                             placeholder="Return Quantity"
+                             matInput pattern="[0-9]*"
+                             type="number">
+                    </div>
+
+                  </td>
+                  <td *matFooterCellDef mat-footer-cell>
+                    <p *ngIf="column=='lot_no'">
+                      Total
+                    </p>
+                    <p *ngIf="column!='item_no' && column!='item_name' && column!='fg_pack_size'
+                      && column!='main_category' && column!='sub_category' && column!='lot_no'
+                      && dataSource?.data?.length>0">
+                      {{sum_footer(dataSource.data, column) }}
+                    </p>
+                  </td>
+                </ng-container>
+                <tr *matHeaderRowDef="displayedColumns ; sticky: true" mat-header-row></tr>
+                <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+                <tr *matFooterRowDef="displayedColumns; sticky: true" mat-footer-row></tr>
+              </table>
+              <div *ngIf="dataSource?.data?.length<=0" class="h3 m-16">No Record Found.</div>
+              <mat-divider *ngIf="dataSource?.data?.length<=0"></mat-divider>
+            </div>
+            <mat-paginator #matpaginator="matPaginator" [pageSizeOptions]="[ 5, 10, 20, 30,40,50]"
+                           showFirstLastButtons></mat-paginator>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

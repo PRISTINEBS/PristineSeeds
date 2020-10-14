@@ -1,0 +1,277 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="itemcreation">
+  <div class="p-16" pristinePerfectScrollbar>
+    <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+      <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column"
+           fxLayoutAlign="start">
+        <div class="h3 mb-8 p-16" fxLayout="column" style="padding-top: 20px">
+          <div fxFlex="1 0 auto" fxLayout="row" fxLayout.lt-sm="row" fxLayoutGap="10px">
+            <div fxFlex="50" fxLayout="row" fxLayoutAlign="start" fxLayoutAlign.lt-sm="start"
+                 fxLayoutGap="20px">
+              <mat-label *ngIf="type?.toLowerCase()=='edit';else elseblok" style="font-size: 20px">Update
+                Party
+              </mat-label>
+              <ng-template #elseblok>
+                <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column"
+                     fxLayoutAlign="space-between center" fxLayoutGap="10px">
+                  <div fxFlex="30">
+                    <b>Create Party</b>
+                  </div>
+                </div>
+              </ng-template>
+            </div>
+          </div>
+          <mat-divider></mat-divider>
+          <br>
+          <div [formGroup]="GeneralInformation">
+            <div fxFlex="" fxLayout="column">
+              <div class="Heading">General:</div>
+              <div class="p-8" fxFlex="" fxLayout="Row wrap" fxLayout.lt-sm="column" fxLayoutAlign="start"
+                   fxLayoutGap="20px" fxLayoutGap.lt-sm="0px">
+                <mat-form-field appearance="outline" fxFlex="22.5">
+                  <mat-label>Name<sup style="color: red">*</sup></mat-label>
+                  <input formControlName="name" matInput placeholder="Name" type="text">
+                </mat-form-field>
+
+                <div fxFlex="22.5"  fxLayout="column">
+                <mat-form-field appearance="outline">
+                  <mat-label>Find Post Code Or City<sup style="color: red">*</sup></mat-label>
+
+                  <mat-select autocomplete="off" formControlName="postcode" >
+                    <input [(ngModel)]="searchByPostCodeorName"
+                           [ngModelOptions]="{standalone:true}"
+                           (ngModelChange)="get_post_code()"
+                           autocomplete="off" class="myInput"
+                           focused="'true'" matInput placeholder="Search" type="text">
+                    <mat-option>None</mat-option>
+                    <mat-option (click)="setCityCountry(get_post_code)"
+                      *ngFor="let get_post_code of getpostcode"
+                      [value]="get_post_code.code">{{get_post_code.city + ' ( ' + get_post_code.code + ' )'}}</mat-option>
+                  </mat-select>
+                  <mat-error>
+                    Post Code is required
+                  </mat-error>
+
+                </mat-form-field>
+                </div>
+
+                <mat-form-field appearance="outline" fxFlex="22.5">
+                  <mat-label>City<sup style="color: red">*</sup></mat-label>
+                  <input formControlName="city" matInput placeholder="City" type="text">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="22.5">
+                  <mat-label>Country<sup style="color: red">*</sup></mat-label>
+                  <input formControlName="country" matInput placeholder="Country" type="text">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="47">
+                  <mat-label>Address<sup style="color: red">*</sup></mat-label>
+                  <input formControlName="address" matInput placeholder="Address" type="text">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="47">
+                  <mat-label>Address 2</mat-label>
+                  <input formControlName="address2" matInput placeholder="Address 2" type="text">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="22.5">
+                  <mat-label>Zone<sup style="color: red">*</sup></mat-label>
+                  <mat-select formControlName="location_zone" (selectionChange)="get_geographical_state_code(this.GeneralInformation.get('location_zone').value)">
+                    <mat-option *ngFor="let location_zone of get_zone"
+                                [value]="location_zone.zone">{{location_zone.zone}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="22.5">
+                  <mat-label>State Code<sup style="color: red">*</sup></mat-label>
+                  <mat-select formControlName="stateCode" (selectionChange)="get_geographical_region(this.GeneralInformation.get('stateCode').value)">
+                    <mat-option *ngFor="let get_state_code of getstatecode"
+                                [value]="get_state_code.state">{{get_state_code.state_desc + ' ( ' + get_state_code.state + ' )'}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="22.5">
+                  <mat-label>Region<sup style="color: red">*</sup></mat-label>
+                  <mat-select formControlName="region" (selectionChange)="get_geographical_district(this.GeneralInformation.get('region').value)">
+                    <mat-option *ngFor="let region of getregionmaster"
+                                [value]="region.region">{{region.region_desc + ' ( ' + region.region + ' )'}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="22.5">
+                  <mat-label>District<sup style="color: red">*</sup></mat-label>
+                  <mat-select formControlName="district" (selectionChange)="get_geographical_taluka(this.GeneralInformation.get('district').value)">
+                    <mat-option *ngFor="let district of getdistrictmaster"
+                                [value]="district.district">{{district.district_desc + ' ( ' + district.district + ' )'}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="22.5">
+                  <mat-label>Taluka<sup style="color: red">*</sup></mat-label>
+                  <mat-select formControlName="taluka">
+                    <mat-option *ngFor="let taluka of gettalukamaster"
+                                [value]="taluka.taluka">{{taluka.taluka_desc + ' ( ' + taluka.taluka + ' )'}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="22.5">
+                  <mat-label>Customer Posting Group</mat-label>
+                  <mat-select formControlName="customerpg">
+                    <mat-option *ngFor="let customerpostinggroup of getcustomerpostinggroup"
+                                [value]="customerpostinggroup.code">{{customerpostinggroup.description + ' ( '+customerpostinggroup.code+' )'}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="22.5">
+                  <mat-label>Vendor Posting Group</mat-label>
+                  <mat-select formControlName="vendorpg">
+                    <mat-option *ngFor="let vendorpostinggroup of getvendorpostinggroup"
+                                [value]="vendorpostinggroup.code">{{vendorpostinggroup.description + ' ( '+vendorpostinggroup.code+' )'}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="22.5">
+                  <mat-label>Customer Type<sup style="color: red">*</sup></mat-label>
+                  <mat-select formControlName="customer_type">
+                    <mat-option *ngFor="let customertypemaster of getcustomertypemaster"
+                                [value]="customertypemaster.code">{{customertypemaster.code}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="22.5">
+                  <mat-label>Vendor Classification<sup style="color: red">*</sup></mat-label>
+                  <mat-select formControlName="vendor_classification">
+                    <mat-option *ngFor="let vendorclassificationmaster of getvendorclassificationmaster"
+                                [value]="vendorclassificationmaster.code">{{vendorclassificationmaster.code}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" fxFlex="22.5">
+                  <mat-label>Customer Business Type<sup style="color: red">*</sup></mat-label>
+                  <mat-select formControlName="customer_bus_type">
+                    <mat-option *ngFor="let customerbusinesstype of getcustomerbusinesstype"
+                                [value]="customerbusinesstype.code">{{customerbusinesstype.code}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+
+              </div>
+              <div class="Heading">Communication:</div>
+              <div fxFlex fxLayout="column">
+                <div class="p-8" fxLayout="Row wrap" fxLayout.lt-sm="column" fxLayoutAlign="start"
+                     fxLayoutGap="20px" fxLayoutGap.lt-sm="10px">
+                  <mat-form-field appearance="outline" fxFlex="47" fxFlex.lt-sm="auto">
+                    <mat-label>Contact No<sup style="color: red">*</sup></mat-label>
+                    <input formControlName="contact_no" matInput placeholder="Contact No" type="number">
+                    <mat-error
+                      *ngIf="GeneralInformation.get('contact_no').hasError('required') && GeneralInformation.get('contact_no').dirty && GeneralInformation.get('contact_no').touched">
+                      Contact No is required*
+                    </mat-error>
+                    <mat-error
+                      *ngIf="GeneralInformation.get('contact_no').hasError('maxLength')">
+                      Contact No should not more than 10 digit(eg:9876576576)
+                    </mat-error>
+                    <mat-error
+                      *ngIf="GeneralInformation.get('contact_no').hasError('pattern')">
+                      Invalid Contact No(eg:9876576576)
+                    </mat-error>
+                  </mat-form-field>
+                  <mat-form-field appearance="outline" fxFlex="47" fxFlex.lt-sm="auto">
+                    <mat-label>Email Id<sup style="color: red">*</sup></mat-label>
+                    <input formControlName="email_id" matInput placeholder="Email Id"
+                           type="email">
+                    <mat-error
+                      *ngIf="GeneralInformation.get('email_id').hasError('required') && GeneralInformation.get('email_id').dirty && GeneralInformation.get('email_id').touched">
+                      Email Id is required*
+                    </mat-error>
+                    <mat-error
+                      *ngIf="GeneralInformation.get('email_id').hasError('pattern')">
+                      Please enter valid email id(eg:example@123.com)
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="Heading">Tax Information:</div>
+              <div fxFlex fxLayout="column">
+                <div class="p-8" fxLayout="Row wrap" fxLayout.lt-sm="column" fxLayoutAlign="start"
+                     fxLayoutGap="20px" fxLayoutGap.lt-sm="10px">
+              <mat-form-field appearance="outline" fxFlex="30.5">
+                <mat-label>Vendor Gst Type<sup style="color: red">*</sup></mat-label>
+                <mat-select (selectionChange)="OnRegVendorTypeSelectionChange()" formControlName="GstVendorType"
+                            placeholder="Gst Type">
+                  <mat-option [value]="'Registered'">Registered</mat-option>
+                  <mat-option [value]="'Composite'">Composite</mat-option>
+                  <mat-option [value]="'Unregistered'">Unregistered</mat-option>
+                  <mat-option [value]="'Import'">Import</mat-option>
+                  <mat-option [value]="'Exempted'">Exempted</mat-option>
+                  <mat-option [value]="'Sez'">Sez</mat-option>
+                </mat-select>
+                <mat-error
+                  *ngIf="GeneralInformation.get('GstVendorType').hasError('required') && GeneralInformation.get('GstVendorType').dirty && GeneralInformation.get('GstVendorType').touched">
+                  Gst Vendor Type is required*
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" fxFlex="30.5">
+                <mat-label>Customer Gst Type<sup style="color: red">*</sup></mat-label>
+                <mat-select (selectionChange)="OnRegCustomerTypeSelectionChange()" formControlName="GstCustomerType"
+                            placeholder="Gst Type">
+                  <mat-option [value]="'Registered'">Registered</mat-option>
+                  <mat-option [value]="'Composite'">Composite</mat-option>
+                  <mat-option [value]="'Unregistered'">Unregistered</mat-option>
+                  <mat-option [value]="'Import'">Import</mat-option>
+                  <mat-option [value]="'Exempted'">Exempted</mat-option>
+                  <mat-option [value]="'Sez'">Sez</mat-option>
+                </mat-select>
+                <mat-error
+                  *ngIf="GeneralInformation.get('GstCustomerType').hasError('required') && GeneralInformation.get('GstCustomerType').dirty && GeneralInformation.get('GstCustomerType').touched">
+                  Gst Customer Type is required*
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" fxFlex="30.5">
+                <mat-label>Gst Registration No.<sup style="color: red">*</sup></mat-label>
+                <input formControlName="GstRegNo" matInput placeholder="Gst Registration No."
+                       type="text">
+                <mat-error
+                  *ngIf="GeneralInformation.get('GstRegNo').hasError('required') && GeneralInformation.get('GstRegNo').dirty && GeneralInformation.get('GstRegNo').touched">
+                  Gst Reg. no is required*
+                </mat-error>
+                <mat-error
+                  *ngIf="GeneralInformation.get('GstRegNo').hasError('pattern')">
+                  invalid Gst Reg. no
+                </mat-error>
+              </mat-form-field>
+              <mat-form-field appearance="outline" fxFlex="30.5">
+                <mat-label>Pan Number<sup style="color: red">*</sup></mat-label>
+                <input formControlName="PanNo" matInput placeholder="Pan Number"
+                       type="text">
+                <mat-error
+                  *ngIf="GeneralInformation.get('PanNo').hasError('required') && GeneralInformation.get('PanNo').dirty && GeneralInformation.get('PanNo').touched">
+                  Pan no is required*
+                </mat-error>
+                <mat-error
+                  *ngIf="GeneralInformation.get('PanNo').hasError('pattern')">
+                  Invalid Pan no
+                </mat-error>
+              </mat-form-field>
+                </div>
+              </div>
+
+              <div fxFlex="" fxLayout="row" fxLayoutAlign="end">
+
+                <button [disabled]="GeneralInformation.invalid" (click)="ItemCreate()" *ngIf="type?.toLowerCase()=='edit';else elseblock"
+                        color="accent" mat-raised-button>
+                  <mat-icon>update</mat-icon>&nbsp;Update
+                </button>
+                <ng-template #elseblock>
+                  <button [disabled]="GeneralInformation.invalid" (click)="ItemCreate()" color="accent" mat-raised-button>
+                    <mat-icon>save</mat-icon>&nbsp;Save
+                  </button>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

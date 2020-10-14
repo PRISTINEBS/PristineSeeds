@@ -1,0 +1,121 @@
+<div id="updateputwayguantity">
+
+    <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+        <div fxFlex="1 0 auto" fxLayout="column" fxLayoutAlign="start">
+            <div fxLayout="row" fxLayoutAlign="space-between center">
+                <b> Putway Information of : {{data?.PutwayHeaderNo}}</b>
+
+                <button (click)="delete_barcode()"
+                        aria-label="Submit"
+                        color="accent"
+                        mat-raised-button>
+                    Delete
+                </button>
+
+                <button (click)="send()" mat-dialog-close mat-icon-button>
+                    <mat-icon>close</mat-icon>
+                </button>
+
+
+            </div>
+            <br>
+            <mat-divider></mat-divider>
+            <br>
+
+            <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+
+
+                <div class="example-container">
+                    <table [dataSource]="dataSource" mat-table matSort>
+                        <!-- Checkbox Column -->
+                        <ng-container matColumnDef="select">
+                            <th *matHeaderCellDef mat-header-cell>
+                                <mat-checkbox (change)="$event ? masterToggle() : null"
+                                              [aria-label]="checkboxLabel()"
+                                              [checked]="selection.hasValue() && isAllSelected()"
+                                              [indeterminate]="selection.hasValue() && !isAllSelected()">
+                                </mat-checkbox>
+                            </th>
+                            <td *matCellDef="let row" mat-cell>
+                                <mat-checkbox (change)="$event ? selection.toggle(row) : null"
+                                              (click)="$event.stopPropagation()"
+                                              [aria-label]="checkboxLabel(row)"
+                                              [checked]="selection.isSelected(row)">
+                                </mat-checkbox>
+                            </td>
+                        </ng-container>
+
+                        <!-- Position Column -->
+                        <ng-container matColumnDef="position">
+                            <th *matHeaderCellDef mat-header-cell> No.</th>
+                            <td *matCellDef="let element" mat-cell> {{element.position}} </td>
+                        </ng-container>
+
+                        <!-- Name Column -->
+                        <ng-container matColumnDef="putway_no">
+                            <th *matHeaderCellDef mat-header-cell>
+                                <div class="filterHeader">
+                                    <b mat-sort-header>Putway No</b><br>
+                                    <input (keyup)="applyFilter($event.target.value,'putway_no')"
+                                           placeholder="Putway No">
+                                </div>
+                            </th>
+
+                            <td *matCellDef="let element" mat-cell> {{element.putway_no}} </td>
+                        </ng-container>
+
+                        <!-- Weight Column -->
+                        <ng-container matColumnDef="barcode">
+                            <th *matHeaderCellDef mat-header-cell>
+                                <div class="filterHeader">
+                                    <b mat-sort-header>Barcode</b><br>
+                                    <input (keyup)="applyFilter($event.target.value,'barcode')"
+                                           placeholder="Barcode">
+                                </div>
+                            </th>
+
+                            <td *matCellDef="let element" mat-cell> {{element.barcode}} </td>
+                        </ng-container>
+
+                        <!-- Symbol Column -->
+                        <ng-container matColumnDef="bincode">
+                            <th *matHeaderCellDef mat-header-cell>
+                                <div class="filterHeader">
+                                    <b mat-sort-header>Bincode</b><br>
+                                    <input (keyup)="applyFilter($event.target.value,'bincode')"
+                                           placeholder="bincode">
+                                </div>
+                            </th>
+                            <td *matCellDef="let element" mat-cell> {{element.bincode}} </td>
+                        </ng-container>
+
+
+                        <ng-container matColumnDef="quantity">
+                            <th *matHeaderCellDef mat-header-cell>Quantity</th>
+                            <td *matCellDef="let element" mat-cell> {{element.quantity}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="vendor_lot_no">
+                            <th *matHeaderCellDef mat-header-cell>Vendor Lot No</th>
+                            <td *matCellDef="let element" mat-cell> {{element.vendor_lot_no}} </td>
+                        </ng-container>
+
+                        <ng-container matColumnDef="expiry_date">
+                            <th *matHeaderCellDef mat-header-cell>Expiry Date</th>
+                            <td *matCellDef="let element" mat-cell> {{element.expiry_date}} </td>
+                        </ng-container>
+
+                        <tr *matHeaderRowDef="displayedColumns; sticky: true" mat-header-row></tr>
+                        <tr (click)="selection.toggle(row)" *matRowDef="let row; columns: displayedColumns;"
+                            mat-row>
+                        </tr>
+                    </table>
+                    <div *ngIf="dataSource?.data?.length<=0" class="h3 m-16">No Record Found.</div>
+                    <mat-divider *ngIf="dataSource?.data?.length<=0"></mat-divider>
+                </div>
+                <mat-paginator [pageSizeOptions]="[5, 9]" showFirstLastButtons></mat-paginator>
+            </div>
+
+        </div>
+    </div>
+</div>

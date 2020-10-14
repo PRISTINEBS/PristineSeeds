@@ -1,0 +1,52 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="TrayMaster">
+    <div class="content p-20" pristinePerfectScrollbar>
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+            <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column"
+                 fxLayoutAlign="start">
+                <div class="h2 mb-8 p-8">Pick Setup
+                </div>
+                <div fxLayout="column">
+                    <mat-divider></mat-divider>
+                </div>
+                <div class="p-16">
+                    <div fxLayout="column">
+                        <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="30px">
+                            <mat-form-field *ngIf="!(status==true)" appearance="outline" fxFlex="50">
+                                <mat-label>Minimum Bin To Pick</mat-label>
+                                <input [formControl]="minPickToPick" autocomplete="off" matInput readonly
+                                       type="number"/>
+                            </mat-form-field>
+                            <mat-form-field *ngIf="status==true" appearance="outline" fxFlex="50">
+                                <mat-label>Enter Bin To Pick Update</mat-label>
+                                <input [formControl]="UpdatePick" autocomplete="off" matInput type="number"/>
+                            </mat-form-field>
+                            <div *ngIf="!(status==true)" fxFlex="20">
+                                <button (click)="UpdateBin()" class="mr-sm-12"
+                                        color="accent"
+                                        mat-raised-button
+                                        style="height: 50px;width: 100px;margin-top: -38px!important;position: absolute">
+                                    <b>Update Bin</b>
+                                </button>
+                            </div>
+                            <div *ngIf="status==true" fxFlex="10">
+                                <button (click)="Submit()" class="mr-sm-12"
+                                        color="accent"
+                                        mat-raised-button
+                                        style="height: 50px;width: 100px;margin-top: -38px!important;position: absolute">
+                                    <b>Submit</b>
+                                </button>
+                            </div>
+                            <div *ngIf="status==true" fxFlex="10">
+                                <button (click)="Cancle()" class="mr-sm-12"
+                                        color="accent"
+                                        mat-raised-button
+                                        style="height: 50px;width: 100px;margin-top: -38px!important;position: absolute">
+                                    <b>Cancel</b>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

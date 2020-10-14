@@ -1,0 +1,161 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="gotfieldtests">
+  <div class="p-16" pristinePerfectScrollbar>
+    <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+      <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column"
+           fxLayoutAlign="start">
+
+        <div class="h3 mb-8 p-16" fxLayout="column" style="padding-top: 20px">
+          <div fxFlex="1 0 auto" fxLayout="row" fxLayout.lt-sm="row" fxLayoutGap="10px">
+
+            <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-between center"
+                 fxLayoutGap="10px">
+              <div fxFlex="50">
+                <b>GOT Field Tests </b>
+              </div>
+            </div>
+
+            <div fxFlex="10" fxLayout="row" fxLayoutAlign.lt-sm="center" style="padding-left: 30px;padding-top: 15px">
+              <div fxLayout="column" fxLayoutAlign.lt-sm="center">
+                <button (click)="saveGOTFieldTest()" mat-flat-button style="background-color: #2ac12adb;color: white">
+                  Save
+                </button>
+              </div>
+            </div>
+
+            <div fxFlex="10" fxLayout="row" fxLayoutAlign.lt-sm="center" style="padding-left: 30px;padding-top: 15px">
+              <div fxLayout="column" fxLayoutAlign.lt-sm="center">
+                <button (click)="submitGOTFieldTest()" mat-flat-button color="accent">
+                  Submit
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <mat-divider></mat-divider>
+        <br>
+
+        <div class="p-8" fxFlex fxLayout="column" fxLayout.lt-sm="column">
+          <div class="example-container">
+            <table [dataSource]="dataSource" mat-table matSort>
+              <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+                <th *matHeaderCellDef mat-header-cell>
+                  <div class="filterHeader">
+                    <b mat-sort-header>{{column|firstAnd_Split}}</b><br>
+                    <input (keyup)="applyFilter($event.target.value,column)"
+                           *ngIf="column!='select'"
+                           [placeholder]="column|firstAnd_Split">
+                    <mat-checkbox [(ngModel)]="selectAll" *ngIf="column=='select'" (change)="checkSelect($event)" class="example-margin" >Select All</mat-checkbox>
+                  </div>
+                </th>
+                <td *matCellDef="let element;let i=index" mat-cell>
+                  <p *ngIf="column!='select' && column!='total_no_of_plants' && column!='total_self_plants'
+                     && column!='total_off_type_plants' && column!='result' && column!='date_of_result_declared'
+                     && column!='got_off_type_plant_code' && column != 'got_off_type_plant_description';else elseAction">{{element[column]}}</p>
+                  <ng-template #elseAction>
+                    <mat-checkbox *ngIf="column=='select'" (change)="checkPeticulerchckbox($event)" [(ngModel)]="element.got_test_done" class="example-margin" ></mat-checkbox>
+                  </ng-template>
+
+                  <div class="CellColumn"
+                       *ngIf="column=='total_no_of_plants'">
+                    <input [(ngModel)]="element['total_no_of_plants']"
+                           (keyup)="total_no_of_plants_change(element)"
+                           autocomplete="off"
+                           class="myInput"
+                           focused="'true'"
+                           placeholder="total no of plants"
+                           matInput pattern="[0-9]*"
+                           type="number">
+                  </div>
+
+                  <div class="CellColumn"
+                       *ngIf="column=='total_self_plants'">
+                    <input [(ngModel)]="element['total_self_plants']"
+                           (keyup)="total_self_plants_change(element)"
+                           autocomplete="off"
+                           class="myInput"
+                           focused="'true'"
+                           placeholder="total self plants"
+                           matInput pattern="[0-9]*"
+                           type="number">
+                  </div>
+
+                  <div class="CellColumn"
+                       *ngIf="column=='total_off_type_plants'">
+                    <input [(ngModel)]="element['total_off_type_plants']"
+                           (keyup)="total_off_type_plants_change(element)"
+                           autocomplete="off"
+                           class="myInput"
+                           focused="'true'"
+                           placeholder="total off type plants"
+                           matInput pattern="[0-9]*"
+                           type="number">
+                  </div>
+
+                  <div class="CellColumn"
+                       *ngIf="column=='result'">
+                    <input [(ngModel)]="element['result']"
+                           autocomplete="off"
+                           class="myInput"
+                           focused="'true'"
+                           matInput
+                           readonly
+                           type="text">
+                  </div>
+
+                  <div class="CellColumn"
+                       *ngIf="column=='date_of_result_declared'">
+                    <input [(ngModel)]="element['date_of_result_declared']"
+                           autocomplete="off"
+                           class="myInput"
+                           focused="'true'"
+                           matInput
+                           readonly
+                           type="text">
+                  </div>
+
+                  <div *ngIf="column=='got_off_type_plant_code'" >
+                    <mat-form-field appearance="outline" style="width: 180px" >
+                      <mat-label>got off type plant code </mat-label>
+                      <mat-select autocomplete="off" [(ngModel)]="element['got_off_type_plant_code']">
+                        <input [(ngModel)]="element['got_off_type_plant_code']"
+                               [ngModelOptions]="{standalone:true}"
+                               (ngModelChange)="get_got_off_type_plants_On_Line()"
+                               autocomplete="off" class="myInput"
+                               focused="'true'" matInput placeholder="Search" type="text">
+                        <mat-option  *ngFor="let got_off_type_plants of gotofftypeplants" (click)="set_got_off_type_plants_on_line(element,got_off_type_plants)"
+                                    [value]="got_off_type_plants.got_off_type_plant_code">{{got_off_type_plants.got_off_type_plant_code + ' ( ' + got_off_type_plants.description + ' )'}}</mat-option>
+                      </mat-select>
+                      <mat-error>
+                        got off type plant code is required
+                      </mat-error>
+
+                    </mat-form-field>
+
+                  </div>
+
+                  <div class="CellColumn"
+                       *ngIf="column=='got_off_type_plant_description'">
+                    <input [(ngModel)]="element['got_off_type_plant_description']"
+                           autocomplete="off"
+                           class="myInput"
+                           focused="'true'"
+                           matInput
+                           readonly
+                           type="text">
+                  </div>
+
+                </td>
+              </ng-container>
+              <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+              <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+            </table>
+            <div *ngIf="dataSource?.data?.length<=0" class="h3 m-16">No Record Found.</div>
+            <mat-divider *ngIf="dataSource?.data?.length<=0"></mat-divider>
+          </div>
+          <mat-paginator [pageSizeOptions]="[ 5,10, 20, 30,40,50]" showFirstLastButtons></mat-paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

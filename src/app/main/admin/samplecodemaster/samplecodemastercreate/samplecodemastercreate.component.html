@@ -1,0 +1,67 @@
+<div fxFlex fxLayout="column" fxLayoutAlign="start" id="AddVarietyQualityParameter">
+  <div mat-dialog-title style="margin-top: -35px">
+    <div class="h5 mb-8 pt-16">Create Sample Code Master
+    </div>
+    <div fxLayout="column" fxLayoutAlign="start">
+      <mat-divider></mat-divider>
+    </div>
+  </div>
+  <div [formGroup]="samplecodemasterform" fxFlex="" fxLayout="column">
+
+    <div fxFlex="1 0 Auto" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="start" fxLayoutGap="20px"
+         fxLayoutGap.lt-sm="0px">
+
+      <div fxFlex="33"  fxLayout="column">
+        <mat-form-field appearance="outline">
+          <mat-label>Lot No <sup style="color: red">*</sup></mat-label>
+          <input autocomplete="off" formControlName="lot_no" matInput
+                 type="text">
+          <mat-error
+            *ngIf="samplecodemasterform.get('lot_no').hasError('required') && samplecodemasterform.get('lot_no').touched && samplecodemasterform.get('lot_no').dirty">
+            Lot No is Required
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="33"  fxLayout="column">
+        <mat-form-field appearance="outline">
+          <mat-label>Sample Code <sup style="color: red">*</sup></mat-label>
+          <input autocomplete="off" formControlName="sample_code" matInput
+                 type="text">
+          <mat-error
+            *ngIf="samplecodemasterform.get('sample_code').hasError('required') && samplecodemasterform.get('sample_code').touched && samplecodemasterform.get('sample_code').dirty">
+            Sample Code is Required
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="33"  fxLayout="column">
+        <mat-form-field appearance="outline" >
+          <mat-label>Year <sub style="color:red">*</sub></mat-label>
+          <mat-select formControlName="year" >
+            <mat-option *ngFor="let year of year"
+                        [value]="year">{{year}}</mat-option>
+
+          </mat-select>
+          <mat-error
+            *ngIf="samplecodemasterform.get('year').hasError('required') && samplecodemasterform.get('year').touched && samplecodemasterform.get('year').dirty">
+            Year Required
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+    </div>
+
+  </div>
+  <div class="pt-16" fxLayout="row" fxLayoutAlign="end">
+    <button [disabled]="samplecodemasterform.invalid" (click)="CreateItemCategory()" *ngIf="data.flag.toLowerCase()=='insert'"
+            class="mat-accent mr-16"
+            mat-raised-button>Save
+    </button>
+    <button (click)="cancle()" color="warn" mat-raised-button>Cancel</button>
+  </div>
+
+</div>
+
+
+

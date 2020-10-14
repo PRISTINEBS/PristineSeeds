@@ -1,0 +1,109 @@
+<div class="page-layout simple right-sidebar inner-scroll" id="RosterMaster">
+    <div class="page-layout carded fullwidth">
+        <!-- CENTER -->
+        <div class="center" pristinePerfectScrollbar>
+            <div class="wrapper">
+                <mat-accordion class="example-headers-align">
+                    <mat-expansion-panel (opened)="setStep(0)" [expanded]="step === 0">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                <div class="shiftInnerClass">
+                                    {{(_roasterMasterService.getDefaultRoaster[0]?.shift_name == undefined || _roasterMasterService.getDefaultRoaster[0]?.shift_name == null || _roasterMasterService.getDefaultRoaster[0]?.shift_name == '') ? "Not Available" : _roasterMasterService.getDefaultRoaster[0]?.shift_name}}
+                                    (
+                                    <b>{{(_roasterMasterService.getDefaultRoaster[0]?.start_time == undefined || _roasterMasterService.getDefaultRoaster[0]?.start_time == null || _roasterMasterService.getDefaultRoaster[0]?.start_time == '') ? "0:00 AM" : _roasterMasterService.getDefaultRoaster[0]?.start_time|time24to12}}</b>
+                                    &nbsp;To&nbsp;<b>{{(_roasterMasterService.getDefaultRoaster[0]?.end_time == undefined || _roasterMasterService.getDefaultRoaster[0]?.end_time == null || _roasterMasterService.getDefaultRoaster[0]?.end_time == '') ? "0:00 AM" : _roasterMasterService.getDefaultRoaster[0]?.end_time|time24to12}}</b>
+                                    ) Shift Roster ( <b style="color: red">{{_sessionManageMent.getWorkType}}</b>)
+                                </div>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <form>
+                            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+
+                                <mat-form-field appearance="outline" class="ml-sm-12" fxFlex="47">
+                                    <mat-label>Select Zone</mat-label>
+                                    <mat-select [formControl]="ZoneType">
+                                        <mat-option *ngFor="let option of allPickZone"
+                                                    [value]="option.zone_type">{{option.zone_type}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <mat-form-field appearance="outline" class="ml-sm-12" fxFlex="47">
+                                    <mat-label>Select Picker</mat-label>
+                                    <mat-select [formControl]="SelectTedPicker" multiple>
+                                        <mat-option *ngFor="let option of allPicker"
+                                                    [value]="option.email">{{option.email}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+
+                                <div class="addbutton" fxFlex="6">
+                                    <button (click)="AddRosterList()" mat-icon-button
+                                            style=" box-shadow: 1px 1px 1px 1px rgba(170,170,170,0.42);">
+                                        <mat-icon>add</mat-icon>
+                                    </button>
+                                </div>
+
+                            </div>
+                            <div fxFlexFill fxLayout="column">
+                                <div fxLayout="row">
+                                    <mat-checkbox [formControl]="isDefault" class="mr-sm-12">Make It Default
+                                    </mat-checkbox>
+                                    &nbsp;&nbsp;
+                                    <button (click)="submitRoasterdata()"
+                                            [disabled]="(_roasterMasterService.getDefaultRoaster[0]?.shift_name==undefined || _roasterMasterService.getDefaultRoaster[0]?.shift_name==null || _roasterMasterService.getDefaultRoaster[0]?.shift_name=='')?true:false"
+                                            class="mr-sm-12" color="accent" mat-raised-button>
+                                        <b *ngIf="!submitHitForServer;else submitclick">Submit</b>
+                                        <ng-template #submitclick>
+                                            <mat-progress-spinner color="warn" diameter="36"
+                                                                  mode="indeterminate"></mat-progress-spinner>
+                                        </ng-template>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                        <br>
+                        <mat-divider
+                            *ngIf="_roasterMasterService.getDefaultRoaster?.length>0 && _roasterMasterService.getDefaultRoaster[0].condition.toLowerCase()=='true'"></mat-divider>
+                        <div (cdkDropListDropped)="dropGroup($event)" [cdkDropListData]="ZonePickCombination"
+                             cdkDropList>
+                            <div *ngFor="let group of ZonePickCombination;let i = index;" [cdkDragData]="group"
+                                 cdkDrag
+                                 cdkDropListGroup class="roaster-container">
+                                <h2>{{group.zone}}
+                                    <button (click)="group.add_cust=!group.add_cust" *ngIf="!group.add_cust"
+                                            mat-icon-button>
+                                        <mat-icon>add</mat-icon>
+                                    </button>
+                                    <button
+                                        (click)="group.add_cust=!group.add_cust;AddRosterList_inner(group.zone,SelectTedPickerinner.value,i,group.id);"
+                                        *ngIf="group.add_cust" mat-icon-button>
+                                        <mat-icon>save</mat-icon>
+                                    </button>
+                                </h2>
+                                <mat-select *ngIf="group.add_cust" [formControl]="SelectTedPickerinner" multiple
+                                            placeholder="Select Picker">
+                                    <mat-option *ngFor="let option of allPicker"
+                                                [value]="option.email">{{option.email}}</mat-option>
+                                </mat-select>
+                                <div (cdkDropListDropped)="dropItem($event,group.zone)" [cdkDropListConnectedTo]="getConnectedList()"
+                                     [cdkDropListData]="group.picker"
+                                     cdkDropList
+                                     class="example-list"
+                                     id={{group.id}}>
+                                    <div *ngFor="let item of group.picker;let j=index"
+                                         [cdkDragData]="item"
+                                         cdkDrag class="example-box">
+                                        {{item.picker_id}}
+                                        <button (click)="RemovePickerFromZoneData(i,j,item.picker_id,group.zone)"
+                                                class="material-icons" class="myClearButton" mat-icon-button>
+                                            <mat-icon>clear</mat-icon>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+        </div>
+    </div>
+</div>

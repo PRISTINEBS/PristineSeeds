@@ -1,0 +1,45 @@
+<div fxFlex fxLayout="column" fxLayoutAlign="start" id="AddItemAttributecreation">
+    <div mat-dialog-title style="margin-top: -35px">
+        <div class="h5 mb-8 pt-16">Create Attribute Type
+        </div>
+        <div fxLayout="column" fxLayoutAlign="start">
+            <mat-divider></mat-divider>
+        </div>
+    </div>
+    <div [formGroup]="itemattributetype" fxFlex="" fxLayout="column">
+        <div fxFlex="" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="start" fxLayoutGap="20px"
+             fxLayoutGap.lt-sm="0px">
+            <mat-form-field appearance="outline">
+                <mat-label>Attribute Code <sub style="color:red">*</sub></mat-label>
+                <input formControlName="attrcode" matInput type="text">
+                <mat-error
+                    *ngIf="itemattributetype.get('attrcode').hasError('required') && itemattributetype.get('attrcode').touched && itemattributetype.get('attrcode').dirty">
+                    Category Code Required
+                </mat-error>
+            </mat-form-field>
+            <div fxLayout="column">
+                <mat-form-field appearance="outline">
+                    <mat-label>Description</mat-label>
+                    <input formControlName="description" matInput type="text">
+                </mat-form-field>
+            </div>
+        </div>
+
+    </div>
+    <div class="pt-16" fxLayout="row" fxLayoutAlign="end">
+        <button (click)="CreateItemCategory()" *ngIf="data.flag.toLowerCase()=='insert'else elseblock"
+                class="mat-accent mr-16"
+                mat-raised-button>Save
+        </button>
+        <ng-template #elseblock>
+            <button (click)="CreateItemCategory()" class="mat-accent mr-16"
+                    mat-raised-button>Update
+            </button>
+        </ng-template>
+        <button (click)="cancle()" color="warn" mat-raised-button>Cancel</button>
+    </div>
+
+</div>
+
+
+

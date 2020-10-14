@@ -1,0 +1,102 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="gateentryview">
+  <div class="p-16" pristinePerfectScrollbar>
+    <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+      <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column"
+           fxLayoutAlign="start">
+        <div class="h3 mb-8 p-16" fxLayout="column" style="padding-top: 20px">
+          <div fxFlex="1 0 auto" fxLayout="row" fxLayout.lt-sm="row" fxLayoutGap="10px">
+            <b>Gate Entry View ( </b><b
+            style="color: red"> {{ sessionManageMent.getLocationName}} </b><b> )</b>
+          </div>
+        </div>
+
+        <mat-divider></mat-divider>
+        <br>
+
+        <div class="h3 mb-8 p-16">
+          <b>Gate Entry Header ( </b>
+          <b style="color: red"> {{this.gateentryno.gateentryid}} </b><b> )</b>
+          <br> <br>
+          <!--          *ngIf="this.iteminfo?.length>0"-->
+          <div *ngIf="this.dataSource?.data.length>0" class="headertable" fxLayout="column" fxLayoutGap="10px">
+            <table style=" border:0px;margin-top: 10px;">
+              <tbody style="font-size: 12px;">
+
+              <tr>
+                <th>Vendor No :</th>
+                <td>{{this.gateentryinfoandupdatemodel?.vendor_no}}</td>
+                <th>Vendor Name :</th>
+                <td>{{this.gateentryinfoandupdatemodel?.vender_no_or_company}}</td>
+                <th>Vehicle No :</th>
+                <td>{{this.gateentryinfoandupdatemodel?.vehicle_no}}</td>
+              </tr>
+
+              <tr>
+                <th>Transport :</th>
+                <td>{{this.gateentryinfoandupdatemodel?.transporter}}</td>
+                <th>Driver Name :</th>
+                <td>{{this.gateentryinfoandupdatemodel?.drive_name}}</td>
+                <th>Driver Mob No :</th>
+                <td>{{this.gateentryinfoandupdatemodel?.driver_number}}</td>
+              </tr>
+
+              <tr>
+                <th>LR No :</th>
+                <td>{{this.gateentryinfoandupdatemodel?.lr_no}}</td>
+                <th>LR Date :</th>
+                <td>{{this.gateentryinfoandupdatemodel?.lr_date}}</td>
+                <th>Status :</th>
+                <td>{{this.gateentryinfoandupdatemodel?.gate_entry_status}}</td>
+              </tr>
+
+              <tr>
+                <th>Created By :</th>
+                <td>{{this.gateentryinfoandupdatemodel?.created_by}}</td>
+                <th>Created On :</th>
+                <td>{{this.gateentryinfoandupdatemodel?.gate_entry_datetime|date:'dd/MM/yyyy HH:mm a'}}</td>
+                <td></td>
+                <td></td>
+              </tr>
+
+              </tbody>
+            </table>
+          </div>
+
+          <br>
+          <mat-divider></mat-divider>
+          <br>
+          <b style="color: red"> Gate Entry Challan Line </b>
+          <br>
+          <br>
+          <div class="example-container">
+            <table [dataSource]="dataSource" mat-table matSort>
+              <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+                <th *matHeaderCellDef mat-header-cell>
+                  <div class="filterHeader">
+                    <b mat-sort-header>{{column|firstAnd_Split}}</b><br>
+                    <input (keyup)="applyFilter($event.target.value,column)"
+                           *ngIf="column!='Edit' && column!='View'"
+                           [placeholder]="column|firstAnd_Split"
+                           matInput>
+                  </div>
+                </th>
+                <td *matCellDef="let element" mat-cell>
+                  <p *ngIf="column!='Edit' && column!='View'">{{element[column]}}</p>
+
+                </td>
+              </ng-container>
+              <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+              <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+            </table>
+            <div *ngIf="dataSource?.data?.length<=0" class="h3 m-16">No Record Found.</div>
+            <mat-divider *ngIf="dataSource?.data?.length<=0"></mat-divider>
+          </div>
+          <mat-paginator [pageSizeOptions]="[ 5, 10, 20, 30,40,50]"
+                         showFirstLastButtons></mat-paginator>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

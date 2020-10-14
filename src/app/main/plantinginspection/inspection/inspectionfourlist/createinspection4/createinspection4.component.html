@@ -1,0 +1,790 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column">
+  <div class="content p-20" pristinePerfectScrollbar>
+    <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+      <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column" fxLayoutAlign="start">
+
+        <div class="h3 mb-8 p-16">
+
+          <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column"
+               fxLayoutAlign="space-between center"
+               fxLayoutGap="10px">
+            <div fxFlex="80">
+              <b>Inspection Four ( </b> <b
+              style="color: red"> {{sessionManageMent.getLocationName}}</b><b>
+              ) </b>
+            </div>
+
+            <div *ngIf="this.dataSource?.data[0]?.status_name.toLowerCase() == 'created'" fxLayout="row" fxLayoutAlign="end">
+              <button (click)="submit_inspection()"
+                      aria-label="Submit"
+                      color="accent"
+                      mat-raised-button mat-ripple>
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="h3 mb-8 p-16">
+
+          <div *ngIf="this.dataSource?.data?.length == 0 || this.scan_prod == true " fxLayout="column" fxLayoutGap="10px">
+            <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+
+
+              <div fxFlex="40" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                <div fxLayout="column" style="width: 80%;">
+                  <mat-form-field appearance="outline" >
+                    <mat-label>Scan Production Lot No <sup style="color: red">*</sup></mat-label>
+                    <input autocomplete="false"
+                           [formControl]="scan_production_lot_no"
+                           (keyup.enter)="get_production_lot_no()"
+                           matInput
+                           placeholder="Scan Production Lot No">
+                  </mat-form-field>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <b>Inspection Four Information</b>
+
+          <div>
+            <div class="headertable" fxLayout="column" fxLayoutGap="10px">
+
+              <table>
+                <tbody>
+                <tr>
+                  <td><b>Inspection Four No : </b>&nbsp;&nbsp;&nbsp;&nbsp;{{this.dataSource?.data[0]?.inspection_no}}</td>
+                  <td><b>Planting No : </b>&nbsp;&nbsp;&nbsp;&nbsp;{{this.dataSource?.data[0]?.planting_no}}</td>
+                  <td><b>Document Date : </b>&nbsp;&nbsp;&nbsp;&nbsp;{{this.dataSource?.data[0]?.created_on| date : 'dd/MM/yyyy'}}</td>
+                </tr>
+
+                <tr>
+                  <td><b>Organizer No : </b>&nbsp;&nbsp;&nbsp;&nbsp;{{this.dataSource?.data[0]?.organiser_code}}</td>
+                  <td><b>Organizer Name : </b>&nbsp;&nbsp;&nbsp;&nbsp;{{this.dataSource?.data[0]?.organiser_name}}</td>
+                  <td><b>Organizer Address : </b>&nbsp;&nbsp;&nbsp;&nbsp;{{this.dataSource?.data[0]?.address}}</td>
+                </tr>
+
+                <tr>
+                  <td><b>Organizer Address 2 : </b>&nbsp;&nbsp;&nbsp;&nbsp;{{this.dataSource?.data[0]?.address2}}</td>
+                  <td><b>Zone : </b>&nbsp;&nbsp;&nbsp;&nbsp;{{this.dataSource?.data[0]?.zone}}</td>
+                  <td><b>State : </b>&nbsp;&nbsp;&nbsp;&nbsp;{{this.dataSource?.data[0]?.state}}</td>
+                </tr>
+
+                <tr>
+                  <td><b>City : </b>&nbsp;&nbsp;&nbsp;&nbsp;{{this.dataSource?.data[0]?.city}}</td>
+                  <td><b>Region : </b>&nbsp;&nbsp;&nbsp;&nbsp;{{this.dataSource?.data[0]?.region}}</td>
+                  <td><b>District : </b>&nbsp;&nbsp;&nbsp;&nbsp;{{this.dataSource?.data[0]?.district}}</td>
+                </tr>
+
+                <tr>
+                  <td><b>Taluka : </b>&nbsp;&nbsp;&nbsp;&nbsp;{{this.dataSource?.data[0]?.taluka}}</td>
+                  <td><b>Contact : </b>&nbsp;&nbsp;&nbsp;&nbsp;{{this.dataSource?.data[0]?.mobile_no}}</td>
+                  <td><b>Season : </b>&nbsp;&nbsp;&nbsp;&nbsp;{{this.dataSource?.data[0]?.season}}</td>
+                </tr>
+
+                </tbody>
+              </table>
+
+            </div>
+
+          </div>
+          <mat-divider></mat-divider>
+          <br>
+
+          <!--          <div *ngIf="this.inspectioncreatemodels?.inspection_1==0 " [formGroup]="inspection_form" name="adjustment_work" novalidate>-->
+
+          <!--            <div fxLayout="column" fxLayoutGap="10px">-->
+          <!--              <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">-->
+
+          <!--                <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">-->
+          <!--                  <div fxLayout="column" style="width: 80%;">-->
+          <!--                    <mat-form-field appearance="outline">-->
+          <!--                      <mat-label>Date Of Inspection <sup style="color: red">*</sup></mat-label>-->
+          <!--                      <input (focusin)="insdate.open()"-->
+          <!--                             [matDatepicker]="insdate"-->
+          <!--                             [min]="minDateexp" autocomplete="false"-->
+          <!--                             formControlName="inspectionDate"-->
+          <!--                             matInput-->
+          <!--                             placeholder="Choose Inspection Date">-->
+          <!--                      <mat-datepicker #insdate="matDatepicker"></mat-datepicker>-->
+          <!--                      <mat-icon class="secondary-text" matSuffix>date_range</mat-icon>-->
+          <!--                      <mat-error>-->
+          <!--                        Inspection Date is required-->
+          <!--                      </mat-error>-->
+          <!--                    </mat-form-field>-->
+          <!--                  </div>-->
+          <!--                </div>-->
+
+          <!--                <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">-->
+          <!--                  <div fxLayout="column" style="width: 80%;">-->
+          <!--                    <mat-form-field appearance="outline" >-->
+          <!--                      <mat-label>Isolation Distance <sup style="color: red">*</sup></mat-label>-->
+          <!--                      <mat-select autocomplete="off" formControlName="isolationDistance" >-->
+          <!--                        <mat-option-->
+          <!--                          *ngFor="let isolationdistance of isolation_distance"-->
+          <!--                          [value]="isolationdistance">{{isolationdistance}}</mat-option>-->
+          <!--                      </mat-select>-->
+          <!--                      <mat-error>-->
+          <!--                        Isolation Distance is required-->
+          <!--                      </mat-error>-->
+
+          <!--                    </mat-form-field>-->
+          <!--                  </div>-->
+          <!--                </div>-->
+
+          <!--                <div fxFlex="20" fxLayout="row"-->
+          <!--                     fxLayoutAlign.lt-sm="center">-->
+          <!--                  <div fxLayout="column" style="width: 80%;">-->
+          <!--                    <mat-form-field appearance="outline">-->
+          <!--                      <mat-label>Isolation Distance In Meter</mat-label>-->
+          <!--                      <input autocomplete="false"-->
+          <!--                             [readonly]="this.inspection_form.get('isolationDistance').value == 'Maintained'-->
+          <!--                             || this.inspection_form.get('isolationDistance').value == '' "-->
+          <!--                             formControlName="isolationDistanceInM"-->
+          <!--                             matInput-->
+          <!--                             type="number"-->
+          <!--                             placeholder="Enter Isolation Distance In Meter">-->
+          <!--                      <mat-icon class="secondary-text" matSuffix>number</mat-icon>-->
+          <!--                    </mat-form-field>-->
+          <!--                  </div>-->
+          <!--                </div>-->
+
+          <!--                <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">-->
+          <!--                  <div fxLayout="column" style="width: 80%;">-->
+          <!--                    <mat-form-field appearance="outline" >-->
+          <!--                      <mat-label>Crop <sup style="color: red">*</sup></mat-label>-->
+          <!--                      <mat-select formControlName="previousCrop" >-->
+          <!--                        <mat-option *ngFor="let crop of get_crop"-->
+          <!--                                    [value]="crop.id">{{crop.name}}</mat-option>-->
+          <!--                      </mat-select>-->
+          <!--                    </mat-form-field>-->
+          <!--                  </div>-->
+          <!--                </div>-->
+
+          <!--                <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">-->
+          <!--                  <div fxLayout="column" style="width: 80%;">-->
+          <!--                    <mat-form-field appearance="outline" >-->
+          <!--                      <mat-label>Germination Status <sup style="color: red">*</sup></mat-label>-->
+          <!--                      <mat-select autocomplete="off" formControlName="germinationStatus" >-->
+          <!--                        <mat-option-->
+          <!--                          *ngFor="let germinationstatus of germination_status"-->
+          <!--                          [value]="germinationstatus">{{germinationstatus}}</mat-option>-->
+          <!--                      </mat-select>-->
+          <!--                      <mat-error>-->
+          <!--                        Germination Status is required-->
+          <!--                      </mat-error>-->
+
+          <!--                    </mat-form-field>-->
+          <!--                  </div>-->
+          <!--                </div>-->
+
+          <!--              </div>-->
+          <!--            </div>-->
+
+          <!--            <div fxLayout="column" fxLayoutGap="10px">-->
+          <!--              <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">-->
+
+          <!--                <div fxFlex="20" fxLayout="row"-->
+          <!--                     fxLayoutAlign.lt-sm="center">-->
+          <!--                  <div fxLayout="column" style="width: 80%;">-->
+          <!--                    <mat-form-field appearance="outline">-->
+          <!--                      <mat-label>Germination %</mat-label>-->
+          <!--                      <input autocomplete="false"-->
+          <!--                             [readonly]="this.inspection_form.get('germinationStatus').value == 'Satisfactory'-->
+          <!--                             || this.inspection_form.get('germinationStatus').value == '' "-->
+          <!--                             formControlName="germinationPer"-->
+          <!--                             matInput-->
+          <!--                             type="number"-->
+          <!--                             placeholder="Enter Germination %">-->
+          <!--                      <mat-icon class="secondary-text" matSuffix>number</mat-icon>-->
+          <!--                    </mat-form-field>-->
+          <!--                  </div>-->
+          <!--                </div>-->
+
+          <!--                <div fxFlex="20" fxLayout="row"-->
+          <!--                     fxLayoutAlign.lt-sm="center">-->
+          <!--                  <div fxLayout="column" style="width: 80%;">-->
+          <!--                    <mat-form-field appearance="outline">-->
+          <!--                      <mat-label>Area</mat-label>-->
+          <!--                      <input autocomplete="false"-->
+          <!--                             formControlName="area"-->
+          <!--                             matInput-->
+          <!--                             type="number"-->
+          <!--                             placeholder="Enter Area">-->
+          <!--                      <mat-icon class="secondary-text" matSuffix>number</mat-icon>-->
+          <!--                    </mat-form-field>-->
+          <!--                  </div>-->
+          <!--                </div>-->
+
+          <!--                <div fxFlex="20" fxLayout="row"-->
+          <!--                     fxLayoutAlign.lt-sm="center">-->
+          <!--                  <div fxLayout="column" style="width: 80%;">-->
+          <!--                    <mat-form-field appearance="outline">-->
+          <!--                      <mat-label>Rejected Area</mat-label>-->
+          <!--                      <input autocomplete="false"-->
+          <!--                             formControlName="rejectedArea"-->
+          <!--                             matInput-->
+          <!--                             type="number"-->
+          <!--                             placeholder="Enter Rejected Area">-->
+          <!--                      <mat-icon class="secondary-text" matSuffix>number</mat-icon>-->
+          <!--                    </mat-form-field>-->
+          <!--                  </div>-->
+          <!--                </div>-->
+
+          <!--                <div fxFlex="20" fxLayout="row"-->
+          <!--                     fxLayoutAlign.lt-sm="center">-->
+          <!--                  <div fxLayout="column" style="width: 80%;">-->
+          <!--                    <mat-form-field appearance="outline">-->
+          <!--                      <mat-label>Net Area</mat-label>-->
+          <!--                      <input autocomplete="false"-->
+          <!--                             formControlName="netArea"-->
+          <!--                             matInput-->
+          <!--                             readonly-->
+          <!--                             type="number"-->
+          <!--                             placeholder="Enter Net Area">-->
+          <!--                      <mat-icon class="secondary-text" matSuffix>number</mat-icon>-->
+          <!--                    </mat-form-field>-->
+          <!--                  </div>-->
+          <!--                </div>-->
+
+          <!--              </div>-->
+          <!--            </div>-->
+
+
+          <!--            <div fxLayout="column" fxLayoutGap="10px">-->
+          <!--              <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">-->
+
+          <!--                <div fxFlex="20" fxLayout="row"-->
+          <!--                     fxLayoutAlign.lt-sm="center">-->
+          <!--                  <div fxLayout="column" style="width: 80%;">-->
+          <!--                    <mat-form-field appearance="outline">-->
+          <!--                      <mat-label>Spacing Variety</mat-label>-->
+          <!--                      <input autocomplete="false"-->
+          <!--                             formControlName="spacingVariety"-->
+          <!--                             matInput-->
+          <!--                             type="number"-->
+          <!--                             placeholder="Enter Spacing Variety">-->
+          <!--                      <mat-icon class="secondary-text" matSuffix>number</mat-icon>-->
+          <!--                    </mat-form-field>-->
+          <!--                  </div>-->
+          <!--                </div>-->
+
+          <!--                <div fxFlex="20" fxLayout="row"-->
+          <!--                     fxLayoutAlign.lt-sm="center">-->
+          <!--                  <div fxLayout="column" style="width: 80%;">-->
+          <!--                    <mat-form-field appearance="outline">-->
+          <!--                      <mat-label>Spacing Male</mat-label>-->
+          <!--                      <input autocomplete="false"-->
+          <!--                             formControlName="spacingMale"-->
+          <!--                             matInput-->
+          <!--                             type="number"-->
+          <!--                             placeholder="Enter Spacing Male">-->
+          <!--                      <mat-icon class="secondary-text" matSuffix>number</mat-icon>-->
+          <!--                    </mat-form-field>-->
+          <!--                  </div>-->
+          <!--                </div>-->
+
+          <!--                <div fxFlex="20" fxLayout="row"-->
+          <!--                     fxLayoutAlign.lt-sm="center">-->
+          <!--                  <div fxLayout="column" style="width: 80%;">-->
+          <!--                    <mat-form-field appearance="outline">-->
+          <!--                      <mat-label>Spacing Female</mat-label>-->
+          <!--                      <input autocomplete="false"-->
+          <!--                             formControlName="spacingFemale"-->
+          <!--                             matInput-->
+          <!--                             type="number"-->
+          <!--                             placeholder="Enter Spacing Female">-->
+          <!--                      <mat-icon class="secondary-text" matSuffix>number</mat-icon>-->
+          <!--                    </mat-form-field>-->
+          <!--                  </div>-->
+          <!--                </div>-->
+
+          <!--                <div fxFlex="20" fxLayout="row"-->
+          <!--                     fxLayoutAlign.lt-sm="center">-->
+          <!--                  <div fxLayout="column" style="width: 80%;">-->
+          <!--                    <mat-form-field appearance="outline">-->
+          <!--                      <mat-label>Plant Population Variety</mat-label>-->
+          <!--                      <input autocomplete="false"-->
+          <!--                             formControlName="plantPopulationVariety"-->
+          <!--                             matInput-->
+          <!--                             type="number"-->
+          <!--                             placeholder="Enter Plant Population Variety">-->
+          <!--                      <mat-icon class="secondary-text" matSuffix>number</mat-icon>-->
+          <!--                    </mat-form-field>-->
+          <!--                  </div>-->
+          <!--                </div>-->
+
+          <!--                <div fxFlex="20" fxLayout="row"-->
+          <!--                     fxLayoutAlign.lt-sm="center">-->
+          <!--                  <div fxLayout="column" style="width: 80%;">-->
+          <!--                    <mat-form-field appearance="outline">-->
+          <!--                      <mat-label>Plant Population Male</mat-label>-->
+          <!--                      <input autocomplete="false"-->
+          <!--                             formControlName="plantPopulationMale"-->
+          <!--                             matInput-->
+          <!--                             type="number"-->
+          <!--                             placeholder="Enter Plant Population Male">-->
+          <!--                      <mat-icon class="secondary-text" matSuffix>number</mat-icon>-->
+          <!--                    </mat-form-field>-->
+          <!--                  </div>-->
+          <!--                </div>-->
+
+          <!--              </div>-->
+          <!--            </div>-->
+
+          <!--            <div fxLayout="column" fxLayoutGap="10px">-->
+          <!--              <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">-->
+
+          <!--                <div fxFlex="20" fxLayout="row"-->
+          <!--                     fxLayoutAlign.lt-sm="center">-->
+          <!--                  <div fxLayout="column" style="width: 80%;">-->
+          <!--                    <mat-form-field appearance="outline">-->
+          <!--                      <mat-label>Plant Population Female</mat-label>-->
+          <!--                      <input autocomplete="false"-->
+          <!--                             formControlName="plantPopulationFemale"-->
+          <!--                             matInput-->
+          <!--                             type="number"-->
+          <!--                             placeholder="Enter Plant Population Female">-->
+          <!--                      <mat-icon class="secondary-text" matSuffix>number</mat-icon>-->
+          <!--                    </mat-form-field>-->
+          <!--                  </div>-->
+          <!--                </div>-->
+
+          <!--                <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">-->
+          <!--                  <div fxLayout="column" style="width: 80%;">-->
+          <!--                    <mat-form-field appearance="outline" >-->
+          <!--                      <mat-label>Crop Condition <sup style="color: red">*</sup></mat-label>-->
+          <!--                      <mat-select autocomplete="off" formControlName="cropCondition" >-->
+          <!--                        <mat-option-->
+          <!--                          *ngFor="let cropcondition of crop_condition"-->
+          <!--                          [value]="cropcondition">{{cropcondition}}</mat-option>-->
+          <!--                      </mat-select>-->
+          <!--                      <mat-error>-->
+          <!--                        Crop Condition is required-->
+          <!--                      </mat-error>-->
+
+          <!--                    </mat-form-field>-->
+          <!--                  </div>-->
+          <!--                </div>-->
+
+          <!--                <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">-->
+          <!--                  <div fxLayout="column" style="width: 80%;">-->
+          <!--                    <mat-form-field appearance="outline" >-->
+          <!--                      <mat-label>Crop Stage <sup style="color: red">*</sup></mat-label>-->
+          <!--                      <mat-select autocomplete="off" formControlName="cropStage" >-->
+          <!--                        <mat-option-->
+          <!--                          *ngFor="let cropstage of crop_stage"-->
+          <!--                          [value]="cropstage">{{cropstage}}</mat-option>-->
+          <!--                      </mat-select>-->
+          <!--                      <mat-error>-->
+          <!--                        Crop Stage is required-->
+          <!--                      </mat-error>-->
+
+          <!--                    </mat-form-field>-->
+          <!--                  </div>-->
+          <!--                </div>-->
+
+          <!--                <div fxFlex="40" fxLayout="row"-->
+          <!--                     fxLayoutAlign.lt-sm="center">-->
+          <!--                  <div fxLayout="column" style="width: 80%;">-->
+          <!--                    <mat-form-field appearance="outline">-->
+          <!--                      <mat-label>Suggestion To Grower</mat-label>-->
+          <!--                      <input autocomplete="false"-->
+          <!--                             formControlName="suggestionGrower"-->
+          <!--                             matInput-->
+          <!--                             placeholder="Enter Suggestion To Grower">-->
+          <!--                      <mat-error>-->
+          <!--                        Suggestion To Grower is required-->
+          <!--                      </mat-error>-->
+          <!--                    </mat-form-field>-->
+          <!--                  </div>-->
+          <!--                </div>-->
+
+          <!--              </div>-->
+          <!--            </div>-->
+
+          <!--            <div fxLayout="column" fxLayoutGap="10px">-->
+          <!--              <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">-->
+
+          <!--                <div fxFlex="20" fxLayout="row"-->
+          <!--                     fxLayoutAlign.lt-sm="center">-->
+          <!--                  <div fxLayout="column" style="width: 80%;">-->
+          <!--                    <mat-form-field appearance="outline">-->
+          <!--                      <mat-label>Spacing Variety Row</mat-label>-->
+          <!--                      <input autocomplete="false"-->
+          <!--                             formControlName="spacingVarietyRow"-->
+          <!--                             matInput-->
+          <!--                             type="number"-->
+          <!--                             placeholder="Enter Spacing Row">-->
+          <!--                      <mat-icon class="secondary-text" matSuffix>number</mat-icon>-->
+          <!--                    </mat-form-field>-->
+          <!--                  </div>-->
+          <!--                </div>-->
+
+          <!--                <div fxFlex="20" fxLayout="row"-->
+          <!--                     fxLayoutAlign.lt-sm="center">-->
+          <!--                  <div fxLayout="column" style="width: 80%;">-->
+          <!--                    <mat-form-field appearance="outline">-->
+          <!--                      <mat-label>Spacing Variety Plant</mat-label>-->
+          <!--                      <input autocomplete="false"-->
+          <!--                             formControlName="spacingVarietyPlant"-->
+          <!--                             matInput-->
+          <!--                             type="number"-->
+          <!--                             placeholder="Enter Spacing Plant">-->
+          <!--                      <mat-icon class="secondary-text" matSuffix>number</mat-icon>-->
+          <!--                    </mat-form-field>-->
+          <!--                  </div>-->
+          <!--                </div>-->
+
+          <!--                <div fxFlex="20" fxLayout="row"-->
+          <!--                     fxLayoutAlign.lt-sm="center">-->
+          <!--                  <div fxLayout="column" style="width: 80%;">-->
+          <!--                    <mat-form-field appearance="outline">-->
+          <!--                      <mat-label>Spacing Male Row</mat-label>-->
+          <!--                      <input autocomplete="false"-->
+          <!--                             formControlName="spacingMaleRow"-->
+          <!--                             matInput-->
+          <!--                             type="number"-->
+          <!--                             placeholder="Enter Spacing Male Row">-->
+          <!--                      <mat-icon class="secondary-text" matSuffix>number</mat-icon>-->
+          <!--                    </mat-form-field>-->
+          <!--                  </div>-->
+          <!--                </div>-->
+
+          <!--                <div fxFlex="20" fxLayout="row"-->
+          <!--                     fxLayoutAlign.lt-sm="center">-->
+          <!--                  <div fxLayout="column" style="width: 80%;">-->
+          <!--                    <mat-form-field appearance="outline">-->
+          <!--                      <mat-label>Spacing Male Plant</mat-label>-->
+          <!--                      <input autocomplete="false"-->
+          <!--                             formControlName="spacingMalePlant"-->
+          <!--                             matInput-->
+          <!--                             type="number"-->
+          <!--                             placeholder="Enter Spacing Male Plant">-->
+          <!--                      <mat-icon class="secondary-text" matSuffix>number</mat-icon>-->
+          <!--                    </mat-form-field>-->
+          <!--                  </div>-->
+          <!--                </div>-->
+
+          <!--                <div fxFlex="20" fxLayout="row"-->
+          <!--                     fxLayoutAlign.lt-sm="center">-->
+          <!--                  <div fxLayout="column" style="width: 80%;">-->
+          <!--                    <mat-form-field appearance="outline">-->
+          <!--                      <mat-label>Spacing Female Row</mat-label>-->
+          <!--                      <input autocomplete="false"-->
+          <!--                             formControlName="spacingFemaleRow"-->
+          <!--                             matInput-->
+          <!--                             type="number"-->
+          <!--                             placeholder="Enter Spacing Female Row">-->
+          <!--                      <mat-icon class="secondary-text" matSuffix>number</mat-icon>-->
+          <!--                    </mat-form-field>-->
+          <!--                  </div>-->
+          <!--                </div>-->
+
+
+          <!--              </div>-->
+          <!--            </div>-->
+
+          <!--            <div fxLayout="column" fxLayoutGap="10px">-->
+          <!--              <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">-->
+
+          <!--                <div fxFlex="20" fxLayout="row"-->
+          <!--                     fxLayoutAlign.lt-sm="center">-->
+          <!--                  <div fxLayout="column" style="width: 80%;">-->
+          <!--                    <mat-form-field appearance="outline">-->
+          <!--                      <mat-label>Spacing Female Plant</mat-label>-->
+          <!--                      <input autocomplete="false"-->
+          <!--                             formControlName="spacingFemalePlant"-->
+          <!--                             matInput-->
+          <!--                             type="number"-->
+          <!--                             placeholder="Enter Spacing Female Plant">-->
+          <!--                      <mat-icon class="secondary-text" matSuffix>number</mat-icon>-->
+          <!--                    </mat-form-field>-->
+          <!--                  </div>-->
+          <!--                </div>-->
+
+          <!--                <div fxFlex="10"-->
+          <!--                     fxLayout="row" fxLayoutAlign.lt-sm="center">-->
+          <!--                  <div fxLayout="column" style="margin-top: 12px">-->
+          <!--                    <button (click)="add_grower()"-->
+          <!--                            [disabled]="inspection_form.invalid" aria-label="Submit"-->
+          <!--                            color="accent"-->
+          <!--                            mat-raised-button>-->
+          <!--                      Add-->
+          <!--                    </button>-->
+          <!--                  </div>-->
+          <!--                </div>-->
+          <!--              </div>-->
+          <!--            </div>-->
+          <!--          </div>-->
+
+          <div fxLayout="column" fxLayoutGap="10px">
+            <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+
+              <div fxFlex="30" style="margin-top: 15px" fxLayout="row" fxLayoutAlign.lt-sm="center"
+                   *ngIf="this.dataSource?.data[0]?.status_name.toLowerCase() == 'created'
+                   && this.dataSource?.data?.length > 0 ">
+                <div fxLayout="column" style="width: 80%;">
+                  <button (click)="update_all_production_lot_no()"
+                          aria-label="Submit"
+                          color="accent"
+                          mat-raised-button mat-ripple>
+                    Update All Production Lot No
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+
+
+        <div class="example-container">
+          <table [dataSource]="dataSource" mat-table matSort>
+            <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+              <th *matHeaderCellDef mat-header-cell>
+                <div class="filterHeader">
+                  <b mat-sort-header>{{column|firstAnd_Split}}</b><br>
+                  <input (keyup)="applyFilter($event.target.value,column)"
+                         [placeholder]="column|firstAnd_Split">
+                </div>
+              </th>
+              <td *matCellDef="let element;let i=index" mat-cell>
+
+                <p *ngIf="column!='date_of_inspection' && column!='crop_condition'
+                && column!='crop_stage' && column!='net_area_as_per_insp_3' && column!='crossing_start_date'
+                && column!='crossing_end_date' && column!='final_plant_population'
+                && column!='avg_cross_boll_per_plant' && column!='kapas_picking_if_any'
+                && column!='approx_kapas_balance_for_picking' && column!='estimated_field_in_kg'
+                && column!='other_specific_observations' && column!='suggestion_to_grower'
+                && column!='harvestingDateMale' && column!='harvestingDateFemale'
+                && column!='harvestingDateOther' && column!='Action'">{{element[column]}}</p>
+
+                <div class="CellColumn" style="width: 150px"
+                     *ngIf="column=='date_of_inspection'">
+
+                  <input style="width: 150px"
+                         [matDatepicker]="insdate"
+                         (click)="insdate.open()"
+                         [(ngModel)]="element['date_of_inspection']"
+                         autocomplete="false"
+                         matInput
+                         readonly
+                         placeholder="Inspection Date">
+                  <mat-datepicker [disabled]="this.dataSource.data[0].status_name.toLowerCase() == 'completed' "
+                    #insdate="matDatepicker"></mat-datepicker>
+                </div>
+
+                <div class="CellColumn" style="width: 150px"
+                     *ngIf="column=='crop_condition'">
+                  <mat-select placeholder="Crop Condition" style="width: 150px" [(ngModel)]="element['crop_condition']">
+                    <mat-option *ngFor="let cropcondition of crop_condition"
+                                [disabled]="this.dataSource.data[0].status_name.toLowerCase() == 'completed' "
+                                [value]="cropcondition">{{cropcondition}}</mat-option>
+                  </mat-select>
+                </div>
+
+
+                <div class="CellColumn" style="width: 150px"
+                     *ngIf="column=='crop_stage'">
+                  <mat-select placeholder="Crop Stage" style="width: 150px" [(ngModel)]="element['crop_stage']">
+                    <mat-option *ngFor="let cropstage of crop_stage"
+                                [disabled]="this.dataSource.data[0].status_name.toLowerCase() == 'completed' "
+                                [value]="cropstage">{{cropstage}}</mat-option>
+                  </mat-select>
+                </div>
+
+                <div class="CellColumn" style="width: 150px"
+                     *ngIf="column=='net_area_as_per_insp_3'">
+                  <input [(ngModel)]="element['net_area_as_per_insp_3']"
+                         style="width: 150px" autocomplete="false"
+                         value="0"
+                         matInput
+                         type="number"
+                         readonly
+                         placeholder="Net Area Insp 3">
+                </div>
+
+                <div class="CellColumn" style="width: 150px"
+                     *ngIf="column=='crossing_start_date'">
+
+                  <input style="width: 150px"
+                         [matDatepicker]="insdate"
+                         (click)="insdate.open()"
+                         [(ngModel)]="element['crossing_start_date']"
+                         autocomplete="false"
+                         matInput
+                         readonly
+                         placeholder="Crossing Start Date">
+                  <mat-datepicker [disabled]="this.dataSource.data[0].status_name.toLowerCase() == 'completed' "
+                    #insdate="matDatepicker"></mat-datepicker>
+                </div>
+
+                <div class="CellColumn" style="width: 150px"
+                     *ngIf="column=='crossing_end_date'">
+
+                  <input style="width: 150px"
+                         [matDatepicker]="insdate"
+                         (click)="insdate.open()"
+                         [(ngModel)]="element['crossing_end_date']"
+                         autocomplete="false"
+                         matInput
+                         readonly
+                         placeholder="Crossing End Date">
+                  <mat-datepicker [disabled]="this.dataSource.data[0].status_name.toLowerCase() == 'completed' "
+                    #insdate="matDatepicker"></mat-datepicker>
+                </div>
+
+                <div class="CellColumn" style="width: 150px"
+                     *ngIf="column=='final_plant_population'">
+                  <input [(ngModel)]="element['final_plant_population']"
+                         style="width: 150px" autocomplete="false"
+                         value="0"
+                         matInput
+                         type="number"
+                         [readonly]="this.dataSource.data[0].status_name.toLowerCase() == 'completed' "
+                         placeholder="Final Plant Population">
+                </div>
+
+                <div class="CellColumn" style="width: 150px"
+                     *ngIf="column=='avg_cross_boll_per_plant'">
+                  <input [(ngModel)]="element['avg_cross_boll_per_plant']"
+                         style="width: 150px" autocomplete="false"
+                         value="0"
+                         matInput
+                         type="number"
+                         [readonly]="this.dataSource.data[0].status_name.toLowerCase() == 'completed' "
+                         placeholder="Avg Cross Boll Per Plant">
+                </div>
+
+                <div class="CellColumn" style="width: 150px"
+                     *ngIf="column=='kapas_picking_if_any'">
+                  <input [(ngModel)]="element['kapas_picking_if_any']"
+                         (ngModelChange)="setestimatedFieldInKG(element,'kapas')"
+                         style="width: 150px" autocomplete="false"
+                         value="0"
+                         matInput
+                         type="number"
+                         [readonly]="this.dataSource.data[0].status_name.toLowerCase() == 'completed' "
+                         placeholder="Kapas Picking If Any">
+                </div>
+
+                <div class="CellColumn" style="width: 150px"
+                     *ngIf="column=='approx_kapas_balance_for_picking'">
+                  <input [(ngModel)]="element['approx_kapas_balance_for_picking']"
+                         (ngModelChange)="setestimatedFieldInKG(element,'approx')"
+                         style="width: 150px" autocomplete="false"
+                         value="0"
+                         matInput
+                         type="number"
+                         [readonly]="this.dataSource.data[0].status_name.toLowerCase() == 'completed' "
+                         placeholder="Approx Kapas Balance For Picking">
+                </div>
+
+                <div class="CellColumn" style="width: 150px"
+                     *ngIf="column=='estimated_field_in_kg'">
+                  <input [(ngModel)]="element['estimated_field_in_kg']"
+                         style="width: 150px" autocomplete="false"
+                         value="0"
+                         matInput
+                         type="number"
+                         readonly
+                         placeholder="Estimated Field In KG">
+                </div>
+
+                <div class="CellColumn" style="width: 150px"
+                     *ngIf="column=='other_specific_observations'">
+                  <input [(ngModel)]="element['other_specific_observations']"
+                         style="width: 150px" autocomplete="false"
+                         value="0"
+                         matInput
+                         type="number"
+                         [readonly]="this.dataSource.data[0].status_name.toLowerCase() == 'completed' "
+                         placeholder="Other Specific Observation">
+                </div>
+
+                <div class="CellColumn" style="width: 150px"
+                     *ngIf="column=='suggestion_to_grower'">
+                  <input [(ngModel)]="element['suggestion_to_grower']"
+                         style="width: 150px" autocomplete="false"
+                         matInput
+                         type="text"
+                         [readonly]="this.dataSource.data[0].status_name.toLowerCase() == 'completed' "
+                         placeholder="Suggestion To Grower">
+                </div>
+
+                <div class="CellColumn" style="width: 150px"
+                     *ngIf="column=='harvestingDateMale'">
+
+                  <input style="width: 150px"
+                         [matDatepicker]="insdate"
+                         (click)="insdate.open()"
+                         [(ngModel)]="element['harvestingDateMale']"
+                         autocomplete="false"
+                         matInput
+                         readonly
+                         placeholder="Harvesting Date Male">
+                  <mat-datepicker [disabled]="element['item_crop_type'].toLowerCase() == 'improved' ||
+                                  this.dataSource.data[0].status_name.toLowerCase() == 'completed'"
+                                  #insdate="matDatepicker"></mat-datepicker>
+                </div>
+
+                <div class="CellColumn" style="width: 150px"
+                     *ngIf="column=='harvestingDateFemale'">
+
+                  <input style="width: 150px"
+                         [matDatepicker]="insdate"
+                         (click)="insdate.open()"
+                         [(ngModel)]="element['harvestingDateFemale']"
+                         autocomplete="false"
+                         matInput
+                         readonly
+                         placeholder="Harvesting Date FeMale">
+                  <mat-datepicker [disabled]="element['item_crop_type'].toLowerCase() == 'improved' ||
+                                  this.dataSource.data[0].status_name.toLowerCase() == 'completed'"
+                                  #insdate="matDatepicker"></mat-datepicker>
+                </div>
+
+                <div class="CellColumn" style="width: 150px"
+                     *ngIf="column=='harvestingDateOther'">
+
+                  <input style="width: 150px"
+                         [matDatepicker]="insdate"
+                         (click)="insdate.open()"
+                         [(ngModel)]="element['harvestingDateOther']"
+                         autocomplete="false"
+                         matInput
+                         readonly
+                         placeholder="Harvesting Date Other">
+                  <mat-datepicker [disabled]="element['item_crop_type'].toLowerCase() == 'hybrid' ||
+                                  this.dataSource.data[0].status_name.toLowerCase() == 'completed'"
+                                  #insdate="matDatepicker"></mat-datepicker>
+                </div>
+
+                <div *ngIf="column=='Action' && this.dataSource?.data[0]?.status_name.toLowerCase()=='created'">
+                  <button (click)="delete_line_barcode(element)" *ngIf="column=='Action'"
+                          mat-icon-button>
+                    <mat-icon class="icon-size">delete</mat-icon>
+                  </button>
+                </div>
+
+              </td>
+
+            </ng-container>
+            <tr *matHeaderRowDef="displayedColumns ; sticky: true" mat-header-row></tr>
+            <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+          </table>
+          <div *ngIf="dataSource?.data?.length<=0" class="h3 m-16">No Record Found.</div>
+          <mat-divider *ngIf="dataSource?.data?.length<=0"></mat-divider>
+        </div>
+        <mat-paginator [pageSizeOptions]="[5, 10, 20, 30,40,50]" showFirstLastButtons></mat-paginator>
+      </div>
+    </div>
+  </div>
+</div>

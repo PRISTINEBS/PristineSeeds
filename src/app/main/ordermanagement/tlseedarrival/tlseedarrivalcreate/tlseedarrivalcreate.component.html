@@ -1,0 +1,448 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="createtlseedarrivalorder">
+  <div class="content p-20" pristinePerfectScrollbar>
+    <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+      <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column" fxLayoutAlign="start">
+
+        <div class=" h3 mb-8 p-16">
+          <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-between center"
+               fxLayoutGap="10px">
+            <div fxFlex="60">
+              <b>Create TL Seed Arrival ( </b> <b
+              style="color: red"> {{sessionManageMent.getLocationName}}</b><b>
+              ) {{currentdate | date: 'dd/MM/yyyy hh:mm a'}} </b>
+            </div>
+
+            <div *ngIf="!start&& dataSource?.data?.length>0" fxFlex="20" fxLayout="row" fxLayoutAlign="end">
+              <button (click)="complete_tl_seed_arrival()"
+                      aria-label="Submit"
+                      color="accent"
+                      mat-raised-button>
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+
+
+        <mat-divider></mat-divider>
+
+        <div *ngIf="start else documentselected" class="p-16">
+          <form [formGroup]="find_purchaseForm" name="find_purchaseForm" novalidate>
+            <div fxLayout="column" fxLayoutGap="10px">
+
+              <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+
+                <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Location <sup style="color: red">*</sup></mat-label>
+                      <mat-select autocomplete="off" formControlName="location" disabled >
+                        <input #searchBylocation
+                               autocomplete="off" class="myInput"
+                               focused="'true'" matInput placeholder="Search" type="text">
+                        <mat-option
+                          *ngFor="let loc of locationlist|searchlocation: searchBylocation.value"
+                          [value]="loc.location_id">{{loc.location_name + ' ( ' + loc.location_id + ' ) ' }}</mat-option>
+                      </mat-select>
+                      <mat-error>
+                        Location is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div fxFlex="33" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Gate Entry Number</mat-label>
+
+                      <mat-select autocomplete="off" formControlName="GateEntryNo">
+                        <input
+                          [(ngModel)]="searchByGateEntryNo"
+                          [ngModelOptions]="{standalone:true}"
+                          (ngModelChange)="get_GateEntryNo()"
+                          autocomplete="off" class="myInput"
+                          focused="'true'" matInput placeholder="Search" type="text">
+                        <mat-option
+                          *ngFor="let gate_entry_list of gateEntryList" (click)="set_Vendor_No(gate_entry_list)"
+                          [value]="gate_entry_list.gate_entry_no">{{gate_entry_list.vender_no_or_company + ' ( ' + gate_entry_list.gate_entry_no + ' ) '}}</mat-option>
+                      </mat-select>
+                      <mat-error>
+                        Gate Entry Number is required
+                      </mat-error>
+
+                    </mat-form-field>
+                  </div>
+                </div>
+                <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80px;margin-top: 10px">
+                    <button (click)="get_tl_seed_arrival_with_vendorinfo()"
+                            [disabled]="find_purchaseForm.invalid" aria-label="Submit"
+                            color="accent" mat-raised-button
+                            mat-ripple>
+                      Submit
+                    </button>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+
+
+        <ng-template #documentselected>
+          <div class="h3 mb-8 p-16">
+            <b>Organizer Information</b>
+            <br>
+
+            <div class="headertable" fxLayout="column" fxLayoutGap="10px">
+              <table style=" border:0px;margin-top: 10px;">
+                <tbody style="font-size: 12px;">
+                <tr>
+                  <th>Gate Entry No</th>
+                  <th>Organizer No</th>
+                  <th>Organizer Name</th>
+                  <th>Organizer Address</th>
+                  <th>Pincode</th>
+                  <th>City</th>
+                  <th>State</th>
+                  <th>Country</th>
+                  <th>Mobile No</th>
+                </tr>
+                <tr>
+                  <td>{{this.find_purchaseForm.get('GateEntryNo').value}}</td>
+                  <td>{{this.VendorInfoWithPO[0].vendor_no}}</td>
+                  <td>{{this.VendorInfoWithPO[0].vendor_name}}</td>
+                  <td>{{this.VendorInfoWithPO[0].vendor_address }}</td>
+                  <td>{{this.VendorInfoWithPO[0].pincode}}</td>
+                  <td>{{this.VendorInfoWithPO[0].city}}</td>
+                  <td>{{this.VendorInfoWithPO[0].state }}</td>
+                  <td>{{this.VendorInfoWithPO[0].country}}</td>
+                  <td>{{this.VendorInfoWithPO[0].mobile_no}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+
+
+            <br>
+            <mat-divider></mat-divider>
+            <br>
+            <b>TL Seed Arrival No </b> ( <b
+            style="color: red"> {{this.VendorInfoWithPO[0].tl_seed_arrival_no}} </b><b> ) Information </b>
+            <br><br>
+
+            <div fxLayout="column" fxLayoutGap="10px">
+              <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+                <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Payment Terms </mat-label>
+                      <mat-select [formControl]="PaymentTerms">
+                        <mat-option>None</mat-option>
+                        <mat-option (select)="this.purchaseForm.setValue({PaymentTerms:values})"
+                                    *ngFor="let values of paymentTerms"
+                                    [value]="values">{{values}} </mat-option>
+                      </mat-select>
+                      <mat-error>
+                        Payment Terms is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline" fxFlex="22.5">
+                      <mat-label>Season <sup style="color: red">*</sup></mat-label>
+                      <mat-select [formControl]="season">
+                        <mat-option *ngFor="let season of seasonMaster"
+                                    [value]="season.season_code">{{season.season_code}}</mat-option>
+                      </mat-select>
+                      <mat-error>
+                        Season is required
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                  <div fxLayout="column" style="width: 80%;">
+                    <mat-form-field appearance="outline" >
+                      <mat-label>Scan Production Lot No <sup style="color: red">*</sup></mat-label>
+                      <input autocomplete="false"
+                             [formControl]="production_lot_no"
+                             (keyup.enter)="get_production_lot_no()"
+                             matInput
+                             placeholder="Scan Production Lot No">
+                    </mat-form-field>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <b> Add Product In the Order </b>
+            <br><br>
+            <form [formGroup]="purchaseForm" name="purchaseForm" novalidate>
+
+              <div fxLayout="column" fxLayoutGap="10px">
+
+                <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+
+<!--                  <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">-->
+<!--                    <div fxLayout="column" style="width: 80%;">-->
+<!--                      <mat-form-field appearance="outline" >-->
+<!--                        <mat-label>Crop <sup style="color: red">*</sup></mat-label>-->
+<!--                        <mat-select formControlName="crop" >-->
+<!--                          <mat-option *ngFor="let crop of get_crop" (click)="get_Crop_Variety(crop)"-->
+<!--                                      [value]="crop.id">{{crop.name}}</mat-option>-->
+<!--                        </mat-select>-->
+<!--                      </mat-form-field>-->
+<!--                    </div>-->
+<!--                  </div>-->
+
+<!--                  <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">-->
+<!--                    <div fxLayout="column" style="width: 80%;">-->
+<!--                      <mat-form-field appearance="outline">-->
+<!--                        <mat-label>Crop Variety <sup style="color: red">*</sup></mat-label>-->
+<!--                        <mat-select formControlName="cropVariety" >-->
+<!--                          <mat-option *ngFor="let cropvariety of get_crop_variety" (click)="get_Item()"-->
+<!--                                      [value]="cropvariety.id">{{cropvariety.name}}</mat-option>-->
+<!--                        </mat-select>-->
+<!--                      </mat-form-field>-->
+<!--                    </div>-->
+<!--                  </div>-->
+
+<!--                  <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">-->
+<!--                    <div fxLayout="column" style="width: 80%;">-->
+<!--                      <mat-form-field appearance="outline">-->
+<!--                        <mat-label>Find Item By Name Or No <sup style="color: red">*</sup></mat-label>-->
+
+<!--                        <mat-select autocomplete="off" formControlName="ItemNo" >-->
+<!--                          <input [(ngModel)]="searchByItemNameorNo"-->
+<!--                                 [ngModelOptions]="{standalone:true}"-->
+<!--                                 (ngModelChange)="get_Item()"-->
+<!--                                 autocomplete="off" class="myInput"-->
+<!--                                 focused="'true'" matInput placeholder="Search" type="text">-->
+<!--                          <mat-option>None</mat-option>-->
+<!--                          <mat-option (click)="setBaseUOM(item_list)"-->
+<!--                                      *ngFor="let item_list of itemlist"-->
+<!--                                      [value]="item_list.item_no">{{item_list.name + ' ( ' + item_list.item_no + ' )' + ' ( ' + item_list.baseuom + ' ) '}}</mat-option>-->
+<!--                        </mat-select>-->
+<!--                        <mat-error>-->
+<!--                          Item Name or Number is required-->
+<!--                        </mat-error>-->
+
+<!--                      </mat-form-field>-->
+<!--                    </div>-->
+<!--                  </div>-->
+
+                  <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                    <div fxLayout="column" style="width: 80%;">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Crop <sup style="color: red">*</sup></mat-label>
+                        <input autocomplete="off" readonly formControlName="crop" matInput
+                               type="text">
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                    <div fxLayout="column" style="width: 80%;">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Crop Variety <sup style="color: red">*</sup></mat-label>
+                        <input autocomplete="off" readonly formControlName="cropVariety" matInput
+                               type="text">
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                    <div fxLayout="column" style="width: 80%;">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Item No <sup style="color: red">*</sup></mat-label>
+                        <input autocomplete="off" readonly formControlName="ItemNo" matInput
+                               type="text">
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                    <div fxLayout="column" style="width: 80%;">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Base Unit Of Measure <sup style="color: red">*</sup></mat-label>
+                        <input autocomplete="off" readonly formControlName="baseuom" matInput
+                               type="text">
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                    <div fxLayout="column" style="width: 80%;">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Stage <sup style="color: red">*</sup></mat-label>
+                        <input autocomplete="off" readonly formControlName="stage" matInput
+                               type="text">
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+<!--                  <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">-->
+<!--                    <div fxLayout="column" style="width: 80%;">-->
+<!--                      <mat-form-field appearance="outline" >-->
+<!--                        <mat-label>Stage <sup style="color: red">*</sup></mat-label>-->
+<!--                        <mat-select formControlName="stage" >-->
+<!--                          <mat-option *ngFor="let getcropstagemaster of get_crop_stage_master"-->
+<!--                                      [value]="getcropstagemaster.stage">{{getcropstagemaster.stage}}</mat-option>-->
+<!--                        </mat-select>-->
+<!--                      </mat-form-field>-->
+<!--                    </div>-->
+<!--                  </div>-->
+
+                </div>
+
+                <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+
+                  <div fxFlex="17" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                    <div fxLayout="column" style="width: 80%;">
+                      <mat-form-field appearance="outline">
+                        <mat-label>No Of Bags <sup style="color: red">*</sup></mat-label>
+                        <input autocomplete="off" formControlName="no_of_bags" matInput
+                               pattern="[0-9]*"
+                               type="text">
+                        <mat-error>
+                          No Of Bags is Required
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <div fxFlex="17" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                    <div fxLayout="column" style="width: 80%;">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Quantity <sup style="color: red">*</sup></mat-label>
+                        <input autocomplete="off" formControlName="Quantity" matInput
+                               pattern="[0-9]*"
+                               type="text">
+                        <mat-error>
+                          Quantity is Wrong
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <div fxFlex="17" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                    <div fxLayout="column" style="width: 80%;">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Lot No <sup style="color: red">*</sup></mat-label>
+                        <input autocomplete="off" formControlName="Lotno" matInput
+                               type="text">
+                        <mat-error>
+                          Lot No is Required
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <div fxFlex="17" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                    <div fxLayout="column" style="width: 80%;">
+                      <mat-form-field appearance="outline">
+                        <mat-label>Discount</mat-label>
+                        <input autocomplete="off" formControlName="Discount" matInput
+                               pattern="[0-9]*"
+                               type="text">
+                        <mat-error>
+                          Discount is Wrong
+                        </mat-error>
+                      </mat-form-field>
+                    </div>
+                  </div>
+
+                  <div fxFlex="17" fxLayout="column" style="margin-top: 7px;">
+                    <div fxLayout="row" fxLayoutAlign.lt-sm="center" style="width: 80%;">
+                      <mat-checkbox formControlName='IsExpireDate' fxLayout="column">For
+                        ExpireDate
+                      </mat-checkbox>
+                    </div>
+                    <div fxLayout="row" fxLayoutAlign.lt-sm="center" style="width: 80%;">
+                      <mat-checkbox formControlName='IsVandorLotNo' fxLayout="column">For Vendor
+                        Lot
+                      </mat-checkbox>
+                    </div>
+                  </div>
+
+                  <div fxFlex="10" fxLayout="row" fxLayoutAlign.lt-sm="center"
+                       style="margin-bottom: 15px">
+                    <div fxLayout="column" style="width: 80px; margin-top: 10px">
+                      <button (click)="AddItem()" [disabled]="purchaseForm.invalid"
+                              aria-label="Submit"
+                              color="accent"
+                              mat-raised-button
+                      >
+                        Add
+                      </button>
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+            </form>
+
+
+          </div>
+        </ng-template>
+
+        <div class="h3 mb-8 p-16">
+          <div [hidden]="start">
+            <div class="example-container">
+              <table #matSort="matSort" [dataSource]="dataSource" mat-table matSort>
+                <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+                  <th *matHeaderCellDef mat-header-cell>
+                    <div class="filterHeader">
+                      <b mat-sort-header>{{column|firstAnd_Split}}</b><br>
+                      <input (keyup)="applyFilter($event.target.value,column)"
+                             *ngIf="column!='Action'"
+                             [placeholder]="column|firstAnd_Split">
+                    </div>
+                  </th>
+                  <td *matCellDef="let element" mat-cell>
+                    <p *ngIf="column!='Action';else elseAction">{{element[column]}}</p>
+                    <ng-template #elseAction>
+                      <button (click)="delete_line(element)" *ngIf="column=='Action'"
+                              mat-icon-button>
+                        <mat-icon class="icon-size">delete</mat-icon>
+                      </button>
+                      <p *ngIf="column=='created_on'">{{element[column]|date:'dd/MM/yyyy HH:MM a'}}</p>
+                    </ng-template>
+                  </td>
+                  <td *matFooterCellDef mat-footer-cell>
+                    <p *ngIf="column=='lot_no'">
+                      Total
+                    </p>
+                    <p *ngIf="column!='production_lot_no' && column!='lot_no' && column!='item_no' && column!='item_descrition' && column!='baseuom' && column!='stage' && column!='Action' && dataSource?.data?.length>0">
+                      {{sum_footer(dataSource.data, column) }}
+                    </p>
+                  </td>
+                </ng-container>
+                <tr *matHeaderRowDef="displayedColumns ; sticky: true" mat-header-row></tr>
+                <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+                <tr *matFooterRowDef="displayedColumns; sticky: true" mat-footer-row></tr>
+              </table>
+              <div *ngIf="dataSource?.data?.length<=0" class="h3 m-16">No Record Found.</div>
+              <mat-divider *ngIf="dataSource?.data?.length<=0"></mat-divider>
+            </div>
+            <mat-paginator #matpaginator="matPaginator" [pageSizeOptions]="[ 5, 10, 20, 30,40,50]"
+                           showFirstLastButtons></mat-paginator>
+
+
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>

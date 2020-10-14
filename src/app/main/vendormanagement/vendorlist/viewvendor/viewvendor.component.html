@@ -1,0 +1,180 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="vendorcreation">
+    <div class="p-16" pristinePerfectScrollbar>
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+            <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column"
+                 fxLayoutAlign="start">
+                <div class="h3 mb-8 p-16" fxLayout="column" style="padding-top: 20px">
+                    <div fxFlex="1 0 auto" fxLayout="row" fxLayout.lt-sm="row" fxLayoutGap="10px">
+                        <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-between center"
+                             fxLayoutGap="10px">
+                            <div fxFlex="30">
+                                <b>View Organizer ( </b><b
+                                style="color: red"> {{ sessionManageMent.getLocationName}} </b><b>
+                                ) </b>
+                            </div>
+                        </div>
+                    </div>
+                    <mat-divider></mat-divider>
+                    <br>
+
+                    <div [formGroup]="GeneralInformation">
+                        <div fxFlex="" fxLayout="column">
+                            <div class="Heading">General Information</div>
+                            <div class="p-8" fxLayout="Row" fxLayoutAlign="start" fxLayoutGap="40px">
+                                <mat-form-field appearance="outline" fxFlex="50">
+                                    <mat-label>Type of Organizer</mat-label>
+                                    <input formControlName="VendorType" matInput placeholder="Vendor Name" readonly
+                                           type="text">
+                                </mat-form-field>
+                                <mat-form-field appearance="outline" fxFlex="50">
+                                    <mat-label>Organizer Name</mat-label>
+                                    <input formControlName="VendorName" matInput placeholder="Vendor Name" readonly
+                                           type="text">
+                                </mat-form-field>
+                            </div>
+                            <div class="Heading">Communication Detail</div>
+                            <div fxFlex fxLayout="column">
+                                <div class="p-8" fxLayout="Row wrap" fxLayout.lt-sm="column" fxLayoutAlign="start"
+                                     fxLayoutGap="20px" fxLayoutGap.lt-sm="10px">
+                                    <mat-form-field appearance="outline" fxFlex="22.5" fxFlex.lt-sm="100">
+                                        <mat-label>Enter Country</mat-label>
+                                        <input formControlName="Country" matInput placeholder="Enter City" readonly
+                                               type="text">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="22.5" fxFlex.lt-sm="auto">
+                                        <mat-label>Enter State</mat-label>
+                                        <input formControlName="State" matInput placeholder="Enter City" readonly
+                                               type="text">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="22.5" fxFlex.lt-sm="auto">
+                                        <mat-label>Enter City</mat-label>
+                                        <input formControlName="City" matInput placeholder="Enter City" readonly
+                                               type="text">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="22.5" fxFlex.lt-sm="auto">
+                                        <mat-label>Pin Code</mat-label>
+                                        <input formControlName="PinCode" matInput placeholder="Pin Code" readonly
+                                               type="text">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="22.5" fxFlex.lt-sm="auto">
+                                        <mat-label>Email Id</mat-label>
+                                        <input formControlName="Email" matInput placeholder="Email Id" readonly
+                                               type="text">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="22.5" fxFlex.lt-sm="auto">
+                                        <mat-label>Mobile No</mat-label>
+                                        <input formControlName="Mobile" matInput placeholder="Mobile No" readonly
+                                               type="text">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="22.5" fxFlex.lt-sm="auto">
+                                        <mat-label>Phone No</mat-label>
+                                        <input formControlName="Phone" matInput placeholder="Phone No" readonly
+                                               type="text">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="22.5" fxFlex.lt-sm="auto">
+                                        <mat-label>Organizer Address</mat-label>
+                                        <input formControlName="Address" matInput placeholder="Vendor Address" readonly
+                                               type="text">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="Heading">Contact Information</div>
+                            <div fxFlex fxLayout="column">
+                                <div class="p-8" fxFlex="" fxLayout="row wrap" fxLayout.lt-sm="column"
+                                     fxLayoutAlign="start" fxLayoutGap="10px" fxLayoutGap.lt-sm="10px">
+                                    <mat-form-field appearance="outline" fxFlex="18" fxFlex.lt-sm="auto">
+                                        <mat-label>Contact Person Name</mat-label>
+                                        <input formControlName="ContactPersonName" matInput placeholder="Contact Person Name" readonly
+                                               type="text">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="18" fxFlex.lt-sm="auto">
+                                        <mat-label>Operation Person Name</mat-label>
+                                        <input formControlName="OperationPersonName" matInput placeholder="Operation Person Name" readonly
+                                               type="text">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="18" fxFlex.lt-sm="auto">
+                                        <mat-label>Account Person Name</mat-label>
+                                        <input formControlName="AccountPersonName" matInput placeholder="Account Person Name" readonly
+                                               type="text">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="18" fxFlex.lt-sm="auto">
+                                        <mat-label>Warehouse Person Name</mat-label>
+                                        <input formControlName="WarehousePersonName" matInput placeholder="Warehouse Person Name" readonly
+                                               type="text">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="18" fxFlex.lt-sm="auto">
+                                        <mat-label>Purchase Person Name</mat-label>
+                                        <input formControlName="PurchasePersonName" matInput placeholder="Purchase Person Name" readonly
+                                               type="text">
+                                    </mat-form-field>
+
+                                    <mat-form-field appearance="outline" fxFlex="18" fxFlex.lt-sm="auto">
+                                        <mat-label>Contact Person No.</mat-label>
+                                        <input formControlName="ContactPersonNo" matInput placeholder="Contact Person No." readonly
+                                               type="text">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="18" fxFlex.lt-sm="auto">
+                                        <mat-label>Operation Person No.</mat-label>
+                                        <input formControlName="OperationPersonNo" matInput placeholder="Operation Person No." readonly
+                                               type="text">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="18" fxFlex.lt-sm="auto">
+                                        <mat-label>Account Person No.</mat-label>
+                                        <input formControlName="AccountPersonNo" matInput placeholder="Account Person No." readonly
+                                               type="text">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="18" fxFlex.lt-sm="auto">
+                                        <mat-label>Warehouse Person No.</mat-label>
+                                        <input formControlName="WarehousePersonNo" matInput placeholder="Warehouse Person No." readonly
+                                               type="text">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="18" fxFlex.lt-sm="auto">
+                                        <mat-label>Purchase Person No.</mat-label>
+                                        <input formControlName="PurchasePersonNo" matInput placeholder="Purchase Person No." readonly
+                                               type="text">
+                                    </mat-form-field>
+
+                                </div>
+                            </div>
+                            <div class="Heading">Tax Information</div>
+                            <div fxFlex fxLayout="column">
+                                <div class="p-8" fxFlex="" fxLayout="row wrap" fxLayout.lt-sm="column"
+                                     fxLayoutGap="20px" fxLayoutGap.lt-sm="10px">
+                                    <mat-form-field appearance="outline" fxFlex="30.5">
+                                        <mat-label>Gst Registration No.</mat-label>
+                                        <input formControlName="GstType" matInput placeholder="Gst Registration No." readonly
+                                               type="text">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="30.5">
+                                        <mat-label>Gst Registration No.</mat-label>
+                                        <input formControlName="GstRegNo" matInput placeholder="Gst Registration No." readonly
+                                               type="text">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="30.5">
+                                        <mat-label>Pan Number</mat-label>
+                                        <input formControlName="PanNo" matInput placeholder="Pan Number" readonly
+                                               type="text">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="46.5">
+                                        <mat-label>Home Page</mat-label>
+                                        <input formControlName="HomePage" matInput placeholder="Home Page" readonly
+                                               type="text">
+                                    </mat-form-field>
+                                    <mat-form-field appearance="outline" fxFlex="46.5">
+                                        <mat-label>Currency</mat-label>
+                                        <input formControlName="Currency" matInput placeholder="Home Page" readonly
+                                               type="text">
+                                    </mat-form-field>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

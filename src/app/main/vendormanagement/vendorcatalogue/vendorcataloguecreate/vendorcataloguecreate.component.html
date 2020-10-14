@@ -1,0 +1,68 @@
+<div fxFlex fxLayout="column" fxLayoutAlign="start" id="AddVendorCatalogue">
+    <div mat-dialog-title style="margin-top: -35px">
+        <div class="h5 mb-8 pt-16">Create catalogue
+        </div>
+        <div fxLayout="column" fxLayoutAlign="start">
+            <mat-divider></mat-divider>
+        </div>
+    </div>
+    <div [formGroup]="VendorCatalogue" fxFlex="" fxLayout="column">
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="start" fxLayoutGap="35px" fxLayoutGap.lt-sm="10px">
+            <mat-form-field appearance="outline">
+                <mat-label>Vendor Name <sub style="color:red">*</sub></mat-label>
+                <input (ngModelChange)="onVendorNameInsert()" [matAutocomplete]="are" formControlName="VendorName" matInput
+                       type="text">
+                <mat-autocomplete #are="matAutocomplete" autoActiveFirstOption>
+                    <mat-option *ngFor="let vendor of vendorDetails"
+                                [value]="vendor.vendor_name">{{vendor.vendor_name}}</mat-option>
+                </mat-autocomplete>
+                <mat-error
+                    *ngIf="VendorCatalogue.get('VendorName').hasError('required') && VendorCatalogue.get('VendorName').touched && VendorCatalogue.get('VendorName').dirty">
+                    Vendor Name Required
+                </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Item Code<sub style="color: red">*</sub></mat-label>
+                <input (ngModelChange)="SearchIteminfo()" [matAutocomplete]="item" formControlName="ItemCode" matInput
+                       type="text">
+                <mat-autocomplete #item="matAutocomplete" autoActiveFirstOption>
+                    <mat-option *ngFor="let item of ItemCode" [value]="item.item_no">{{item.item_no}}</mat-option>
+                </mat-autocomplete>
+                <mat-error
+                    *ngIf="VendorCatalogue.get('ItemCode').hasError('required') && VendorCatalogue.get('ItemCode').touched && VendorCatalogue.get('ItemCode').dirty">
+                    Item Code Required
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="start" fxLayoutGap="35px" fxLayoutGap.lt-sm="10px">
+            <mat-form-field appearance="outline">
+                <mat-label>Vendor item code</mat-label>
+                <input formControlName="VendorItemCode" matInput type="text">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Coset per unit<sub style="color: red">*</sub></mat-label>
+                <input formControlName="CostPerUnit" matInput type="number">
+                <mat-error
+                    *ngIf="VendorCatalogue.get('CostPerUnit').hasError('required') && VendorCatalogue.get('CostPerUnit').touched && VendorCatalogue.get('CostPerUnit').dirty">
+                    Cost Per Unit Required
+                </mat-error>
+            </mat-form-field>
+        </div>
+        <div fxLayout="column" fxLayout.lt-sm="column" fxLayoutAlign="start" fxLayoutGap.lt-sm="10px">
+            <mat-form-field appearance="outline">
+                <mat-label>Description</mat-label>
+                <input formControlName="Description" matInput type="text">
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="pt-16" fxLayout="row" fxLayoutAlign="end">
+        <button (click)="CreateCatalogue()" class="mat-accent mr-16"
+                mat-raised-button>Save
+        </button>
+        <button (click)="cancle()" color="warn" mat-raised-button>Cancel</button>
+    </div>
+
+</div>
+
+
+

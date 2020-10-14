@@ -1,0 +1,236 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="priorityPickMaster">
+    <div class="content p-20" pristinePerfectScrollbar>
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+            <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column" fxLayoutAlign="start">
+                <div class="h3 mb-8 p-16">
+                    <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column"
+                         fxLayoutAlign="space-between center"
+                         fxLayoutGap="10px">
+                        <div fxFlex="30">
+                            <b>Picking ( </b><b
+                            style="color: red"> {{ sessionmanagent.getLocationName}} </b><b> )</b>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-16">
+                    <!--todo start pick scan code -->
+
+                    <div *ngIf="what_to_show=='scan_pick';" fxLayout="column" fxLayoutGap="10px">
+                        <div fxLayout="column" fxLayoutAlign="space-between">
+                            <div fxFlex="1 0 auto" fxLayout="row" fxLayout.lt-sm="column"
+                                 fxLayoutAlign="space-between center" fxLayoutGap="10px">
+                                <div fxFlex="25" fxLayout="row" fxLayoutGap="20px">
+                                    <mat-icon class="icon-size">shopping_cart</mat-icon>
+                                    <mat-label
+                                        style="font-size: 20px">{{ pickmodel.tray + " (" + pickmodel.qty_picked + ")" }}</mat-label>
+                                </div>
+                                <div fxFlex="25" fxLayout="row" fxLayoutGap="20px">
+                                    <mat-label
+                                        style="font-size: 20px">Zone : {{ pickmodel.pick_zone }}</mat-label>
+                                </div>
+                                <div fxFlex="25" fxLayout="row" fxLayoutGap="20px">
+                                    <mat-label
+                                        style="font-size: 20px">Pick No : {{ pickmodel.pick_no }}</mat-label>
+                                </div>
+                                <div fxFlex="25" fxLayout="row" fxLayoutAlign="end">
+                                    <div (click)="user_close_tray()" fxLayout="row" fxLayoutGap="20px" mat-ripple>
+                                        <mat-icon class="icon-size">remove_shopping_cart</mat-icon>
+                                        <mat-label style="font-size: 20px">Exit</mat-label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div fxLayout="column" fxLayoutGap="10px">
+                            <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+                                <div fxFlex="50" fxLayout="row" fxLayoutAlign="start" fxLayoutAlign.lt-sm="center">
+                                    <div fxLayout="column" style="width: 80%;">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Scan Bin</mat-label>
+                                            <input (keydown.enter)="scanbinvalidation(scanbin.value)"
+                                                   [formControl]="scanbin" autocomplete="off"
+                                                   id="scanbin" matInput>
+                                        </mat-form-field>
+                                        <mat-label
+                                            style="font-size: 20px ; color: #4a91ff">{{pickmodel.bincode}}</mat-label>
+                                    </div>
+                                </div>
+                                <div fxFlex="50" fxLayout="row" fxLayoutAlign="end" fxLayoutAlign.lt-sm="center">
+                                    <div fxLayout="column" style="width: 80%;">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Scan Barcode</mat-label>
+                                            <input (keydown.enter)="scanbarcodevalidation(scanbarcode.value)"
+                                                   [formControl]="scanbarcode" autocomplete="off"
+                                                   id="scanbarcode" matInput>
+                                        </mat-form-field>
+                                        <mat-label
+                                            style="font-size: 20px ; color: #4a91ff">{{pickmodel.barcode}}</mat-label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div fxLayout="column">
+                            <div fxFlex="1 0 auto" fxLayout="row" fxLayout.lt-sm="column">
+                                <div fxFlex="50" fxLayout="column" fxLayoutAlign="start" fxLayoutAlign.lt-sm="start">
+                                    <div class="p-24" id="photos-videos">
+                                        <div class="period">
+                                            <div class="period-media" fxLayout="row wrap">
+                                                <div class="media">
+                                                    <img (click)="open_image_preview()" [src]="current_image"
+                                                         class="preview">
+                                                    <div class="title">
+                                                        <button mat-icon-button>
+                                                            <mat-icon (click)="open_image_preview()">visibility
+                                                            </mat-icon>
+                                                        </button>
+                                                        <b style="float: right">{{current_image_count + '/' + 4}}</b>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div fxFlex="50" fxLayout="column" fxLayoutAlign="start" fxLayoutAlign.lt-sm="start">
+                                    <div fxLayoutAlign="start" fxLayoutAlign.lt-sm="start">
+                                        <div class="tbl-content">
+                                            <table>
+                                                <tr>
+                                                    <td>
+                                                        <b>Description :</b>
+                                                    </td>
+                                                    <td>
+                                                        <mat-label>{{pickmodel.description}}</mat-label>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <b>Style :</b>
+                                                    </td>
+                                                    <td>
+                                                        <mat-label>{{pickmodel.style}}</mat-label>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <b>Item No :</b>
+                                                    </td>
+                                                    <td>
+                                                        <mat-label>{{pickmodel.item_code}}</mat-label>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <b>Color :</b>
+                                                    </td>
+                                                    <td>
+                                                        <mat-label>{{pickmodel.color}}</mat-label>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <b>Size :</b>
+                                                    </td>
+                                                    <td>
+                                                        <mat-label>{{pickmodel.size}}</mat-label>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div fxLayout="column" fxLayoutAlign="bottam" fxLayoutAlign.lt-sm="bottam">
+                                        <div class="example-button-row">
+                                            <div fxFlex="50" fxLayout="row">
+                                                <button (click)="not_found()"
+                                                        mat-raised-button
+                                                        style="background-color:#ff4c4d; color: #FFFFFF">Not Found
+                                                </button>
+                                            </div>
+                                            <div fxFlex="50" fxLayout="row">
+                                                <button (click)="wrong_image()"
+                                                        mat-raised-button
+                                                        style="background-color:#4a91ff; color: #FFFFFF">Wrong Image
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--todo End pick scan code -->
+
+                    <!--todo start Tray Scan code -->
+
+                    <div *ngIf="what_to_show=='scan_tray';" class="example-container">
+                        <div fxLayout="column">
+                            <b>{{ picker_zone_info }} </b>
+                            <br>
+                            <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
+                                <mat-form-field appearance="outline" fxFlex="50">
+                                    <mat-label>Tray No.</mat-label>
+                                    <input (keydown.enter)="trayscan(trayNo.value)" [datoAutoFocus]="focus_start_tray"
+                                           [formControl]="trayNo"
+                                           autocomplete="off"
+                                           matInput/>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--todo End Tray Scan code -->
+
+                    <!--todo start Close Tray code -->
+
+                    <div *ngIf="what_to_show=='close_tray';">
+                        <div fxLayout="column" fxLayoutGap="20px">
+                            <div fxLayout="row">
+                                <mat-icon class="icon-size">remove_shopping_cart</mat-icon>
+                                <b style="font-size: 20px">{{'Close Tray ( ' + this.pickmodel.tray + ' )'}}</b>
+                            </div>
+                            <div fxLayout="row">
+                                <mat-form-field appearance="outline" fxFlex="50">
+                                    <mat-label>Scan Tray For Closing</mat-label>
+                                    <input (keydown.enter)="closeTray(close_tray.value)"
+                                           [datoAutoFocus]="focus_close_tray" [formControl]="close_tray"
+                                           autocomplete="off"
+                                           id="close_tray" matInput/>
+                                </mat-form-field>
+                            </div>
+                            <div fxLayout="row">
+                                <mat-label style="font-size: 20px ; color: red">{{this.pickmodel.message}}</mat-label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--todo End Close Tray code -->
+
+                    <!--todo start No Pick Available code -->
+
+                    <div *ngIf="what_to_show=='no_pick';" class="image-adjest">
+                        <div fxLayout="column">
+                            <b>{{ this.pickmodel.message }} </b>
+                            <div class="image-adjest">
+                                <img src="assets/images/backgrounds/nothing_to_pick.jpg">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--todo End No Pick Available code -->
+
+                    <!--todo start Error code -->
+
+                    <div *ngIf="what_to_show=='error';" class="image-adjest">
+                        <div fxLayout="column">
+                            <b>{{ this.pickmodel.message }} </b>
+                            <div class="image-adjest">
+                                <img src="assets/images/backgrounds/wrong.png">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--todo End Error code -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,176 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="grn">
+    <div class="p-16" pristinePerfectScrollbar>
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+            <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column" fxLayoutAlign="start">
+                <div class=" h3 mb-8 p-16">
+                    <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column"
+                         fxLayoutAlign="space-between center"
+                         fxLayoutGap="10px">
+                        <div fxFlex="30">
+                            <b>Goods Receipt Note (GRN </b><b
+                            style="color: red"> {{ sessionManageMent.getLocationName}} </b><b>
+                            ) </b>
+                        </div>
+                        <!--&& documentInfo[0].documentData[0].ordered_qty>documentInfo[0].documentData[0].received_quantity-->
+                        <div *ngIf="!start"
+                             fxFlex="50" fxLayout="row" fxLayoutAlign="end">
+                            <button (click)="new_grn()"
+                                    aria-label="Submit"
+                                    color="accent"
+                                    mat-raised-button>
+                                New
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+                <mat-divider></mat-divider>
+
+                <div *ngIf="start else documentselected" class="p-16">
+                    <form [formGroup]="find_grn" name="find_grn" novalidate>
+                        <div fxLayout="column" fxLayoutGap="10px">
+                            <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+                                <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                    <div fxLayout="column" style="width: 80%;">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Document Type</mat-label>
+                                            <mat-select formControlName="DocumentType">
+                                                <mat-option (click)="this.documentlist = [];">None</mat-option>
+                                                <mat-option (click)="get_DocumentNo()"
+                                                            *ngFor="let values of documentType"
+                                                            [value]="values">{{values}}  </mat-option>
+                                            </mat-select>
+                                            <mat-error>
+                                                Document Type is required
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div fxFlex="25" fxHide="{{subtype}}" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                    <div fxLayout="column" style="width: 80%;">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Sub Document type</mat-label>
+                                            <mat-select>
+                                                <mat-option>None</mat-option>
+                                                <mat-option (click)="get_subDocumentNo(values)"
+                                                            *ngFor="let values of subdocumentType"
+                                                            [value]="values">{{values}}  </mat-option>
+                                            </mat-select>
+                                            <mat-error>
+                                                Sub Document type is required
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div fxFlex="33" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                    <div fxLayout="column" style="width: 80%;">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Document No</mat-label>
+
+                                            <mat-select autocomplete="off" formControlName="DocumentNo">
+                                                <input (ngModelChange)="get_DocumentNo()"
+                                                       [(ngModel)]="searchByDocumentNo"
+                                                       [ngModelOptions]="{standalone:true}"
+                                                       autocomplete="off" class="myInput"
+                                                       focused="'true'" matInput placeholder="Search" type="text">
+                                                <mat-option
+                                                    *ngFor="let shippingOrder of documentlist"
+                                                    [value]="shippingOrder.document_no">{{shippingOrder.document_no}}</mat-option>
+                                            </mat-select>
+                                            <mat-error>
+                                                Document Number is required
+                                            </mat-error>
+
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                    <div fxLayout="column" style="width: 80px;margin-top: 10px">
+                                        <button (click)="getdocument_full_info()"
+                                                [disabled]="find_grn.invalid" aria-label="Submit"
+                                                color="accent"
+                                                mat-raised-button>
+                                            Submit
+                                        </button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <ng-template #documentselected>
+                    <div class="h3 mb-8 p-16">
+                        <b> {{this.find_grn.get('DocumentType').value}} Information</b>
+                        <br><br>
+                        <div class="headertable" fxLayout="column" fxLayoutGap="10px">
+                            <table style=" border:0px;margin-top: 10px;">
+                                <tbody style="font-size: 12px;">
+                                <tr>
+                                    <th>Document No</th>
+                                    <th>{{vendor_name}}</th>
+                                    <th>Order Date</th>
+                                    <th>{{ordered_qty}}</th>
+                                    <th>{{received_quantity}}</th>
+                                </tr>
+                                <tr>
+                                    <td>{{documentInfo[0].documentData[0].document_no}}</td>
+                                    <td>{{documentInfo[0].documentData[0].vendor_name}}</td>
+                                    <td>{{documentInfo[0].documentData[0].order_date|date: 'dd/MM/yyyy hh:mm a' }}</td>
+                                    <td>{{documentInfo[0].documentData[0].ordered_qty}}</td>
+                                    <td>{{documentInfo[0].documentData[0].received_quantity}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <br><br>
+                        <mat-divider></mat-divider>
+                        <br>
+                        <b> Document No : {{this.find_grn.get('DocumentNo').value}} GRN Information</b>
+                        <br><br>
+                        <div class="example-container">
+                            <table [dataSource]="dataSource" mat-table matSort>
+                                <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+                                    <th *matHeaderCellDef mat-header-cell>
+                                        <div class="filterHeader">
+                                            <b mat-sort-header>{{column|firstAnd_Split}}</b><br>
+                                            <input (keyup)="applyFilter($event.target.value,column)"
+                                                   *ngIf="column!='With Scan' && column!='Without Scan'"
+                                                   [placeholder]="column|firstAnd_Split">
+                                        </div>
+                                    </th>
+                                    <td *matCellDef="let element" mat-cell>
+
+                                        <p *ngIf="column!='With Scan' && column!='Without Scan' && column!= 'grn_created_datetime'">{{element[column]}}</p>
+
+                                        <p *ngIf="column=='grn_created_datetime'">{{element[column]|date:'dd/MM/yyyy HH:MM a'}}</p>
+
+                                        <div *ngIf="column=='With Scan' && element['grn_status']=='Created'">
+                                            <button (click)="startgrn(element, 'With Scan')" mat-icon-button>
+                                                <mat-icon svgIcon="scanner"></mat-icon>
+                                            </button>
+                                        </div>
+                                        <div *ngIf="column=='Without Scan' && element['grn_status']=='Created'">
+                                            <button (click)="startgrn(element,'Without Scan')" mat-icon-button>
+                                                <mat-icon svgIcon="input"></mat-icon>
+                                            </button>
+                                        </div>
+
+
+                                    </td>
+                                </ng-container>
+                                <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+                                <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+                            </table>
+                            <div *ngIf="dataSource?.data?.length<=0" class="h3 m-16">No Record Found.</div>
+                            <mat-divider *ngIf="dataSource?.data?.length<=0"></mat-divider>
+                        </div>
+
+
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</div>

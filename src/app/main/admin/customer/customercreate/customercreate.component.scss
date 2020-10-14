@@ -1,0 +1,22 @@
+@import "src/@pristine/scss/pristine";
+
+#createcustomer {
+ .card-table{
+   height: 100%;
+   table{
+     border-collapse: collapse;
+     table-layout: fixed;
+     td{
+       //line-break: auto;
+       word-break: break-all;
+       padding: 5px;
+     }
+   }
+ }
+  .product{
+    min-width: 180px; /* adjust as desired */
+    min-height: 250px;
+    margin-bottom: 20px; /* same as fxLayoutGap for even distribution */
+  }
+
+}

@@ -1,0 +1,127 @@
+@import "src/@pristine/scss/pristine";
+
+#Itemattribute {
+    .wrapper {
+        max-width: 100%;
+        width: 100%;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    .example-container {
+        overflow-x: auto;
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+
+            th {
+                padding: 8px;
+                color: black;
+            }
+
+            td {
+                padding: 8px;
+            }
+
+            th.mat-column-pick_no {
+                font-weight: bold;
+            }
+
+            th.mat-column-priorty {
+                font-weight: bold;
+            }
+
+            th.mat-column-created_datetime {
+                font-weight: bold;
+            }
+
+            td.mat-column-pick_no {
+
+            }
+
+            td.mat-column-priorty {
+                mat-select {
+                    width: 100px;
+                }
+            }
+
+            td.mat-column-created_datetime {
+            }
+
+            td.mat-column-Action {
+                width: 20px;
+            }
+
+        }
+    }
+
+    .filterHeader {
+        input {
+            width: 120px;
+            padding: 10px 8px;
+            display: inline-block;
+            //  border: 1px solid #ccc;
+            border-radius: 40px;
+            box-sizing: border-box;
+            background: #f4f4f4;
+            transition: all 0.3s ease;
+        }
+
+        input:hover {
+            box-shadow: 0px 0px 4px #8d8d8d;
+        }
+
+        input:focus::-webkit-input-placeholder {
+            color: #ccc;
+        }
+
+        input:focus {
+            //border: 1px solid #EF4023;
+            box-shadow: 0px 0px 4px #aaaaaa;
+
+            ::-webkit-input-placeholder {
+                // color: #F5968F;
+            }
+        }
+    }
+
+    ::ng-deep .mat-form-field-flex > .mat-form-field-infix {
+        padding: 0.5em 0px !important;
+        top: -0.19em !important;
+    }
+
+    ::ng-deep .mat-form-field-label-wrapper {
+        top: -1.25em;
+    }
+
+    ::ng-deep .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+        transform: translateY(-1.1em) scale(.75);
+        width: 133.33333%;
+    }
+
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    ::ng-deep input:disabled {
+        font-weight: 300 !important;
+        color: black;
+    }
+
+    .btn {
+        border: 1px solid #dbdbdb;
+        color: gray;
+        height: 50%;
+        background-color: white;
+        padding: 8px 20px;
+        border-radius: 8px;
+        font-size: 20px;
+        font-weight: bold;
+        width: 100%;
+
+    }
+
+}

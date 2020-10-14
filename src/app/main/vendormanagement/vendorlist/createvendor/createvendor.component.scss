@@ -1,0 +1,73 @@
+@import "src/@pristine/scss/pristine";
+
+#vendorcreation {
+    ::ng-deep .mat-form-field-flex > .mat-form-field-infix {
+        padding: 0.5em 0px !important;
+        top: -0.19em !important;
+    }
+
+    ::ng-deep .mat-form-field-label-wrapper {
+        top: -1.25em;
+    }
+
+    ::ng-deep .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
+        transform: translateY(-1.1em) scale(.75);
+        width: 133.33333%;
+    }
+
+    ::ng-deep .mat-step-header .mat-step-icon-selected {
+        background-color: red !important;
+    }
+
+    ::ng-deep .mat-step-header .mat-step-icon-state-edit {
+        background-color: rgba(35, 158, 52, 0.71) !important;
+    }
+
+    .Heading {
+        border: 1px solid rgba(215, 158, 165, 0.23);
+        color: black;
+        font-weight: 600;
+        border-radius: 20px;
+        background-color: rgba(203, 147, 156, 0.15);
+        padding: 8px;
+        width: 92%;
+
+    }
+
+    .browse-btn {
+        box-sizing: border-box;
+        display: inline-block;
+        margin: 0.5rem;
+        position: relative;
+        width: 150px;
+        height: 150px;
+        border: 1px solid #ccc;
+        text-align: center;
+    }
+
+    .img {
+        height: 150px;
+        width: 150px;
+        display: block; /* remove extra space below image */
+    }
+
+    .browse-image {
+        position: relative;
+        //top: 10%;
+
+        background-color: #ffffff;
+    }
+
+    #cameraImg {
+        cursor: pointer;
+        opacity: 0;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 3;
+    }
+}

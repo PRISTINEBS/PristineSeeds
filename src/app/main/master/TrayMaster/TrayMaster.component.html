@@ -1,0 +1,52 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="TrayMaster">
+    <div class="content p-20" pristinePerfectScrollbar>
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+            <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column"
+                 fxLayoutAlign="start">
+                <div class="h2 mb-8 p-16">Tray Master
+                    <button (click)="AddTray()" mat-icon-button matTooltip="Add Tray"
+                            style="float: right;box-shadow: 1px 1px 1px 1px rgba(170,170,170,0.42);background-color: rgba(255,0,19,0.15)">
+                        <mat-icon>add</mat-icon>
+                    </button>
+
+                    <button (click)="downloadExcel()" mat-icon-button matTooltip="Download Tray Data"
+                            style="margin-right: 15px;float: right;box-shadow: 1px 1px 1px 1px rgba(170,170,170,0.42)">
+                        <mat-icon>cloud_download</mat-icon>
+                    </button>
+                </div>
+                <div class="p-8">
+                    <div class="example-container">
+                        <table [dataSource]="dataSource" mat-table matSort>
+                            <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+                                <th *matHeaderCellDef mat-header-cell>
+                                    <div class="filterHeader">
+                                        <b mat-sort-header>{{column|firstAnd_Split}}</b><br>
+                                        <input (keyup)="applyFilter($event.target.value,column)"
+                                               *ngIf="column!='Action' && column!='pick_person_id' && column!='work_type' && column!='created_on'"
+                                               [placeholder]="column|firstAnd_Split">
+                                    </div>
+                                </th>
+                                <td *matCellDef="let element" mat-cell>
+                                    <p *ngIf="column!='Action'&& column!='created_on';else elseAction">{{element[column]}}</p>
+                                    <ng-template #elseAction>
+                                        <button (click)="deleteTray(element)" *ngIf="column=='Action'"
+                                                [disabled]="(element['tray_state']!='Not in Use')?true:false"
+                                                mat-icon-button>
+                                            <mat-icon>delete</mat-icon>
+                                        </button>
+                                        <p *ngIf="column=='created_on'">{{element[column]|date:'dd/MM/yyyy HH:MM a'}}</p>
+                                    </ng-template>
+                                </td>
+                            </ng-container>
+                            <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+                            <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+                        </table>
+                        <div *ngIf="dataSource?.data?.length<=0" class="h3 m-16">No Record Found.</div>
+                        <mat-divider *ngIf="dataSource?.data?.length<=0"></mat-divider>
+                    </div>
+                    <mat-paginator [pageSizeOptions]="[ 10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

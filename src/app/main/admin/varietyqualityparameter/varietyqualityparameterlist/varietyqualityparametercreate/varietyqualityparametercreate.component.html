@@ -1,0 +1,122 @@
+<div fxFlex fxLayout="column" fxLayoutAlign="start" id="AddVarietyQualityParameter">
+  <div mat-dialog-title style="margin-top: -35px">
+    <div class="h5 mb-8 pt-16">Create Variety Quality Parameter
+    </div>
+    <div fxLayout="column" fxLayoutAlign="start">
+      <mat-divider></mat-divider>
+    </div>
+  </div>
+  <div [formGroup]="varietyqualityparameterform" fxFlex="" fxLayout="column">
+
+    <div fxFlex="1 0 Auto" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="start" fxLayoutGap="20px"
+         fxLayoutGap.lt-sm="0px">
+
+      <div fxFlex="33"  fxLayout="column">
+        <mat-form-field appearance="outline" >
+          <mat-label>Type <sub style="color:red">*</sub></mat-label>
+          <mat-select formControlName="type" >
+            <mat-option *ngFor="let type of type"
+                        [value]="type">{{type}}</mat-option>
+
+          </mat-select>
+          <mat-error
+            *ngIf="varietyqualityparameterform.get('type').hasError('required') && varietyqualityparameterform.get('type').touched && varietyqualityparameterform.get('type').dirty">
+            Type Required
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="33"  fxLayout="column">
+        <mat-form-field appearance="outline">
+          <mat-label>Find Item By Name Or No <sup style="color: red">*</sup></mat-label>
+
+          <mat-select autocomplete="off" formControlName="ItemNo" >
+            <input [(ngModel)]="searchByItemNameorNo"
+                   [ngModelOptions]="{standalone:true}"
+                   (ngModelChange)="get_Item()"
+                   autocomplete="off" class="myInput"
+                   focused="'true'" matInput placeholder="Search" type="text">
+            <mat-option>None</mat-option>
+            <mat-option *ngFor="let item_list of itemlist"
+                        [value]="item_list.item_no">{{item_list.name + ' ( ' + item_list.item_no + ' )' + ' ( ' + item_list.baseuom + ' ) '}}</mat-option>
+          </mat-select>
+          <mat-error>
+            Item Name or Number is required
+          </mat-error>
+
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="33"  fxLayout="column">
+        <mat-form-field appearance="outline" >
+          <mat-label>Parameter <sub style="color:red">*</sub></mat-label>
+          <mat-select formControlName="parameter" >
+            <mat-option *ngFor="let parameter of parameter"
+                        [value]="parameter">{{parameter}}</mat-option>
+
+          </mat-select>
+          <mat-error
+            *ngIf="varietyqualityparameterform.get('parameter').hasError('required') && varietyqualityparameterform.get('parameter').touched && varietyqualityparameterform.get('parameter').dirty">
+            Parameter Required
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+    </div>
+
+    <div fxFlex="1 0 Auto" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="start" fxLayoutGap="20px"
+         fxLayoutGap.lt-sm="0px">
+
+      <div fxFlex="33"  fxLayout="column">
+        <mat-form-field appearance="outline">
+          <mat-label>Parameter Value Calc <sub style="color:red">*</sub></mat-label>
+          <mat-select formControlName="parameter_value_calc" >
+            <mat-option *ngFor="let parameter_value_calc of parameter_value_calc"
+                        [value]="parameter_value_calc">{{parameter_value_calc}}</mat-option>
+
+          </mat-select>
+          <mat-error
+            *ngIf="varietyqualityparameterform.get('parameter_value_calc').hasError('required') && varietyqualityparameterform.get('parameter_value_calc').touched && varietyqualityparameterform.get('parameter_value_calc').dirty">
+            Parameter Required
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="33"  fxLayout="column">
+        <div fxLayout="column" style="width: 80%;">
+          <mat-form-field appearance="outline">
+            <mat-label>Value <sup style="color: red">*</sup></mat-label>
+            <input autocomplete="off" formControlName="value" matInput
+                   type="number">
+            <mat-error>
+              Value is Required
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div fxFlex="33"  fxLayout="column">
+        <div fxLayout="column" style="width: 80%;">
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+  <div class="pt-16" fxLayout="row" fxLayoutAlign="end">
+    <button [disabled]="varietyqualityparameterform.invalid" (click)="CreateItemCategory()" *ngIf="data.flag.toLowerCase()=='insert'else elseblock"
+            class="mat-accent mr-16"
+            mat-raised-button>Save
+    </button>
+    <ng-template #elseblock>
+      <button [disabled]="varietyqualityparameterform.invalid" (click)="CreateItemCategory()" class="mat-accent mr-16"
+              mat-raised-button>Update
+      </button>
+    </ng-template>
+    <button (click)="cancle()" color="warn" mat-raised-button>Cancel</button>
+  </div>
+
+</div>
+
+
+

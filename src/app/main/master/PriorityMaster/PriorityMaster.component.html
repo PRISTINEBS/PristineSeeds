@@ -1,0 +1,50 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="priorityPickMaster">
+    <div class="content p-20" pristinePerfectScrollbar>
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+            <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column"
+                 fxLayoutAlign="start">
+                <div class="h3 mb-8 p-16">Priority Master</div>
+                <div class="p-16">
+                    <div class="example-container">
+                        <table [dataSource]="dataSource" mat-table>
+                            <ng-container matColumnDef="pick_no">
+                                <th *matHeaderCellDef mat-header-cell>Pick No</th>
+                                <td *matCellDef="let element" mat-cell> {{element.pick_no}} </td>
+                            </ng-container>
+                            <ng-container matColumnDef="priorty">
+                                <th *matHeaderCellDef mat-header-cell>Priorty</th>
+                                <td *matCellDef="let element" mat-cell>
+                                    <mat-select [(value)]="element.priorty" placeholder="Select Priority">
+                                        <mat-option *ngFor="let opt of priorityMasterService.AllProiorityPickMaster"
+                                                    [value]="opt.priortyId">{{opt.priorty}}</mat-option>
+                                    </mat-select>
+                                </td>
+                            </ng-container>
+                            <ng-container matColumnDef="created_datetime">
+                                <th *matHeaderCellDef mat-header-cell>Created date Time</th>
+                                <td *matCellDef="let element"
+                                    mat-cell> {{element.created_datetime|date:'dd/MM/yyyy hh:mm a' }} </td>
+                            </ng-container>
+                            <!-- Star Column -->
+                            <ng-container matColumnDef="Action" stickyEnd>
+                                <th *matHeaderCellDef mat-header-cell></th>
+                                <td *matCellDef="let element" mat-cell>
+                                    <button (click)="UpdateLinePick(element)" mat-icon-button>
+                                        <mat-icon>edit</mat-icon>
+                                    </button>
+                                </td>
+                            </ng-container>
+                            <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+                            <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+                        </table>
+                        <div *ngIf="priorityMasterService.AllPickPriorityPickList?.length<=0" class="h3 m-16">No Record
+                            Found.
+                        </div>
+                        <mat-divider *ngIf="priorityMasterService.AllPickPriorityPickList?.length<=0"></mat-divider>
+                    </div>
+                </div>
+                <mat-paginator [pageSizeOptions]="[ 10, 20]" showFirstLastButtons></mat-paginator>
+            </div>
+        </div>
+    </div>
+</div>

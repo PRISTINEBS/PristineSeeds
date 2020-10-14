@@ -1,0 +1,73 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="WaveWiseZoneDashboard">
+    <div class="p-16" pristinePerfectScrollbar>
+        <div fxLayout="column" fxLayoutAlign="start">
+            <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column"
+                 fxLayoutAlign="start">
+                <h3 class="headofcard">Wave Wise Zone Activity
+                </h3>
+                <div fxLayout="column" fxLayoutAlign="start">
+                    <mat-divider></mat-divider>
+                </div>
+                <div class="p-16" fxFlex fxLayout="column" fxLayout.lt-sm="column">
+                    <div class="tbl-content">
+                        <table class="tablestyle">
+                            <tr>
+                                <th style="border-left: 1px solid #E74C3C">Sorting zone</th>
+                                <th style="border-left: 1px solid #E74C3C">Wave</th>
+                                <th>Wave Priority</th>
+                                <th>Bins allocated</th>
+                                <th>Qty</th>
+                                <th style="border-right: 1px solid #E74C3C">Active pickers</th>
+                            </tr>
+                            <tbody *ngFor="let mainrow of WaveWiseZoneActivity;let i=index">
+                            <tr *ngFor="let subrow of mainrow.pl;let i2 =index;">
+                                <td *ngIf="i2==0"
+                                    [ngStyle]="{'border-bottom':'1px solid #E74C3C','border-left':'2px solid #E74C3C'}"
+                                    [rowSpan]="i2==0?mainrow.pl.length:0">
+                                    <b style="color: #E74C3C"> Zone : <b> {{mainrow.zone_id}}</b> </b><br>
+                                    <b> Total Picker: {{mainrow.total_worker}}</b>
+
+                                </td>
+                                <td [ngStyle]="{'border-bottom':(i2==mainrow.pl.length-1)?'1px solid #E74C3C':'1px solid #dfe2e8','border-left':'2px solid #E74C3C'}">
+                                    <button mat-stroked-button
+                                            style="color: rgb(0,0,0)">{{subrow.pick_no}}
+                                    </button>
+                                </td>
+                                <td [ngStyle]="{'border-bottom':(i2==mainrow.pl.length-1)?'1px solid #E74C3C':'1px solid #dfe2e8'}">
+                                    <button *ngIf="subrow.pick_priority!=null && subrow.pick_priority!=undefined"
+                                            mat-stroked-button
+                                            style="color: #1A237E">{{subrow.pick_priority}}
+                                    </button>
+                                </td>
+                                <td [ngStyle]="{'border-bottom':(i2==mainrow.pl.length-1)?'1px solid #E74C3C':'1px solid #dfe2e8'}">
+                                    <button mat-stroked-button
+                                            style="color: #237770">{{subrow.total_bin}}
+                                    </button>
+                                </td>
+                                <td [ngStyle]="{'border-bottom':(i2==mainrow.pl.length-1)?'1px solid #E74C3C':'1px solid #dfe2e8'}">
+                                    <button mat-stroked-button
+                                            style="color: #003200">{{subrow.qty_ordered}}
+                                    </button>
+                                </td>
+                                <td [ngStyle]="{'border-bottom':(i2==mainrow.pl.length-1)?'1px solid #E74C3C':'1px solid #dfe2e8','border-right':'1px solid #E74C3C'}">
+                                    <button color="warn"
+                                            mat-stroked-button>{{subrow.active_picker}}
+                                    </button>
+                                </td>
+                            </tr>
+                            </tbody>
+                            <tbody>
+                            <tr *ngIf="WaveWiseZoneActivity.length==0">
+                                <td [ngStyle]="{'border-bottom':'1px solid #E74C3C','border-left':'2px solid #E74C3C','border-right':'2px solid #E74C3C'}"
+                                    colspan="6">
+                                    No Record Found..
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

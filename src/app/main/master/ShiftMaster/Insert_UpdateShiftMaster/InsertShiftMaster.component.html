@@ -1,0 +1,63 @@
+<div class="dialog-content-wrapper">
+    <mat-toolbar style="background-color: #FFFFFF;">
+        <mat-toolbar-row fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+            <span class="title dialog-title">{{data.flag}}</span>
+            <button (click)="dialogRef.close()" aria-label="Close dialog" mat-icon-button>
+                <mat-icon>close</mat-icon>
+            </button>
+        </mat-toolbar-row>
+    </mat-toolbar>
+    <mat-divider></mat-divider>
+    <!-- HORIZONTAL STEPPER EXAMPLE -->
+    <div class="shelf-content">
+        <br>
+        <form (submit)="this.data.flag=='Add Shift'?OnsubmitHit():UpdatesubmitHit()" [formGroup]="shiftCreateForm">
+            <mat-form-field appearance="outline" fxFill>
+                <mat-label>Shift Name</mat-label>
+                <input formControlName="shift_name" matInput name="name" placeholder="Shift Name" required/>
+                <mat-error *ngIf="shiftCreateForm.get('shift_name').touched ||shiftCreateForm.get('shift_name').errors">
+                    Please Enter Shift Name.
+                </mat-error>
+            </mat-form-field>
+
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                <mat-form-field appearance="outline" class="mr-sm-12" fxFlex>
+                    <mat-label>Start Time</mat-label>
+                    <!--      <input matInput id="startdate" mode="12h" formControlName="start_date" matTimepicker
+                                  placeholder="Start Date"/>-->
+                    <mat-error
+                        *ngIf="shiftCreateForm.get('start_date').touched ||shiftCreateForm.get('start_date').errors">
+                        Please Enter Start Time .
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="ml-sm-12" fxFlex>
+                    <mat-label>End Time</mat-label>
+                    <!--  <input matInput id="enddate"  mode="12h" formControlName="end_date" matTimepicker
+                              placeholder="End Date"/>-->
+                    <mat-error *ngIf="shiftCreateForm.get('end_date').touched ||shiftCreateForm.get('end_date').errors">
+                        Please Enter End Time.
+                    </mat-error>
+                </mat-form-field>
+
+            </div>
+            <div fxFlexFill fxLayout="column" fxLayout.gt-xs="row">
+                <mat-form-field appearance="outline" class="ml-sm-12" fxFlex>
+                    <mat-label>Select Supervisor</mat-label>
+                    <mat-select (selectionChange)="totalSelected_Supervisor = $event.value" formControlName="Supervisor"
+                                multiple>
+                        <input #searchBySupervisor autocomplete="off" class="myInput" focused="'true'" matInput
+                               placeholder="Search" type="text">
+
+                        <mat-option
+                            *ngFor="let PendingShippingOrder of Supervisor_ListData|filter:searchBySupervisor.value:'any'"
+                            [value]="PendingShippingOrder.value">{{PendingShippingOrder.display}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <button [disabled]="shiftCreateForm.invalid" color="accent" mat-raised-button> SAVE</button>
+        </form>
+
+    </div>
+</div>
+

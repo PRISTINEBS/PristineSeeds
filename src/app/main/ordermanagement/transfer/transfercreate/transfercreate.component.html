@@ -1,0 +1,192 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="createsaleorder">
+    <div class="content p-20" pristinePerfectScrollbar>
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+            <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column" fxLayoutAlign="start">
+
+                <div class=" h3 mb-8 p-16">
+                    <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column"
+                         fxLayoutAlign="space-between"
+                         fxLayoutGap="10px">
+                        <div fxFlex="60" fxFlex.sm fxLayout.lt-sm="column">
+                            <b>{{this.inputjson.type|titlecase}} Transfer Order ( </b> <b
+                            style="color: red"> {{sessionManageMent.getLocationName}}</b><b>
+                            ) </b>
+                        </div>
+
+                        <div *ngIf="dataSource?.data?.length>0 && this.inputjson.type!='view'"  fxFlex="20 " fxLayout="row" fxLayoutAlign="end">
+                            <button (click)="complete_order()"
+                                    aria-label="Submit"
+                                    color="accent"
+                                    mat-raised-button>
+                                Submit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <mat-divider></mat-divider>
+                <div class="p-16" fxFlex fxLayout="column">
+                    <form [formGroup]="AddItem">
+                        <div fxLayout="column" fxLayoutGap="10px">
+                            <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+                                <div fxFlex="33" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                    <div fxLayout="column" style="width: 80%;">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>To Location</mat-label>
+
+                                            <mat-select autocomplete="off" formControlName="ToLocation">
+                                                <input [(ngModel)]="searchBylocation"
+                                                       [ngModelOptions]="{standalone:true}"
+                                                       autocomplete="off" class="myInput"
+                                                       focused="'true'" matInput placeholder="Search" type="text">
+                                                <mat-option
+                                                    *ngFor="let shippingOrder of locationlist|searchlocation: searchBylocation"
+                                                    [value]="shippingOrder.location_id">{{shippingOrder.location_name}}</mat-option>
+                                            </mat-select>
+                                            <mat-error>
+                                                To Location is required
+                                            </mat-error>
+
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div fxFlex="33" fxLayout="row" fxLayoutAlign="center" fxLayoutAlign.lt-sm="center">
+                                    <div fxLayout="column" style="width: 80%;">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>From Location</mat-label>
+                                            <input autocomplete="off" formControlName="FromLocation" matInput readonly
+                                                   type="text">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div fxFlex="33" fxLayout="row" fxLayoutAlign="center" fxLayoutAlign.lt-sm="center">
+                                    <div fxLayout="column" style="width: 80%;">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Tranfer No</mat-label>
+                                            <input autocomplete="off" formControlName="TransferNo" matInput readonly
+                                                   type="text">
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="this.inputjson.type!='view'" fxLayout="column" fxLayoutGap="10px">
+                            <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+                                <div fxFlex="33" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                    <div fxLayout="column" style="width: 80%;">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Find Item By Name Or No</mat-label>
+
+                                            <mat-select autocomplete="off" formControlName="ItemNo">
+                                                <input #abc
+                                                       (ngModelChange)="get_Item(abc.value)"
+                                                       [(ngModel)]="searchByItemNameorNo"
+                                                       [ngModelOptions]="{standalone:true}"
+                                                       autocomplete="off" class="myInput"
+                                                       focused="'true'" matInput placeholder="Search" type="text">
+                                                <mat-option>None</mat-option>
+                                                <mat-option
+                                                    *ngFor="let shippingOrder of itemlist"
+                                                    [value]="shippingOrder.item_no">{{shippingOrder.name + '( ' + shippingOrder.item_no + ' )'}}</mat-option>
+                                            </mat-select>
+                                            <mat-error>
+                                                Item Name or Number is required
+                                            </mat-error>
+
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div fxFlex="33" fxLayout="row" fxLayoutAlign="center" fxLayoutAlign.lt-sm="center">
+                                    <div fxLayout="column" style="width: 80%;">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Quantity</mat-label>
+                                            <input autocomplete="off" formControlName="Quantity" matInput
+                                                   pattern="[0-9]*"
+                                                   type="text">
+                                            <mat-error>
+                                                Quantity is Wrong
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div fxFlex="20" fxLayout="row" fxLayoutAlign="end" fxLayoutAlign.lt-sm="center"
+                                     style="margin-bottom: 15px">
+                                    <div fxLayout="column" style="width: 80px; margin-top: 10px">
+                                        <button (click)="addnewitem()" [disabled]="AddItem.invalid"
+                                                aria-label="Submit"
+                                                color="accent"
+                                                mat-raised-button>
+                                            Add
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="h3 mb-8 p-16">
+
+                        <div class="example-container">
+                            <table [dataSource]="dataSource" mat-table matSort>
+                                <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+                                    <th *matHeaderCellDef mat-header-cell>
+                                        <div class="filterHeader">
+                                            <b mat-sort-header>{{column|firstAnd_Split}}</b><br>
+                                            <input (keyup)="applyFilter($event.target.value,column)"
+                                                   *ngIf="column!='Action'"
+                                                   [placeholder]="column|firstAnd_Split">
+                                        </div>
+                                    </th>
+                                    <td *matCellDef="let element" mat-cell>
+                                        <p *ngIf="column!='Action';else elseAction">{{element[column]}}</p>
+                                        <ng-template #elseAction>
+                                            <button (click)="delete_line(element)" *ngIf="column=='Action'"
+                                                    mat-icon-button>
+                                                <mat-icon class="icon-size">delete</mat-icon>
+                                            </button>
+                                            <p *ngIf="column=='created_on'">{{element[column]|date:'dd/MM/yyyy HH:MM a'}}</p>
+                                        </ng-template>
+                                    </td>
+                                    <td *matFooterCellDef mat-footer-cell>
+                                        <p *ngIf="column=='item_descrition'">
+                                            Total
+                                        </p>
+                                        <p *ngIf="column!='item_descrition' && column!='item_no' && column!='Action' && dataSource?.data?.length>0">
+                                            {{sum_footer(dataSource.data, column) }}
+                                        </p>
+                                    </td>
+                                </ng-container>
+                                <tr *matHeaderRowDef="displayedColumns ; sticky: true" mat-header-row></tr>
+                                <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+                                <tr *matFooterRowDef="displayedColumns; sticky: true" mat-footer-row></tr>
+                            </table>
+                            <div *ngIf="dataSource?.data?.length<=0" class="h3 m-16">No Record Found.</div>
+                            <mat-divider *ngIf="dataSource?.data?.length<=0"></mat-divider>
+                        </div>
+                        <mat-paginator [pageSizeOptions]="[ 5, 10, 20, 30,40,50]" matPaginator
+                                       showFirstLastButtons></mat-paginator>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

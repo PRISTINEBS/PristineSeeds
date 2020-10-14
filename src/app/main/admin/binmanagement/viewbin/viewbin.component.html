@@ -1,0 +1,78 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="viewbin">
+    <div class="p-16" pristinePerfectScrollbar>
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+            <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column" fxLayoutAlign="start">
+                <div class=" h3 mb-8 p-16">
+                    <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="space-between center"
+                         fxLayoutGap="10px">
+                        <div fxFlex="30">
+                            <b>Bin Information ( </b><b
+                            style="color: red"> {{ sessionManageMent.getLocationName}} </b><b>
+                            ) </b>
+                        </div>
+                    </div>
+                </div>
+
+                <mat-divider></mat-divider>
+                <div>
+                    <div class="h3 mb-8 p-16">
+                        <div *ngIf="dataSource" class="headertable" fxLayout="column" fxLayoutGap="10px">
+                            <table style=" border:0px;margin-top: 10px;">
+                                <tbody style="font-size: 12px;">
+                                <tr>
+                                    <th>Bin Type</th>
+                                    <th>Bincode</th>
+                                    <th>Zone Type</th>
+                                    <th>Rack</th>
+                                    <th>Row</th>
+                                </tr>
+                                <tr>
+                                    <td>{{dataSource.data[0].bin_type}}</td>
+                                    <td>{{dataSource.data[0].bincode}}</td>
+                                    <td>{{dataSource.data[0].zone_type }}</td>
+                                    <td>{{dataSource.data[0].rack}}</td>
+                                    <td>{{dataSource.data[0].row}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <br><br>
+                        <mat-divider></mat-divider>
+                        <br>
+                        <b *ngIf="dataSource"> Item Information In Bin : {{dataSource.data[0].bincode}} </b>
+                        <br><br>
+                        <div class="example-container">
+                            <table [dataSource]="dataSource" mat-table matSort>
+                                <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+                                    <th *matHeaderCellDef mat-header-cell>
+                                        <div class="filterHeader">
+                                            <b mat-sort-header>{{column|firstAnd_Split}}</b><br>
+                                            <input (keyup)="applyFilter($event.target.value,column)"
+                                                   *ngIf="column!='Barcode'"
+                                                   [placeholder]="column|firstAnd_Split">
+                                        </div>
+                                    </th>
+                                    <td *matCellDef="let element" mat-cell>
+
+                                        <p *ngIf="column!='Barcode'">{{element[column]}}</p>
+
+                                        <div *ngIf="column=='Barcode'">
+                                            <button (click)="viewbarcode(element)" mat-icon-button>
+                                                <mat-icon>barcode</mat-icon>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </ng-container>
+                                <tr *matHeaderRowDef="displayedColumns" mat-header-row></tr>
+                                <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+                            </table>
+                            <div *ngIf="dataSource?.data?.length<=0" class="h3 m-16">No Record Found.</div>
+                            <mat-divider *ngIf="dataSource?.data?.length<=0"></mat-divider>
+                        </div>
+                        <mat-paginator [pageSizeOptions]="[5, 10, 20, 30,40,50]" showFirstLastButtons></mat-paginator>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

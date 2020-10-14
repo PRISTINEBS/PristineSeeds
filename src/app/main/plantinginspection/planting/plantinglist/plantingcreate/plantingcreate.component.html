@@ -1,0 +1,81 @@
+<div fxFlex fxLayout="column" fxLayoutAlign="start" id="PlantingCreate">
+  <div mat-dialog-title style="margin-top: -35px">
+    <div class="h5 mb-8 pt-16">Create Planting
+    </div>
+    <div fxLayout="column" fxLayoutAlign="start">
+      <mat-divider></mat-divider>
+    </div>
+  </div>
+  <div [formGroup]="plantingCreateForm" fxFlex="" fxLayout="column">
+
+    <div fxFlex="1 0 Auto" fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="start" fxLayoutGap="20px"
+         fxLayoutGap.lt-sm="0px">
+
+      <div fxFlex="33"  fxLayout="column">
+        <mat-form-field appearance="outline">
+          <mat-label>Location <sup style="color: red">*</sup></mat-label>
+          <mat-select autocomplete="off" formControlName="location" disabled >
+            <input #searchBylocation
+                   autocomplete="off" class="myInput"
+                   focused="'true'" matInput placeholder="Search" type="text">
+            <mat-option
+              *ngFor="let loc of locationlist|searchlocation: searchBylocation.value"
+              [value]="loc.location_id">{{loc.location_name + ' ( ' + loc.location_id + ' ) ' }}</mat-option>
+          </mat-select>
+          <mat-error
+            *ngIf="plantingCreateForm.get('location').hasError('required') && plantingCreateForm.get('location').touched && plantingCreateForm.get('location').dirty">
+            Location is Required
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="33"  fxLayout="column">
+        <mat-form-field appearance="outline">
+          <mat-label>Customer Name or Mobile No</mat-label>
+          <mat-select autocomplete="off" formControlName="CustomerNameorNo"  >
+            <input (ngModelChange)="get_CustomerNo()"
+                   [(ngModel)]="searchByCustomerNameorNo"
+                   [ngModelOptions]="{standalone:true}"
+                   autocomplete="off" class="myInput"
+                   focused="'true'" matInput placeholder="Search"
+                   type="text">
+            <mat-option>None</mat-option>
+            <mat-option
+              *ngFor="let cust_list of customerlist" (click)="setOrganiserDetails(cust_list)"
+              [value]="cust_list.customer_id">{{cust_list.full_name}}</mat-option>
+          </mat-select>
+          <mat-error>
+            Customer Name or Number is required
+          </mat-error>
+
+        </mat-form-field>
+      </div>
+
+      <div fxFlex="33"  fxLayout="column">
+        <mat-form-field appearance="outline" fxFlex="22.5">
+          <mat-label>Season <sup style="color: red">*</sup></mat-label>
+          <mat-select formControlName="season">
+            <mat-option *ngFor="let season of seasonMaster"
+                        [value]="season.season_code">{{season.season_code}}</mat-option>
+          </mat-select>
+          <mat-error>
+            Season is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+
+    </div>
+
+  </div>
+  <div class="pt-16" fxLayout="row" fxLayoutAlign="end">
+    <button [disabled]="plantingCreateForm.invalid" (click)="CreateItemCategory()"
+            class="mat-accent mr-16"
+            mat-raised-button>Save
+    </button>
+    <button (click)="cancle()" color="warn" mat-raised-button>Cancel</button>
+  </div>
+
+</div>
+
+
+

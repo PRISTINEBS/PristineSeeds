@@ -1,0 +1,414 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="creategateentry">
+    <div class="content p-20" pristinePerfectScrollbar>
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+            <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column" fxLayoutAlign="start">
+                <div class="h3 mb-8 p-16"><b>Create GateEntry ( </b> <b
+                    style="color: red"> {{sessionManageMent.getLocationName}}</b><b>
+                    ) {{currentdate | date: 'dd/MM/yyyy hh:mm a'}} </b>
+
+                    <button style="float: right" (click)="CreategateEntry()" [disabled]="(registerForm.invalid)" aria-label="Submit"
+                            color="accent"
+                            mat-raised-button
+                    >
+                      Submit
+                    </button>
+                </div>
+                <div class="p-16">
+                    <form [formGroup]="registerForm" name="registerForm" novalidate>
+                        <div fxLayout="column" fxLayoutGap="10px">
+                          <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+
+                            <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                              <div fxLayout="column" style="width: 80%;">
+                                <mat-form-field appearance="outline" fxFlex="22.5">
+                                  <mat-label>Vendor Type<sup style="color: red">*</sup></mat-label>
+                                  <mat-select formControlName="vendor_classification" (selectionChange)="get_vendor_details()">
+                                    <mat-option *ngFor="let vendorclassificationmaster of getvendorclassificationmaster"
+                                                [value]="vendorclassificationmaster.code">{{vendorclassificationmaster.code}}</mat-option>
+                                  </mat-select>
+                                </mat-form-field>
+                              </div>
+                            </div>
+
+                            <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                              <div fxLayout="column" style="width: 80%;">
+                              <mat-form-field appearance="outline">
+                                <mat-label>Find Vendor Name<sup style="color: red">*</sup></mat-label>
+
+                                <mat-select autocomplete="off" formControlName="vendor_no" >
+                                  <input [(ngModel)]="searchByVendorNoorName"
+                                         [ngModelOptions]="{standalone:true}"
+                                         (ngModelChange)="get_vendor_details()"
+                                         autocomplete="off" class="myInput"
+                                         focused="'true'" matInput placeholder="Search" type="text">
+                                  <mat-option>None</mat-option>
+                                  <mat-option (click)="setVendorNameorMobileNo(vendor_list)"
+                                              *ngFor="let vendor_list of vendorlist"
+                                              [value]="vendor_list.vendor_no">{{vendor_list.vendor_name + ' ( ' + vendor_list.vendor_no + ' )'}}</mat-option>
+                                </mat-select>
+                                <mat-error>
+                                  Vendor Name is required
+                                </mat-error>
+
+                              </mat-form-field>
+                            </div>
+                            </div>
+
+                            <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                              <div fxLayout="column" style="width: 80%;">
+                            <mat-form-field appearance="outline" >
+                              <mat-label>Vendor Name<sup style="color: red">*</sup></mat-label>
+                              <input formControlName="vendor_name" readonly matInput placeholder="City" type="text">
+                            </mat-form-field>
+                            </div>
+                            </div>
+
+                            <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                              <div fxLayout="column" style="width: 80%;">
+                            <mat-form-field appearance="outline" >
+                              <mat-label>Vendor Mobile No<sup style="color: red">*</sup></mat-label>
+                              <input formControlName="vendor_mobile_no" readonly matInput placeholder="Country" type="text">
+                            </mat-form-field>
+                            </div>
+                            </div>
+
+
+                          </div>
+                        </div>
+
+                        <div fxLayout="column" fxLayoutGap="10px">
+                            <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+
+                                <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                  <div fxLayout="column" style="width: 80%;">
+                                    <mat-form-field appearance="outline" fxFlex="22.5">
+                                      <mat-label>Item Type<sup style="color: red">*</sup></mat-label>
+                                      <mat-select formControlName="item_type" >
+                                        <mat-option *ngFor="let item_type of itemType"
+                                                    [value]="item_type">{{item_type}}</mat-option>
+                                      </mat-select>
+                                    </mat-form-field>
+                                  </div>
+                                </div>
+
+                                <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                    <div fxLayout="column" style="width: 80%;">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Vehicle No <sup style="color: red">*</sup></mat-label>
+                                            <input autocomplete="off" formControlName="VehicleNo"
+                                                   matInput>
+                                            <mat-icon class="secondary-text" matSuffix>airport_shuttle</mat-icon>
+                                            <mat-error>
+                                                Vehicle No is required
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                    <div fxLayout="column" style="width: 80%;">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Driver Name <sup style="color: red">*</sup></mat-label>
+                                            <input autocomplete="off" formControlName="DriverName"
+                                                   matInput>
+                                            <mat-icon class="secondary-text" matSuffix>face</mat-icon>
+                                            <mat-error>
+                                                Driver Name is required
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                    <div fxLayout="column" style="width: 80%;">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Driver Number <sup style="color: red">*</sup></mat-label>
+                                            <input autocomplete="off" formControlName="DriverNumber"
+                                                   matInput pattern="[0-9]*"
+                                                   type="number">
+                                            <mat-icon class="secondary-text" matSuffix>dialpad</mat-icon>
+                                            <mat-error>
+                                                Driver Number is required
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div fxLayout="column" fxLayoutGap="10px">
+                            <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+                              <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                <div fxLayout="column" style="width: 80%;">
+                                  <mat-form-field appearance="outline">
+                                    <mat-label>Transpoter <sup style="color: red">*</sup></mat-label>
+                                    <input autocomplete="off" formControlName="Transpoter"
+                                           matInput>
+                                    <mat-icon class="secondary-text" matSuffix>commute</mat-icon>
+                                    <mat-error>
+                                      Transpoter is required
+                                    </mat-error>
+                                  </mat-form-field>
+                                </div>
+                              </div>
+
+                              <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                    <div fxLayout="column" style="width: 80%;">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>Lorry Receipt (LR) <sup style="color: red">*</sup></mat-label>
+                                            <input autocomplete="off" formControlName="LRNo"
+                                                   matInput>
+                                            <mat-icon class="secondary-text" matSuffix>receipt</mat-icon>
+                                            <mat-error>
+                                                Lorry Receipt is required
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                                <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                                    <div fxLayout="column" style="width: 80%;">
+                                        <mat-form-field appearance="outline">
+                                            <mat-label>LR Date <sup style="color: red">*</sup></mat-label>
+                                            <input (focusin)="ldate.open()" [matDatepicker]="ldate"
+                                                   formControlName="LRDate"
+                                                   matInput
+                                                   placeholder="Choose LR date"
+                                            >
+                                            <mat-datepicker #ldate="matDatepicker"
+                                            ></mat-datepicker>
+                                            <mat-icon class="secondary-text" matSuffix>date_range</mat-icon>
+                                            <mat-error>
+                                                Lorry Receipt Date is required
+                                            </mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+
+<!--                                <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">-->
+<!--                                  <div fxLayout="column" style="width: 80%;">-->
+<!--                                    <mat-form-field appearance="outline">-->
+<!--                                      <mat-label>Freight Type <sup style="color: red">*</sup></mat-label>-->
+<!--                                      <mat-select formControlName="Freight">-->
+<!--                                        <mat-option>None</mat-option>-->
+<!--                                        <mat-option (select)="this.registerForm.setValue({Freight:values})"-->
+<!--                                                    *ngFor="let values of freightType"-->
+<!--                                                    [value]="values">{{values}} </mat-option>-->
+<!--                                      </mat-select>-->
+<!--                                      <mat-error>-->
+<!--                                        Freight Type is required-->
+<!--                                      </mat-error>-->
+<!--                                    </mat-form-field>-->
+<!--                                  </div>-->
+<!--                                </div>-->
+
+                            </div>
+                        </div>
+<!--                        <div fxLayout="column" fxLayoutGap="10px">-->
+<!--                            <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">-->
+<!--                              <div *ngIf="this.registerForm.get('Freight').value== freightType[1]" fxFlex="25"-->
+<!--                                   fxLayout="row" fxLayoutAlign.lt-sm="center">-->
+<!--                                <div fxLayout="column" style="width: 80%;">-->
+<!--                                  <mat-form-field appearance="outline">-->
+<!--                                    <mat-label>Freight Amount <sup style="color: red">*</sup></mat-label>-->
+<!--                                    <input autocomplete="off" formControlName="FreightAmount" matInput-->
+<!--                                           pattern="[0-9]*"-->
+<!--                                           type="text">-->
+<!--                                    <mat-error>-->
+<!--                                      Freight Amount is Wrong-->
+<!--                                    </mat-error>-->
+<!--                                    <mat-icon matSuffix>money</mat-icon>-->
+<!--                                  </mat-form-field>-->
+<!--                                </div>-->
+<!--                              </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+                    </form>
+
+                  <b> Add Challan In the GateEntry </b>
+                  <br><br>
+                  <form [formGroup]="addChallanForm" name="addChallanForm" novalidate>
+
+                    <div fxLayout="column" fxLayoutGap="10px">
+
+                      <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+
+                        <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                          <div fxLayout="column" style="width: 80%;">
+                            <mat-form-field appearance="outline">
+                              <mat-label>Challan No <sup style="color: red">*</sup></mat-label>
+                              <input autocomplete="off" formControlName="challan_no"
+                                     matInput>
+                              <mat-error>
+                                Challan No is required
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                        </div>
+                        <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                          <div fxLayout="column" style="width: 80%;">
+                            <mat-form-field appearance="outline">
+                              <mat-label>Challan Date <sup style="color: red">*</sup></mat-label>
+                              <input (focusin)="chdate.open()" [matDatepicker]="chdate"
+                                     formControlName="challan_date"
+                                     matInput
+                                     placeholder="Challan date"
+                              >
+                              <mat-datepicker #chdate="matDatepicker"
+                              ></mat-datepicker>
+                              <mat-icon class="secondary-text" matSuffix>date_range</mat-icon>
+                              <mat-error>
+                                Challan Date is required
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                        </div>
+
+<!--                        <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">-->
+<!--                          <div fxLayout="column" style="width: 80%;">-->
+<!--                            <mat-form-field appearance="outline" fxFlex="22.5">-->
+<!--                              <mat-label>Crop</mat-label>-->
+<!--                              <mat-select formControlName="crop">-->
+<!--                                <mat-option *ngFor="let cat of ItemCategoryList"-->
+<!--                                            [value]="cat.code">{{cat.code}}</mat-option>-->
+<!--                              </mat-select>-->
+<!--                            </mat-form-field>-->
+<!--                          </div>-->
+<!--                        </div>-->
+
+                        <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                          <div fxLayout="column" style="width: 80%;">
+                            <mat-form-field appearance="outline" >
+                              <mat-label>Crop Code <sub style="color:red">*</sub></mat-label>
+                              <mat-select formControlName="crop" >
+                                <mat-option *ngFor="let crop_type of CropType"
+                                            [value]="crop_type">{{crop_type}}</mat-option>
+                              </mat-select>
+                              <mat-error
+                                *ngIf="addChallanForm.get('crop').hasError('required') && addChallanForm.get('crop').touched && addChallanForm.get('crop').dirty">
+                                Crop Type Required
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                        </div>
+
+                        <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                          <div fxLayout="column" style="width: 80%;">
+                            <mat-form-field appearance="outline">
+                              <mat-label>Description </mat-label>
+                              <input autocomplete="off" formControlName="description"
+                                     matInput>
+                            </mat-form-field>
+                          </div>
+                        </div>
+
+                      </div>
+
+                      <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+
+                        <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                          <div fxLayout="column" style="width: 80%;">
+                            <mat-form-field appearance="outline" fxFlex="22.5">
+                              <mat-label>Base Unit Of Measurement</mat-label>
+                              <mat-select formControlName="baseuom">
+                                <mat-option *ngFor="let uom of GetBaseUom" (onSelectionChange)="setbaseuomdesc(uom)"
+                                            [value]="uom.id">{{uom.name}}</mat-option>
+                              </mat-select>
+                            </mat-form-field>
+                          </div>
+                        </div>
+
+                        <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                          <div fxLayout="column" style="width: 80%;">
+                            <mat-form-field appearance="outline">
+                              <mat-label>No Of Bags <sup style="color: red">*</sup></mat-label>
+                              <input autocomplete="off" formControlName="no_of_bags" matInput
+                                     pattern="[0-9]*"
+                                     type="number">
+                              <mat-error>
+                                No Of Bags is Required
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                        </div>
+
+                        <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                          <div fxLayout="column" style="width: 80%;">
+                            <mat-form-field appearance="outline">
+                              <mat-label>Quantity <sup style="color: red">*</sup></mat-label>
+                              <input autocomplete="off" formControlName="Quantity" matInput
+                                     pattern="[0-9]*"
+                                     type="number">
+                              <mat-error>
+                                Quantity is Wrong
+                              </mat-error>
+                            </mat-form-field>
+                          </div>
+                        </div>
+
+                        <div fxFlex="10" fxLayout="row" fxLayoutAlign.lt-sm="center"
+                             style="margin-bottom: 15px">
+                          <div fxLayout="column" style="width: 80px; margin-top: 10px">
+                            <button (click)="AddChallan()" [disabled]="addChallanForm.invalid"
+                                    aria-label="Submit"
+                                    color="accent"
+                                    mat-raised-button
+                            >
+                              Add
+                            </button>
+                          </div>
+                        </div>
+
+                      </div>
+
+                    </div>
+                  </form>
+
+                </div>
+
+              <div class="h3 mb-8 p-16">
+                <div [hidden]="start">
+                  <div class="example-container">
+                    <table #matSort="matSort" [dataSource]="dataSource" mat-table matSort>
+                      <ng-container *ngFor="let column of displayedColumns" [matColumnDef]="column">
+                        <th *matHeaderCellDef mat-header-cell>
+                          <div class="filterHeader">
+                            <b mat-sort-header>{{(column=='baseuomid'?'baseuom':column)|firstAnd_Split}}</b><br>
+                            <input (keyup)="applyFilter($event.target.value,column)"
+                                   *ngIf="column!='Action'"
+                                   [placeholder]="column|firstAnd_Split">
+                          </div>
+                        </th>
+                        <td *matCellDef="let element" mat-cell>
+                          <p *ngIf="column!='Action';else elseAction">{{element[column]}}</p>
+                          <ng-template #elseAction>
+                            <button (click)="delete_line(element)" *ngIf="column=='Action'"
+                                    mat-icon-button>
+                              <mat-icon class="icon-size">delete</mat-icon>
+                            </button>
+                            <p *ngIf="column=='created_on'">{{element[column]|date:'dd/MM/yyyy HH:MM a'}}</p>
+                          </ng-template>
+                        </td>
+                        <td *matFooterCellDef mat-footer-cell>
+                          <p *ngIf="column=='baseuomid'">
+                            Total
+                          </p>
+                          <p *ngIf="column!='challan_no' && column!='challan_date' && column!='crop' && column!='description' && column!='baseuom' && column!='baseuomid' && column!='condition' && column!='message' && column!='Action' && dataSource?.data?.length>0">
+                            {{sum_footer(dataSource.data, column) }}
+                          </p>
+                        </td>
+                      </ng-container>
+                      <tr *matHeaderRowDef="displayedColumns ; sticky: true" mat-header-row></tr>
+                      <tr *matRowDef="let row; columns: displayedColumns;" mat-row></tr>
+                      <tr *matFooterRowDef="displayedColumns; sticky: true" mat-footer-row></tr>
+                    </table>
+                    <div *ngIf="dataSource?.data?.length<=0" class="h3 m-16">No Record Found.</div>
+                    <mat-divider *ngIf="dataSource?.data?.length<=0"></mat-divider>
+                  </div>
+                  <mat-paginator #matpaginator="matPaginator" [pageSizeOptions]="[ 5, 10, 20, 30,40,50]"
+                                 showFirstLastButtons></mat-paginator>
+
+
+                </div>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>

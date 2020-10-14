@@ -1,0 +1,93 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="stlmoistureview">
+  <div class="p-16" pristinePerfectScrollbar>
+    <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+      <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column"
+           fxLayoutAlign="start">
+        <div class="h3 mb-8 p-16" fxLayout="column" style="padding-top: 20px">
+
+          <div fxFlex="1 0 auto" fxLayout="row" fxLayout.lt-sm="row" fxLayoutGap="10px">
+
+            <div fxFlex="1 0 auto" fxLayout="row" fxLayout.lt-sm="row" fxLayoutGap="10px">
+              <b>STL Moisture Test ( </b><b
+              style="color: red"> {{ sessionManageMent.getLocationName}} </b><b> )  ( </b>
+              <b style="color: red"> {{this.stl_moisture_test_no}} </b><b> )</b>
+            </div>
+
+            <div *ngIf="this.dataSource?.data[0]?.result_done == 0" fxFlex="10" fxLayout="row" fxLayoutAlign.lt-sm="center" style="padding-left: 30px;padding-top: 15px">
+              <div fxLayout="column" fxLayoutAlign.lt-sm="center">
+                <button (click)="savemoisture()" mat-flat-button style="background-color: #2ac12adb;color: white">
+                  Save
+                </button>
+              </div>
+            </div>
+
+            <div *ngIf="this.dataSource?.data[0]?.result_done == 0" fxFlex="10" fxLayout="row" fxLayoutAlign.lt-sm="center" style="padding-left: 30px;padding-top: 15px">
+              <div fxLayout="column" fxLayoutAlign.lt-sm="center">
+                <button (click)="submitmoisture()" mat-flat-button color="accent">
+                  Submit
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <mat-divider></mat-divider>
+        <br>
+
+        <div class="h3 mb-8 p-16">
+          <div *ngIf="this.dataSource?.data?.length>0" class="headertable" fxLayout="column" fxLayoutGap="10px">
+            <table style=" border:0px;margin-top: 10px;">
+              <tbody style="font-size: 12px;">
+              <tr>
+                <th>Crop Code :</th>
+                <td>{{this.dataSource?.data[0]?.crop_code}}</td>
+                <th>Item No :</th>
+                <td>{{this.dataSource?.data[0]?.item_no}}</td>
+                <th>Item Name :</th>
+                <td>{{this.dataSource?.data[0]?.item_name}}</td>
+              </tr>
+
+              <tr>
+                <th>Sub Category Name :</th>
+                <td>{{this.dataSource?.data[0]?.sub_cat_name}}</td>
+                <th>Crop Type :</th>
+                <td>{{this.dataSource?.data[0]?.crop_type}}</td>
+                <th>Class Of Seed :</th>
+                <td>{{this.dataSource?.data[0]?.class_of_seed}}</td>
+              </tr>
+
+              <tr>
+                <th>Sample Code :</th>
+                <td>{{this.dataSource?.data[0]?.sample_code}}</td>
+                <th>Stage Code :</th>
+                <td>{{this.dataSource?.data[0]?.stage_code}}</td>
+                <th>Arrival Qty :</th>
+                <td>{{this.dataSource?.data[0]?.arrival_qty}}</td>
+              </tr>
+
+              <tr>
+                <th>Vapour Proof :</th>
+                <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].result_done == 1" (keyup)="set_result()" [(ngModel)]="this.dataSource.data[0].vapour_proof_per" type="number"></td>
+                <th>Non Vapour Proof :</th>
+                <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].result_done == 1" (keyup)="set_result()" [(ngModel)]="this.dataSource.data[0].non_vapour_proof_per" type="number"></td>
+                <th>Result :</th>
+                <td>{{this.dataSource?.data[0]?.moisture_result}}</td>
+              </tr>
+
+              <tr>
+                <th>Result Date :</th>
+                <td colspan="5">{{this.dataSource?.data[0]?.result_date}}</td>
+              </tr>
+
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+

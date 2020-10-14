@@ -1,0 +1,61 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="slotInfoReport">
+    <div class="p-16" pristinePerfectScrollbar>
+        <div fxLayout="column" fxLayoutAlign="start">
+            <div class="pristine-card auto-width mat-elevation-z1 mb-32" fxFlex="1 0 auto" fxLayout="column"
+                 fxLayoutAlign="start">
+                <h3 class="headofcard">Slot Info Report
+                    <button (click)="DownLoadReport()" mat-icon-button
+                            matTooltip="Download Slot-Info Report Excel"
+                            style="margin-right: 15px;float: right;box-shadow: 1px 1px 1px 1px rgba(170,170,170,0.42)">
+                        <mat-icon>cloud_download</mat-icon>
+                    </button>
+
+                </h3>
+                <div fxLayout="column" fxLayoutAlign="start">
+                    <mat-divider></mat-divider>
+                </div>
+                <div class="p-16" fxFlex fxLayout="column" fxLayout.lt-sm="column">
+                    <div *ngIf="slot_listData?.length>0" class="tbl-content">
+                        <table class="tablestyle">
+                            <tr>
+                                <th>Sorting zone</th>
+                                <th>Free slot</th>
+                                <th>Under consolidation</th>
+                                <th>Ready For OQC</th>
+                                <th>Under OQC</th>
+                                <th>Hold For Partical</th>
+                            </tr>
+                            <tr *ngFor="let Zone of slot_listData">
+                                <td>
+                                    <b>
+                                        {{Zone.sorting_zone}}
+                                    </b>
+                                </td>
+                                <td>
+                                    <button (click)="openSlot('free_slot',Zone)" mat-stroked-button
+                                            style="color: rgba(0,0,0,0.69)">{{Zone.free_slot}}</button>
+                                </td>
+                                <td>
+                                    <button (click)="openSlot('under_consolidation',Zone)" mat-stroked-button
+                                            style="color: #1A237E">{{Zone.under_consolidation}}</button>
+                                </td>
+                                <td>
+                                    <button (click)="openSlot('done_consolidation',Zone)" mat-stroked-button
+                                            style="color: #2AA198">{{Zone.done_consolidation}}</button>
+                                </td>
+                                <td>
+                                    <button (click)="openSlot('under_oqc',Zone)" mat-stroked-button
+                                            style="color: darkgreen">{{Zone.under_oqc}}</button>
+                                </td>
+                                <td>
+                                    <button (click)="openSlot('hold_for_partical',Zone)" color="warn"
+                                            mat-stroked-button>{{Zone.hold_for_partical}}</button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

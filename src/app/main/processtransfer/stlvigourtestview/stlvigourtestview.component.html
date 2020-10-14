@@ -1,0 +1,221 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="stlvigourtestview">
+  <div class="p-16" pristinePerfectScrollbar>
+    <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+      <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column"
+           fxLayoutAlign="start">
+        <div class="h3 mb-8 p-16" fxLayout="column" style="padding-top: 20px">
+          <div fxFlex="1 0 auto" fxLayout="row" fxLayout.lt-sm="row" fxLayoutGap="10px">
+            <b>STL Vigouor Test ( </b><b
+            style="color: red"> {{ sessionManageMent.getLocationName}} </b><b> )  ( </b>
+            <b style="color: red"> {{this.stl_vigour_test_no}} </b><b> )</b>
+          </div>
+        </div>
+
+        <mat-divider></mat-divider>
+        <br>
+
+        <div class="h3 mb-8 p-16">
+          <div *ngIf="this.dataSource?.data?.length>0" class="headertable" fxLayout="column" fxLayoutGap="10px">
+            <table style=" border:0px;margin-top: 10px;">
+              <tbody style="font-size: 12px;">
+              <tr>
+                <th>Crop Code :</th>
+                <td>{{this.dataSource?.data[0]?.crop_code}}</td>
+                <th>Item No :</th>
+                <td>{{this.dataSource?.data[0]?.item_no}}</td>
+                <th>Item Name :</th>
+                <td>{{this.dataSource?.data[0]?.item_name}}</td>
+              </tr>
+
+              <tr>
+                <th>Sub Category Name :</th>
+                <td>{{this.dataSource?.data[0]?.sub_cat_name}}</td>
+                <th>Crop Type :</th>
+                <td>{{this.dataSource?.data[0]?.crop_type}}</td>
+                <th>Class Of Seed :</th>
+                <td>{{this.dataSource?.data[0]?.class_of_seed}}</td>
+              </tr>
+
+              <tr>
+                <th>Sample Code :</th>
+                <td>{{this.dataSource?.data[0]?.sample_code}}</td>
+                <th>Stage Code :</th>
+                <td>{{this.dataSource?.data[0]?.stage_code}}</td>
+                <th>Arrival Qty :</th>
+                <td>{{this.dataSource?.data[0]?.arrival_qty}}</td>
+              </tr>
+
+              </tbody>
+            </table>
+          </div>
+          <br>
+          <mat-divider></mat-divider>
+        </div>
+
+        <div class="p-8" fxFlex fxLayout="column" fxLayout.lt-sm="column">
+          <mat-tab-group>
+            <mat-tab label="Vigour Test Info">
+              <br>
+              <div *ngIf="this.dataSource?.data[0]?.result_done == 0" class="h3 mb-8 p-16" fxLayout="column" style="padding-top: 20px">
+                <div fxFlex="1 0 auto" fxLayout="row" fxLayout.lt-sm="row" fxLayoutGap="10px">
+
+                  <div fxFlex="10" fxLayout="row" fxLayoutAlign.lt-sm="center" style="padding-top: 15px">
+                    <div fxLayout="column" fxLayoutAlign.lt-sm="center">
+                      <button (click)="savevigour()"  mat-flat-button style="background-color: #2ac12adb;color: white">
+                        Save
+                      </button>
+                    </div>
+                  </div>
+
+                  <div fxFlex="10" fxLayout="row" fxLayoutAlign.lt-sm="center" style="padding-left: 30px;padding-top: 15px">
+                    <div fxLayout="column" fxLayoutAlign.lt-sm="center">
+                      <button (click)="submitvigour()"  mat-flat-button color="accent">
+                        Submit
+                      </button>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+              <div *ngIf="this.dataSource?.data?.length>0" class="headertable" fxLayout="column" fxLayoutGap="10px">
+
+                <form [formGroup]="vigour_form" name="complete" novalidate>
+
+                  <div fxLayout="column" fxLayoutGap="10px">
+                    <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+                      <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                        <div fxLayout="column" style="width: 80%;margin-top: 25px;color: black">
+                          <mat-label>Sowing Date</mat-label>
+                        </div>
+                      </div>
+
+                      <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                        <div fxLayout="column" style="width: 80%;">
+                          <mat-form-field appearance="outline">
+                            <mat-label>Sowing Date </mat-label>
+                            <input [readonly]="this.dataSource.data[0].result_done == 1"
+                                   (focusin)="sow_date.open()"
+                                   [matDatepicker]="sow_date"
+                                   [min]="minDateexp" autocomplete="false"
+                                   formControlName="sowing_date"
+                                   matInput
+                                   (ngModelChange)="set_sowing_date()"
+                                   placeholder="Choose Sowing Date">
+                            <mat-datepicker [disabled]="this.dataSource.data[0].result_done == 1" #sow_date="matDatepicker"></mat-datepicker>
+                            <mat-icon class="secondary-text" matSuffix>date_range</mat-icon>
+                            <mat-error>
+                              Sowing Date is required
+                            </mat-error>
+                          </mat-form-field>
+                        </div>
+                      </div>
+
+                      <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                        <div fxLayout="column" style="width: 80%;margin-top: 25px;color: black">
+                          <mat-label>Result</mat-label>
+                        </div>
+                      </div>
+
+                      <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                        <div fxLayout="column" style="width: 80%;">
+                          <mat-form-field appearance="outline">
+                            <mat-label>Result</mat-label>
+                            <input readOnly
+                                   autocomplete="off" readonly formControlName="result" matInput
+                                   type="text">
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+
+
+                    <div fxFlex="1 0 auto" fxFlex.sm fxLayout="row" fxLayout.lt-sm="column">
+                      <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                        <div fxLayout="column" style="width: 80%;margin-top: 25px;color: black">
+                          <mat-label>Vigour %</mat-label>
+                        </div>
+                      </div>
+
+                      <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                        <div fxLayout="column" style="width: 80%;">
+                          <mat-form-field appearance="outline">
+                            <mat-label>Vigour %</mat-label>
+                            <input [readonly]="this.dataSource.data[0].result_done == 1"
+                                   autocomplete="off" formControlName="vigour_per" matInput
+                                   (keyup) = set_result()
+                                   type="text">
+                            <mat-error>
+                              Vigour % is Required
+                            </mat-error>
+                          </mat-form-field>
+                        </div>
+                      </div>
+
+                      <div fxFlex="20" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                        <div fxLayout="column" style="width: 80%;margin-top: 25px;color: black">
+                          <mat-label>Result Date</mat-label>
+                        </div>
+                      </div>
+
+                      <div fxFlex="25" fxLayout="row" fxLayoutAlign.lt-sm="center">
+                        <div fxLayout="column" style="width: 80%;">
+                          <mat-form-field appearance="outline">
+                            <mat-label>Result Date</mat-label>
+                            <input readonly
+                                   autocomplete="off" readonly formControlName="result_date" matInput
+                                   type="text">
+                          </mat-form-field>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </form>
+
+
+<!--                <table style="margin-top: 10px;">-->
+<!--                  <tbody style="font-size: 12px;">-->
+<!--                    <tr>-->
+<!--                      <th>Sowing Date :</th>-->
+<!--                      <td><mat-form-field appearance="outline">-->
+<!--                        <mat-label>Expiry Date <sup style="color: red">*</sup></mat-label>-->
+<!--                        <input (focusin)="ldate.open()"-->
+<!--                               [matDatepicker]="ldate"-->
+<!--                               autocomplete="false"-->
+<!--                               formControlName="ExpiryDate"-->
+<!--                               matInput-->
+<!--                               placeholder="Choose Expiry Date">-->
+<!--                        <mat-datepicker #ldate="matDatepicker"></mat-datepicker>-->
+<!--                        <mat-icon class="secondary-text" matSuffix>date_range</mat-icon>-->
+<!--                        <mat-error>-->
+<!--                          Expiry Date is required-->
+<!--                        </mat-error>-->
+<!--                      </mat-form-field></td>-->
+<!--                      <th>Result :</th>-->
+<!--                      <td>{{this.dataSource?.data[0]?.vigour_result}}</td>-->
+<!--                    </tr>-->
+
+<!--                    <tr>-->
+<!--                      <th>Vigour % :</th>-->
+<!--                      <td class="CellColumn" ><input [readOnly]="this.dataSource.data[0].result_done == 1" (keyup)="set_result()" [(ngModel)]="this.dataSource.data[0].vigour_per" type="number"></td>-->
+<!--                      <th>Result Date :</th>-->
+<!--                      <td>{{this.dataSource?.data[0]?.result_date}}</td>-->
+<!--                    </tr>-->
+
+<!--                  </tbody>-->
+<!--                </table>-->
+
+              </div>
+
+
+              <br>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+

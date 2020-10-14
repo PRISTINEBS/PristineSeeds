@@ -1,0 +1,32 @@
+<div class="page-layout simple fullwidth inner-scroll" fxLayout="column" id="ForceAssignMentMaster">
+    <div class="content p-20" pristinePerfectScrollbar>
+        <div class="mb-24" fxLayout="column" fxLayoutAlign="start">
+            <div class="mat-card mat-elevation-z1" fxFlex="1 0 auto" fxLayout="column"
+                 fxLayoutAlign="start">
+                <div class="h3 mb-8 p-16">Reprint Invoice</div>
+                <div class="p-16">
+                    <div fxLayout="column">
+                        <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
+                            <mat-form-field appearance="outline" fxFlex="40">
+                                <mat-label>Enter Order No</mat-label>
+                                <input #pickNo (keydown.enter)="getPickInfoFromServer(pickNo.value)" autocomplete="off"
+                                       matInput/>
+                                <button (click)="getPickInfoFromServer(pickNo.value)" *ngIf="!loading"
+                                        class="disabled-text" mat-icon-button
+                                        matSuffix>
+                                    <mat-icon>search</mat-icon>
+                                </button>
+                                <mat-progress-spinner *ngIf="loading" diameter="25" matSuffix
+                                                      mode="indeterminate"></mat-progress-spinner>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div fxLayout="column">
+                        <div fxFlex="1 0 auto" fxLayout="row" fxLayoutAlign="start center">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
